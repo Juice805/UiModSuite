@@ -10,8 +10,8 @@
     <ProjectGuid>{40D249C8-810B-48FE-ADE4-24819BBBD5FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Demiacle_UiMod</RootNamespace>
-    <AssemblyName>Demiacle_UiMod</AssemblyName>
+    <RootNamespace>UiModSuite</RootNamespace>
+    <AssemblyName>UiModSuite</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -21,10 +21,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\SteamLibrary2\steamapps\common\Stardew Valley\Mods\UiModSuite\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,9 +56,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
-    <Reference Include="Stardew Valley, Version=1.0.6124.25603, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="Stardew Valley">
+      <HintPath>..\..\..\..\SteamLibrary2\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+    </Reference>
+    <Reference Include="StardewModdingAPI, Version=1.7.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\SteamLibrary2\steamapps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+      <HintPath>..\..\..\..\SteamLibrary2\steamapps\common\Stardew Valley\StardewModdingAPI.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,23 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemiacleUtility.cs" />
-    <Compile Include="ElevatorMenuMod.cs" />
-    <Compile Include="MineShaftExtension.cs" />
-    <Compile Include="MineShaftMod.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="ModEntry.cs" />
-    <Compile Include="OutdoorMonsters\AI\HoldStill.cs" />
-    <Compile Include="OutdoorMonsters\AI\MovementType.cs" />
-    <Compile Include="OutdoorMonsters\AI\MoveTowardsTarget.cs" />
-    <Compile Include="OutdoorMonsters\AI\PathFinder.cs" />
-    <Compile Include="OutdoorMonsters\AI\PathFinderMap.cs" />
-    <Compile Include="OutdoorMonsters\AI\PathFinding.cs" />
-    <Compile Include="OutdoorMonsters\OutDoorMonster.cs" />
-    <Compile Include="OutdoorMonsters\OutDoorRockCrab.cs" />
-    <Compile Include="OutdoorMonsters\OutDoorShadowBrute.cs" />
-    <Compile Include="PersistantMonsters.cs" />
-    <Compile Include="ScytheDamageMod.cs" />
-    <Compile Include="SpeedMod.cs" />
     <Compile Include="UiMods\OptionData.cs" />
     <Compile Include="UiMods\OptionsPage.cs" />
     <Compile Include="UiMods\OptionsPageHandler.cs" />

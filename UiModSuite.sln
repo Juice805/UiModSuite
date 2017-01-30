@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemiacleSVM", "ClassLibrary1\DemiacleSVM.csproj", "{40D249C8-810B-48FE-ADE4-24819BBBD5FB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemiacleSVMTests", "Demiacle_SVMTests\DemiacleSVMTests.csproj", "{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiModSuite", "UiModSuite\UiModSuite.csproj", "{40D249C8-810B-48FE-ADE4-24819BBBD5FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +21,6 @@ Global
 		{40D249C8-810B-48FE-ADE4-24819BBBD5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40D249C8-810B-48FE-ADE4-24819BBBD5FB}.Release|x86.ActiveCfg = Release|x86
 		{40D249C8-810B-48FE-ADE4-24819BBBD5FB}.Release|x86.Build.0 = Release|x86
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Debug|x86.Build.0 = Debug|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Release|x86.ActiveCfg = Release|Any CPU
-		{1CBB6DD4-BCDA-4C43-9B54-110266BA9535}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
