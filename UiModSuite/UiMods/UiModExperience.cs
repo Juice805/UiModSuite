@@ -75,7 +75,7 @@ namespace DemiacleSvm.UiMods {
             addCheckboxOption( SHOW_EXP_GAIN, true );
             addCheckboxOption( SHOW_LEVEL_UP_ANIMATION, true, togglLevelUpAnimation );
 
-            Stream soundfile = TitleContainer.OpenStream( @"Mods\\Demiacle_UiMod\\LevelUp.wav" );
+            Stream soundfile = TitleContainer.OpenStream( @"Mods\\UiModSuite\\LevelUp.wav" );
             SoundEffect soundEffect = SoundEffect.FromStream( soundfile );
             se = soundEffect.CreateInstance();
             se.Volume = 1;

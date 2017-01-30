@@ -33,7 +33,7 @@ namespace DemiacleSvm.UiMods {
 
             this.modsWithOptions = modsWithOptions;
 
-            OptionData title = OptionData.createTitle( "Demiacle Ui Mods - V0.1" );
+            OptionData title = OptionData.createTitle( "UiModSuite - V0.1: Demiacle" );
             title.optionsElement.bounds.X = xPositionOnScreen + 30;
 
             options.Add( title );

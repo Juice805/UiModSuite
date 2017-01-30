@@ -13,7 +13,7 @@ namespace DemiacleSvm {
         public static ModEntry modEntry;
         public static IModHelper helper;
         // TODO Replace with helper method mod already has a saver and loader so change to use that
-        public static readonly string modDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\Mods\\Demiacle_UiMod\\";
+        public static string modDirectory;
         public const string saveFilePostfix = "_modData.xml";
         public static Boolean isTesting = false;
             
@@ -21,6 +21,8 @@ namespace DemiacleSvm {
             ModEntry.helper = helper;
             ModEntry.modEntry = this;
             modData = new ModData();
+            modDirectory = helper.DirectoryPath + @"\\";
+
 
             // Loads the correct settings on character load
             PlayerEvents.LoadedGame += loadModData;
