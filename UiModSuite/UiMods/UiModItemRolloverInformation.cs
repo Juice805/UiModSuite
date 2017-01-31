@@ -8,29 +8,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
 
     /// <summary>
     /// Handler that overrides Toolbar and InventoryMenu
     /// </summary>
-    class UiModItemRolloverInformation :UiModWithOptions {
-
-        public const string SHOW_EXTRA_ITEM_INFORMATION = "Show extra tooltip information";
+    class UiModItemRolloverInformation {
 
         Item hoverItem;
         private bool isDrawingShopInformation = false;
 
-        public UiModItemRolloverInformation() {
-            addCheckboxOption( SHOW_EXTRA_ITEM_INFORMATION, true, onSettingChange );
-        }
-
         private void onSettingChange() {
-            var setting = ( bool ) ModEntry.modData.checkboxOptions[ SHOW_EXTRA_ITEM_INFORMATION ];
 
             GraphicsEvents.OnPreRenderEvent -= removeDefaultHoverItems;
             GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolip;
 
-            if ( setting ) {
+            if ( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) ) {
                 GraphicsEvents.OnPostRenderEvent += drawAdvancedToolip;
                 GraphicsEvents.OnPreRenderEvent += removeDefaultHoverItems;
             }

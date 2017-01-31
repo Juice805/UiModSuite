@@ -1,4 +1,4 @@
-﻿using DemiacleSvm.UiMods;
+﻿using UiModSuite.UiMods;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DemiacleSvm {
+namespace UiModSuite {
     public class ModEntry : Mod {
 
         public static ModData modData;
@@ -23,9 +23,8 @@ namespace DemiacleSvm {
             modData = new ModData();
             modDirectory = helper.DirectoryPath + @"\\";
 
-
             // Loads the correct settings on character load
-            PlayerEvents.LoadedGame += loadModData;
+            SaveEvents.AfterLoad += loadModData;
            
             // Skip Intro
             MenuEvents.MenuChanged += SkipIntro.onMenuChange;
@@ -42,9 +41,10 @@ namespace DemiacleSvm {
         }
 
         /// <summary>
+
         /// Loads mod specific data
         /// </summary>
-        internal void loadModData( object sender, EventArgsLoadedGameChanged e ) {
+        internal void loadModData( object sender, EventArgs e ) {
 
             string playerName = Game1.player.name;
 
@@ -56,17 +56,25 @@ namespace DemiacleSvm {
                 Serializer.ReadFromXmlFile( out loadedData, playerName );
 
                 // Only load options valid for this build
-                foreach( var data in loadedData.checkboxOptions ) {
-                    if( modData.checkboxOptions.ContainsKey( data.Key ) ) {
-                        modData.checkboxOptions[ data.Key ] = loadedData.checkboxOptions[ data.Key ];
-                    }
+                foreach( var data in loadedData.boolSettings ) {
+                    modData.boolSettings[ data.Key ] = loadedData.boolSettings[ data.Key ];
+                }
+
+                // Only load options valid for this build
+                foreach( var data in loadedData.intSettings ) {
+                    modData.intSettings[ data.Key ] = loadedData.intSettings[ data.Key ];
+                }
+
+                // Only load options valid for this build
+                foreach( var data in loadedData.stringSettings ) {
+                    modData.stringSettings[ data.Key ] = loadedData.stringSettings[ data.Key ];
                 }
 
                 // Always load character location data
                 // Beware this may need a check later
                 modData.locationOfTownsfolkOptions = loadedData.locationOfTownsfolkOptions;
                     
-                // If need to add more options create object here and merge with loaded data
+
 
             // create file and ModData
             } else {
@@ -86,14 +94,7 @@ namespace DemiacleSvm {
             var uiModExperience = new UiModExperience();
             var uiModluckOfDay = new UiModLuckOfDay();
 
-            var uiMods = new List<UiModWithOptions>();
-            uiMods.Add( uiModAccurateHearts );
-            uiMods.Add( uiModLocationOfTownsfolk );
-            uiMods.Add( uiModItemrolloverInformation );
-            uiMods.Add( uiModExperience );
-            uiMods.Add( uiModluckOfDay );
-
-            var optionPageHandler = new OptionsPageHandler( uiMods );
+            var optionPageHandler = new OptionsPageHandler();
         }
 
         /// <summary>

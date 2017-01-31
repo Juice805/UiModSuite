@@ -3,20 +3,16 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
+using static UiModSuite.UiMods.OptionsPage;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
     /// <summary>
     /// The icon below the day that shows your luck for the day when hovered
     /// </summary>
-    class UiModLuckOfDay : UiModWithOptions{
+    class UiModLuckOfDay {
 
         private ClickableTextureComponent icon;
         private string hoverText = "";
-        public const string SHOW_LUCK_ICON = "Show luck icon";
-
-        public UiModLuckOfDay() {
-            addCheckboxOption( SHOW_LUCK_ICON, true, toggleOption );
-        }
 
         internal void drawDiceIcon( object sender, EventArgs e ) {
             if( Game1.eventUp ) {
@@ -63,7 +59,7 @@ namespace DemiacleSvm.UiMods {
             GraphicsEvents.OnPreRenderHudEvent -= drawDiceIcon;
             GraphicsEvents.OnPostRenderHudEvent -= drawHoverTextOverEverything;
 
-            if( ModEntry.modData.checkboxOptions[ SHOW_LUCK_ICON ] ) {
+            if( getCheckboxValue( Setting.SHOW_LUCK_ICON ) ) {
                 adjustIconXToBlackBorder( null, null );
                 LocationEvents.CurrentLocationChanged += adjustIconXToBlackBorder;
                 GraphicsEvents.OnPreRenderHudEvent += drawDiceIcon;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
     /// <summary>
     /// The text drawn to screen when experience is gained.
     /// </summary>

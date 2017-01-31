@@ -3,7 +3,7 @@ using StardewValley.Menus;
 using System;
 using System.Reflection;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
     class SkipIntro {
 
         internal static void onMenuChange( object sender, EventArgsClickableMenuChanged e ) {

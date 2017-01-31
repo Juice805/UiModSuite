@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace DemiacleSvm {
+namespace UiModSuite {
     /// <summary>
     /// This class handles file saving and loading for ModData.cs
     /// </summary>

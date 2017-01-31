@@ -11,7 +11,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
 
     //TODO This class is not efficient at all and is really really messy... if bored or have time please cleanup...
 
@@ -28,12 +28,7 @@ namespace DemiacleSvm.UiMods {
     /// <summary>
     /// The mod that shows an experienceBar and plays an animation on level up
     /// </summary>
-    class UiModExperience : UiModWithOptions{
-
-        public const string ALLOW_EXPERIENCE_BAR_TO_FADE_OUT = "Allow experience bar to fade out";
-        public const string SHOW_EXPERIENCE_BAR = "Show experience bar";
-        public const string SHOW_EXP_GAIN = "Show experience gain";
-        public const string SHOW_LEVEL_UP_ANIMATION = "Show level up animation";
+    class UiModExperience {
 
         private int maxBarWidth = 175;
 
@@ -67,14 +62,6 @@ namespace DemiacleSvm.UiMods {
             GraphicsEvents.OnPreRenderHudEvent += onPreRenderEvent;
             LocationEvents.CurrentLocationChanged += removeAllExpPointDisplays;
 
-            addCheckboxOption( SHOW_EXPERIENCE_BAR, true );
-
-            OptionData test = addCheckboxOption( ALLOW_EXPERIENCE_BAR_TO_FADE_OUT, true, displayExperienceBar );
-            test.addDelegateCheckIfEnabled( () => ModEntry.modData.checkboxOptions[ SHOW_EXPERIENCE_BAR ] ? true : false );
-
-            addCheckboxOption( SHOW_EXP_GAIN, true );
-            addCheckboxOption( SHOW_LEVEL_UP_ANIMATION, true, togglLevelUpAnimation );
-
             Stream soundfile = TitleContainer.OpenStream( @"Mods\\UiModSuite\\LevelUp.wav" );
             SoundEffect soundEffect = SoundEffect.FromStream( soundfile );
             se = soundEffect.CreateInstance();
@@ -92,9 +79,8 @@ namespace DemiacleSvm.UiMods {
         }
 
         private void togglLevelUpAnimation() {
-            bool setting = ModEntry.modData.checkboxOptions[ SHOW_LEVEL_UP_ANIMATION ];
 
-            if( setting ) {
+            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) ) {
                 PlayerEvents.LeveledUp -= onLevelUp;
                 PlayerEvents.LeveledUp += onLevelUp;
             } else {
@@ -175,7 +161,7 @@ namespace DemiacleSvm.UiMods {
             } else if( currentExp != nextExp ) {
                 displayExperienceBar();
 
-                if( ModEntry.modData.checkboxOptions[ SHOW_EXP_GAIN ] != false && ( nextExp - currentExp ) > 0 ) {
+                if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_EXP_GAIN ) == true && ( nextExp - currentExp ) > 0 ) {
                     expPointDisplays.Add( new ExpPointDisplay( nextExp - currentExp, Game1.player.getLocalPosition( Game1.viewport ) ) );
                 }
 
@@ -184,7 +170,7 @@ namespace DemiacleSvm.UiMods {
             previousItem = currentItem;
             currentExp = nextExp;
 
-            if( ModEntry.modData.checkboxOptions[ SHOW_EXPERIENCE_BAR ] == false || shouldDrawExperienceBar == false  || levelOfCurrentlyDisplayedExp == 10 ) {
+            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_EXPERIENCE_BAR ) == false || shouldDrawExperienceBar == false  || levelOfCurrentlyDisplayedExp == 10 ) {
                 return;
             }
 
@@ -269,7 +255,7 @@ namespace DemiacleSvm.UiMods {
         }
 
         private void displayExperienceBar() {
-            if( ModEntry.modData.checkboxOptions[ ALLOW_EXPERIENCE_BAR_TO_FADE_OUT ] == true ) {
+            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.ALLOW_EXPERIENCE_BAR_TO_FADE_OUT ) == true ) {
                 timerToDissapear.Interval = TIME_BEFORE_EXPERIENCE_BAR_FADE;
                 timerToDissapear.Start();
                 shouldDrawExperienceBar = true;
@@ -284,7 +270,7 @@ namespace DemiacleSvm.UiMods {
         /// Pauses the game, shows Level Up text and plays a chime, and unpauses after some time;
         /// </summary>
         internal void onLevelUp( object sender, EventArgsLevelUp e ) {
-            if( ModEntry.modData.checkboxOptions[ SHOW_LEVEL_UP_ANIMATION ] == false ) {
+            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) == false ) {
                 return;
             }
             

@@ -7,22 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
 
     /// <summary>
     /// SocialPage overwriting handler. Also holds data between menu calls
     /// </summary>
-    class UiModAccurateHearts : UiModWithOptions {
+    class UiModAccurateHearts {
         
         private List<ClickableTextureComponent> friendNames;
         private SocialPage socialPage;
 
-        public const string SHOW_HEART_FILLS = "Show heart fills";
-
-        public UiModAccurateHearts() {
-            addCheckboxOption( SHOW_HEART_FILLS, true, toggleVisibleHearts );
-        }
-        
         /// <summary>
         /// Stores the useful data from the social page when the GameMenu is brought up
         /// </summary>
@@ -152,7 +146,7 @@ namespace DemiacleSvm.UiMods {
             GraphicsEvents.OnPostRenderGuiEvent -= drawHeartFills;
             MenuEvents.MenuChanged -= OnMenuChange;
 
-            if( ModEntry.modData.checkboxOptions[ SHOW_HEART_FILLS ] ) {
+            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_HEART_FILLS ) ) {
                 MenuEvents.MenuChanged += OnMenuChange;
                 GraphicsEvents.OnPostRenderGuiEvent += drawHeartFills;
             }

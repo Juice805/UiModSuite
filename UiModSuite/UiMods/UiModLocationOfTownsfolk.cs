@@ -8,12 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DemiacleSvm.UiMods {
+namespace UiModSuite.UiMods {
 
     /// <summary>
     /// Displays mugshots of townsfolk on the map.
     /// </summary>
-    class UiModLocationOfTownsfolk : UiModWithOptions {
+    class UiModLocationOfTownsfolk {
 
         private SocialPage socialPage;
 
@@ -28,11 +28,6 @@ namespace DemiacleSvm.UiMods {
 
         private int socialPanelWidth = 190;
         private int socialPanelOffsetX = 160;
-
-
-        public UiModLocationOfTownsfolk() {
-            addCheckboxOption( SHOW_NPCS_ON_MAP, true, toggleShowNPCLocationOnMap );
-        }
 
         internal void drawNPCLocationsOnMap( object sender, EventArgs e ) {
             
@@ -509,7 +504,6 @@ namespace DemiacleSvm.UiMods {
         }
 
         public void toggleShowNPCLocationOnMap() {
-            bool setting = ModEntry.modData.checkboxOptions[ SHOW_NPCS_ON_MAP ];
 
             GraphicsEvents.OnPreRenderGuiEvent -= overrideTooltipInformation;
             GraphicsEvents.OnPostRenderGuiEvent -= drawNPCLocationsOnMap;
@@ -517,7 +511,7 @@ namespace DemiacleSvm.UiMods {
             ControlEvents.MouseChanged -= handleClick;
             MenuEvents.MenuChanged -= onMenuChange;
 
-            if( setting ) {
+            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
                 GraphicsEvents.OnPreRenderGuiEvent += overrideTooltipInformation;
                 GraphicsEvents.OnPostRenderGuiEvent += drawNPCLocationsOnMap;
                 GraphicsEvents.OnPostRenderGuiEvent += drawSocialPageOptions;

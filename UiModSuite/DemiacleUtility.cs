@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace DemiacleSvm {
+namespace UiModSuite {
     class DemiacleUtility {
 
         /// <summary>
