@@ -22,6 +22,22 @@ namespace DemiacleSvm.UiMods {
         private Rectangle scrollBarRunner;
         private bool scrolling;
 
+        public enum optionType {
+            ALLOW_EXPERIENCE_BAR_TO_FADE_OUT = 1,
+            SHOW_EXPERIENCE_BAR = 2,
+            SHOW_EXP_GAIN = 3,
+            SHOW_LEVEL_UP_ANIMATION = 4,
+
+            SHOW_HEART_FILLS = 5,
+
+            SHOW_EXTRA_ITEM_INFORMATION = 6,
+
+            SHOW_LOCATION_Of_TOWNSPEOPLE = 7,
+
+            SHOW_LUCK_ICON = 8,
+
+        }
+
         internal OptionsPage( int x, int y, int width, int height, List<UiModWithOptions> modsWithOptions ) : base( x, y, width, height ) {
 
             upArrow = new ClickableTextureComponent( new Rectangle( this.xPositionOnScreen + width + Game1.tileSize / 4, this.yPositionOnScreen + Game1.tileSize, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom ), Game1.mouseCursors, new Rectangle( 421, 459, 11, 12 ), ( float ) Game1.pixelZoom );
