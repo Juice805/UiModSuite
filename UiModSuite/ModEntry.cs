@@ -82,19 +82,9 @@ namespace UiModSuite {
                 updateModData();
             }
 
-            initializeMods();
-
-        }
-
-        private void initializeMods() {
-
-            var uiModAccurateHearts = new UiModAccurateHearts();
-            var uiModLocationOfTownsfolk = new UiModLocationOfTownsfolk();
-            var uiModItemrolloverInformation = new UiModItemRolloverInformation();
-            var uiModExperience = new UiModExperience();
-            var uiModluckOfDay = new UiModLuckOfDay();
-
+            // Initialize mods
             var optionPageHandler = new OptionsPageHandler();
+
         }
 
         /// <summary>

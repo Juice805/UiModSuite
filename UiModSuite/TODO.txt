@@ -6,7 +6,9 @@
     COMPLETE -Display more accurate hearts
     COMPLETE -Display more info of items on mouseover
 	-Display when an animal still needs to be pet
-	-View calendar and billboard anywhere
-	-Display how many days a crop needs until yeild when mouseover
+	Complete -View calendar and billboard anywhere
+	COMPLETE -Display how many days a crop needs until yeild when mouseover
 	-Create a list of items you've given to npcs and how much they like them visible on social panel
 	
+-Known bugs
+	-Level up sound triggers on load

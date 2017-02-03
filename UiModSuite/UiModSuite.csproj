@@ -76,8 +76,10 @@
     <Compile Include="DemiacleUtility.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="ModEntry.cs" />
+    <Compile Include="UiMods\IToggleOption.cs" />
     <Compile Include="UiMods\ModOptionsCheckbox.cs" />
     <Compile Include="UiMods\ModOptionsDropDown.cs" />
+    <Compile Include="UiMods\ModOptionsElement.cs" />
     <Compile Include="UiMods\ModOptionsPlusMinus.cs" />
     <Compile Include="UiMods\ModOptionsSlider.cs" />
     <Compile Include="UiMods\OptionsPage.cs" />
@@ -90,10 +92,15 @@
     <Compile Include="UiMods\OptionsWindow.cs" />
     <Compile Include="UiMods\SkipIntro.cs" />
     <Compile Include="UiMods\UiModAccurateHearts.cs" />
+    <Compile Include="UiMods\UiModDisplayAnimalNeedsPet.cs" />
+    <Compile Include="UiMods\UiModDisplayBirthdayIcon.cs" />
+    <Compile Include="UiMods\UiModDisplayCalendarAndBillboardOnGameMenuButton.cs" />
+    <Compile Include="UiMods\UiModDisplayCropAndBarrelTime.cs" />
     <Compile Include="UiMods\UiModExperience.cs" />
     <Compile Include="UiMods\UiModItemRolloverInformation.cs" />
     <Compile Include="UiMods\UiModLocationOfTownsfolk.cs" />
     <Compile Include="UiMods\UiModLuckOfDay.cs" />
+    <Compile Include="UiMods\UiModShowTravelingMerchant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json">

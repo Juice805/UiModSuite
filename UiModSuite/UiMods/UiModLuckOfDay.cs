@@ -9,7 +9,7 @@ namespace UiModSuite.UiMods {
     /// <summary>
     /// The icon below the day that shows your luck for the day when hovered
     /// </summary>
-    class UiModLuckOfDay {
+    class UiModLuckOfDay : IToggleOption {
 
         private ClickableTextureComponent icon;
         private string hoverText = "";

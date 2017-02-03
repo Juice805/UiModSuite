@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -29,7 +31,7 @@ namespace UiModSuite.UiMods {
         private int socialPanelWidth = 190;
         private int socialPanelOffsetX = 160;
 
-        internal void drawNPCLocationsOnMap( object sender, EventArgs e ) {
+        private void drawNPCLocationsOnMap( object sender, EventArgs e ) {
             
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;
@@ -249,130 +251,64 @@ namespace UiModSuite.UiMods {
 
                 }
 
-                int cropFactor = 0;
+                Rectangle rect = getHeadShot( npc );
 
-                switch( npc.name ) {
-                    case "Abigail":
-                        cropFactor = 7;
-                        break;
-                    case "Alex":
-                        cropFactor = 8;
-                        break;
-                    case "Caroline":
-                        cropFactor = 5;
-                        break;
-                    case "Clint":
-                         cropFactor = 10;
-                        break;
-                    case "Demetrius":
-                        cropFactor = 11;
-                        break;
-                    case "Dwarf":
-                        cropFactor = 8;
-                        break;
-                    case "Elliott":
-                        cropFactor = 9;
-                        break;
-                    case "Emily":
-                        cropFactor = 8;
-                        break;
-                    case "Evelyn":
-                        cropFactor = 5;
-                        break;
-                    case "George":
-                        cropFactor = 5;
-                        break;
-                    case "Gus":
-                        cropFactor = 7;
-                        break;
-                    case "Haley":
-                        cropFactor = 6;
-                        break;
-                    case "Harvey":
-                        cropFactor = 9;
-                        break;
-                    case "Jas":
-                        cropFactor = 6;
-                        break;
-                    case "Jodi":
-                        cropFactor = 7;
-                        break;
-                    case "Kent":
-                        cropFactor = 10;
-                        break;
-                    case "Krobus":
-                        cropFactor = 7;
-                        break;
-                    case "Leah":
-                        cropFactor = 6;
-                        break;
-                    case "Lewis":
-                        cropFactor = 8;
-                        break;
-                    case "Linus":
-                        cropFactor = 4;
-                        break;
-                    case "Marnie":
-                        cropFactor = 5;
-                        break;
-                    case "Maru":
-                        cropFactor = 6;
-                        break;
-                    case "Pam":
-                        cropFactor = 5;
-                        break;
-                    case "Penny":
-                        cropFactor = 6;
-                        break;
-                    case "Pierre":
-                        cropFactor = 9;
-                        break;
-                    case "Robin":
-                        cropFactor = 7;
-                        break;
-                    case "Sandy":
-                        cropFactor = 7;
-                        break;
-                    case "Sam":
-                        cropFactor = 9;
-                        break;
-                    case "Sebastian":
-                        cropFactor = 7;
-                        break;
-                    case "Shane":
-                        cropFactor = 8;
-                        break;
-                    case "Vincent":
-                        cropFactor = 6;
-                        break;
-                    case "Willy":
-                        cropFactor = 10;
-                        break;
-                    case "Marlon":
-                        cropFactor = 2;
-                        break;
-                    case "Wizard":
-                        cropFactor = 9;
-                        break;
-                    // Child name is the only unknown
-                    default:
-                        cropFactor = 4;
-                        break;
-                }
-
-                int positionX = Game1.activeClickableMenu.xPositionOnScreen - 180;
+                int positionX = Game1.activeClickableMenu.xPositionOnScreen - 158;
                 int positionY = Game1.activeClickableMenu.yPositionOnScreen - 40;
 
-                Rectangle rect = npc.getMugShotSourceRect();
-                rect.Height -= cropFactor / 2;
-                rect.Y -= cropFactor / 2;
-
                 float scale = 2.3f;
-                var npcMugShot = new ClickableTextureComponent( npc.name, new Rectangle( positionX + offsetIconX, positionY + offsetIconY, 0, 0 ), null, npc.name, npc.sprite.Texture, rect, scale, false );
-                npcMugShot.draw( Game1.spriteBatch );
 
+                int iconPositionX = positionX + offsetIconX;
+                int iconPositionY = positionY + offsetIconY;
+
+                Stack<StardewValley.Dialogue> currentDialogue =  ModEntry.helper.Reflection.GetPrivateField<Stack<StardewValley.Dialogue>>( npc, "currentDialogue" ).GetValue();
+
+                Color tint;
+                if( currentDialogue.Count > 0 ) {
+                    tint = Color.White;
+                } else {
+                    tint = Color.Gray;
+                }
+
+                //TOOD change to just a drawable texture
+                var npcMugShot = new ClickableTextureComponent( npc.name, new Rectangle( iconPositionX, iconPositionY, 0, 0 ), null, npc.name, npc.sprite.Texture, rect, scale, false );
+                //npcMugShot.draw( Game1.spriteBatch );
+                Game1.spriteBatch.Draw( npc.sprite.Texture, new Vector2( iconPositionX, iconPositionY ), rect, tint, 0, Vector2.Zero, 2f, SpriteEffects.None, 1 );
+
+                // Draw quest icon
+                foreach( var item in Game1.player.questLog ) {
+                    if( item.accepted && item.dailyQuest && !item.completed ) {
+                        bool hasQuest = false;
+                        if( item.questType == 3 ) {
+                            var current = ( ItemDeliveryQuest ) item;
+                            if( current.target == npc.name ) {
+                                hasQuest = true;
+                            }
+                        } else if( item.questType == 4 ) {
+                            var current = ( SlayMonsterQuest ) item;
+                            if( current.target == npc.name ) {
+                                hasQuest = true;
+                            }
+                        } else if( item.questType == 7 ) {
+                            var current = ( FishingQuest ) item;
+                            if( current.target == npc.name ) {
+                                hasQuest = true;
+                            }
+                        } else if( item.questType == 10 ) {
+                            var current = ( ResourceCollectionQuest ) item;
+                            if( current.target == npc.name ) {
+                                hasQuest = true;
+                            }
+                        }
+
+                        if( hasQuest ) {
+                            //var clickableTextureComponent = new ClickableTextureComponent( new Rectangle( 0, 0, 16, 40), Game1.content.Load<Texture2D>( "LooseSprites\\Cursors" ), new Rectangle( 1578, 1983, 16, 40 ), 4 );
+                            Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( iconPositionX+10, iconPositionY - 12 ), new Rectangle(1578/4,1983/4,4,10), Color.White, 0, Vector2.Zero, 3, SpriteEffects.None, 1 );
+                        }
+                    }
+                }
             }
-            
+
             // ReDraw the mouse
             if( !Game1.options.hardwareCursor ) {
                 Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( ( float ) Game1.getMouseX(), ( float ) Game1.getMouseY() ), new Microsoft.Xna.Framework.Rectangle?( Game1.getSourceRectForStandardTileSheet( Game1.mouseCursors, Game1.mouseCursor, 16, 16 ) ), Color.White * Game1.mouseCursorTransparency, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f );
@@ -385,14 +321,128 @@ namespace UiModSuite.UiMods {
 
             IClickableMenu.drawHoverText( Game1.spriteBatch, defaultHoverText, Game1.smallFont, 0, 0, -1, ( string ) null, -1, ( string[] ) null, ( Item ) null, 0, -1, -1, -1, -1, 1f, ( CraftingRecipe ) null );
 
-
         }
 
-        public void overrideTooltipInformation( object sender, EventArgs e ) {
-            return;
+        public static Rectangle getHeadShot( NPC npc ) {
+            int cropFactor = 0;
+
+            switch( npc.name ) {
+                case "Abigail":
+                    cropFactor = 7;
+                    break;
+                case "Alex":
+                    cropFactor = 8;
+                    break;
+                case "Caroline":
+                    cropFactor = 5;
+                    break;
+                case "Clint":
+                    cropFactor = 10;
+                    break;
+                case "Demetrius":
+                    cropFactor = 11;
+                    break;
+                case "Dwarf":
+                    cropFactor = 8;
+                    break;
+                case "Elliott":
+                    cropFactor = 9;
+                    break;
+                case "Emily":
+                    cropFactor = 8;
+                    break;
+                case "Evelyn":
+                    cropFactor = 5;
+                    break;
+                case "George":
+                    cropFactor = 5;
+                    break;
+                case "Gus":
+                    cropFactor = 7;
+                    break;
+                case "Haley":
+                    cropFactor = 6;
+                    break;
+                case "Harvey":
+                    cropFactor = 9;
+                    break;
+                case "Jas":
+                    cropFactor = 6;
+                    break;
+                case "Jodi":
+                    cropFactor = 7;
+                    break;
+                case "Kent":
+                    cropFactor = 10;
+                    break;
+                case "Krobus":
+                    cropFactor = 7;
+                    break;
+                case "Leah":
+                    cropFactor = 6;
+                    break;
+                case "Lewis":
+                    cropFactor = 8;
+                    break;
+                case "Linus":
+                    cropFactor = 4;
+                    break;
+                case "Marnie":
+                    cropFactor = 5;
+                    break;
+                case "Maru":
+                    cropFactor = 6;
+                    break;
+                case "Pam":
+                    cropFactor = 5;
+                    break;
+                case "Penny":
+                    cropFactor = 6;
+                    break;
+                case "Pierre":
+                    cropFactor = 9;
+                    break;
+                case "Robin":
+                    cropFactor = 7;
+                    break;
+                case "Sandy":
+                    cropFactor = 7;
+                    break;
+                case "Sam":
+                    cropFactor = 9;
+                    break;
+                case "Sebastian":
+                    cropFactor = 7;
+                    break;
+                case "Shane":
+                    cropFactor = 8;
+                    break;
+                case "Vincent":
+                    cropFactor = 6;
+                    break;
+                case "Willy":
+                    cropFactor = 10;
+                    break;
+                case "Marlon":
+                    cropFactor = 2;
+                    break;
+                case "Wizard":
+                    cropFactor = 9;
+                    break;
+                // Child name is the only unknown
+                default:
+                    cropFactor = 4;
+                    break;
+            }
+
+            Rectangle rect = npc.getMugShotSourceRect();
+            rect.Height -= cropFactor / 2;
+            rect.Y -= cropFactor / 2;
+
+            return rect;
         }
 
-        public void drawSocialPageOptions( object sender, EventArgs e ) {
+        private void drawSocialPageOptions( object sender, EventArgs e ) {
 
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;
@@ -452,7 +502,7 @@ namespace UiModSuite.UiMods {
         /// <summary>
         /// Resets and populates the list of townsfolk and checkboxes to display every time the game menu is called
         /// </summary>
-        internal void onMenuChange( object sender, EventArgsClickableMenuChanged e ) {
+        private void onMenuChange( object sender, EventArgsClickableMenuChanged e ) {
 
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;
@@ -504,24 +554,23 @@ namespace UiModSuite.UiMods {
         }
 
         public void toggleShowNPCLocationOnMap() {
-
-            GraphicsEvents.OnPreRenderGuiEvent -= overrideTooltipInformation;
+            
+            onMenuChange(null,null);
             GraphicsEvents.OnPostRenderGuiEvent -= drawNPCLocationsOnMap;
             GraphicsEvents.OnPostRenderGuiEvent -= drawSocialPageOptions;
-            ControlEvents.MouseChanged -= handleClick;
+            ControlEvents.MouseChanged -= handleClickForSocialPage;
             MenuEvents.MenuChanged -= onMenuChange;
 
             if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
-                GraphicsEvents.OnPreRenderGuiEvent += overrideTooltipInformation;
                 GraphicsEvents.OnPostRenderGuiEvent += drawNPCLocationsOnMap;
                 GraphicsEvents.OnPostRenderGuiEvent += drawSocialPageOptions;
-                ControlEvents.MouseChanged += handleClick;
+                ControlEvents.MouseChanged += handleClickForSocialPage;
                 MenuEvents.MenuChanged += onMenuChange;
             }
 
         }
 
-        private void handleClick( object sender, EventArgsMouseStateChanged e ) {
+        private void handleClickForSocialPage( object sender, EventArgsMouseStateChanged e ) {
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;
             }
@@ -534,6 +583,7 @@ namespace UiModSuite.UiMods {
                     if( checkboxes[ i ].bounds.Contains( Game1.getMouseX(), Game1.getMouseY() ) && checkboxes[ i ].greyedOut == false ) {
                         checkboxes[ i ].isChecked = !checkboxes[ i ].isChecked;
                         ModEntry.modData.locationOfTownsfolkOptions[ checkboxes[ i ].whichOption ] = checkboxes[ i ].isChecked;
+                        Game1.playSound( "drumkit6" );
                     }
                 }
 

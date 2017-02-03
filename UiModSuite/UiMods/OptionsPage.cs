@@ -23,55 +23,14 @@ namespace UiModSuite.UiMods {
             SHOW_LOCATION_Of_TOWNSPEOPLE = 7,
 
             SHOW_LUCK_ICON = 8,
+            SHOW_TRAVELING_MERCHANT = 9,
+            SHOW_LOCATION_OF_TOWNSPEOPLE_SHOW_QUEST_ICON = 10,
+            SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER = 11,
+            SHOW_BIRTHDAY_ICON = 12,
         }
 
-        internal OptionsPage( List<OptionsElement> options ) {
+        internal OptionsPage( List<ModOptionsElement> options ) {
             this.options = options;
-        }
-
-        public static void syncSettingsToLoadedData( List<OptionsElement> listOfOptions ) {
-            foreach( var option in listOfOptions ) {
-
-                if( option is ModOptionsCheckbox ) {
-                    var checkbox = ( ModOptionsCheckbox ) option;
-
-                    if( ModEntry.modData.boolSettings.ContainsKey( option.whichOption ) == false ) {
-                        ModEntry.modData.boolSettings.Add( option.whichOption, checkbox.isChecked );
-                    } else {
-                        checkbox.isChecked = ModEntry.modData.boolSettings[ option.whichOption ];
-                    }
-                }
-
-                if( option is ModOptionsSlider ) {
-                    var slider = ( ModOptionsSlider ) option;
-
-                    if( ModEntry.modData.intSettings.ContainsKey( option.whichOption ) == false ) {
-                        ModEntry.modData.intSettings.Add( option.whichOption, slider.value );
-                    } else {
-                        slider.value = ModEntry.modData.intSettings[ option.whichOption ];
-                    }
-                }
-
-                if( option is ModOptionsDropDown ) {
-                    var dropDown = ( ModOptionsDropDown ) option;
-
-                    if( ModEntry.modData.intSettings.ContainsKey( option.whichOption ) == false ) {
-                        ModEntry.modData.intSettings.Add( option.whichOption, dropDown.selectedOption );
-                    } else {
-                        dropDown.selectedOption = ModEntry.modData.intSettings[ option.whichOption ];
-                    }
-                }
-
-                if( option is ModOptionsPlusMinus ) {
-                    var plusMinus = ( ModOptionsPlusMinus ) option;
-
-                    if( ModEntry.modData.intSettings.ContainsKey( option.whichOption ) == false ) {
-                        ModEntry.modData.intSettings.Add( option.whichOption, plusMinus.selected );
-                    } else {
-                        plusMinus.selected = ModEntry.modData.intSettings[ option.whichOption ];
-                    }
-                }
-            }
         }
 
         internal static int getSliderValue( Setting setting ) {

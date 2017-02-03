@@ -18,7 +18,7 @@ namespace UiModSuite.UiMods {
         Item hoverItem;
         private bool isDrawingShopInformation = false;
 
-        private void onSettingChange() {
+        public void toggleOption() {
 
             GraphicsEvents.OnPreRenderEvent -= removeDefaultHoverItems;
             GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolip;
@@ -31,7 +31,7 @@ namespace UiModSuite.UiMods {
 
         private void drawAdvancedToolip( object sender, EventArgs e ) {
 
-            if( hoverItem == null ) {
+            if( hoverItem == null || !( hoverItem is StardewValley.Object ) ) {
                 return;
             }
 
@@ -173,7 +173,7 @@ namespace UiModSuite.UiMods {
 
         }
 
-        internal void removeDefaultHoverItems( object sender, EventArgs e ) {
+        private void removeDefaultHoverItems( object sender, EventArgs e ) {
 
             // Remove hovers from toolbar
             for( int j = 0; j < Game1.onScreenMenus.Count; j++ ) {

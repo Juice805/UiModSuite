@@ -5,17 +5,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 
 namespace UiModSuite.UiMods {
-    class ModOptionsCheckbox : OptionsCheckbox {
+    public class ModOptionsCheckbox : ModOptionsElement {
+        public static Rectangle sourceRectUnchecked = new Rectangle( 227, 425, 9, 9 );
+        public static Rectangle sourceRectChecked = new Rectangle( 236, 425, 9, 9 );
+        public const int pixelsWide = 9;
+        public bool isChecked;
 
-        public ModOptionsCheckbox( string label, int whichOption, bool defaultValue = true ) : base( label, whichOption, -1, -1 ) {
-            isChecked = defaultValue;
+        public ModOptionsCheckbox( string label, int whichOption, Action toggleOptionDelegate, int x = -1, int y = -1 )
+          : base( label, x, y, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, whichOption ) {
+            this.toggleOptionDelegate = toggleOptionDelegate;
+            if ( ModEntry.modData.boolSettings.ContainsKey( whichOption ) ) {
+                isChecked = ModEntry.modData.boolSettings[ whichOption ];
+            } else {
+                ModEntry.modData.boolSettings.Add( whichOption, true );
+            }
+            toggleOptionDelegate.Invoke();
         }
 
         public override void receiveLeftClick( int x, int y ) {
+            if( this.greyedOut )
+                return;
+            Game1.playSound( "drumkit6" );
             base.receiveLeftClick( x, y );
+            this.isChecked = !this.isChecked;
             ModEntry.modData.boolSettings[ whichOption ] = isChecked;
+            toggleOptionDelegate.Invoke();
+        }
+
+        public override void draw( SpriteBatch b, int slotX, int slotY ) {
+            b.Draw( Game1.mouseCursors, new Vector2( ( float ) ( slotX + this.bounds.X ), ( float ) ( slotY + this.bounds.Y ) ), new Rectangle?( this.isChecked ? OptionsCheckbox.sourceRectChecked : OptionsCheckbox.sourceRectUnchecked ), Color.White * ( this.greyedOut ? 0.33f : 1f ), 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.4f );
+            base.draw( b, slotX, slotY );
         }
     }
 }

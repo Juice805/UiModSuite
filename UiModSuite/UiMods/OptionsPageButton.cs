@@ -12,6 +12,7 @@ namespace UiModSuite.UiMods {
 
         public Rectangle bounds = new Rectangle();
         private OptionsPageHandler optionPageHandler;
+        private bool hasClicked = false;
 
         public OptionsPageButton( OptionsPageHandler optionPageHandler ) {
 
@@ -36,15 +37,22 @@ namespace UiModSuite.UiMods {
             ControlEvents.MouseChanged += onLeftClick;
         }
 
-        private void onLeftClick( object sender, EventArgsMouseStateChanged e ) {
+        public void onLeftClick( object sender, EventArgsMouseStateChanged e ) {
 
             if( e.NewState.LeftButton != ButtonState.Pressed || !( Game1.activeClickableMenu is GameMenu ) ) {
+                hasClicked = false;
                 return;
             }
 
-            if ( bounds.Contains( e.NewPosition.X, e.NewPosition.Y ) ) {
+            if( ( Game1.activeClickableMenu as GameMenu ).currentTab == GameMenu.mapTab ) {
+                return;
+            }
+
+            if ( bounds.Contains( e.NewPosition.X, e.NewPosition.Y ) && !hasClicked ) {
                 base.receiveLeftClick( e.NewPosition.X, e.NewPosition.Y, true );
                 optionPageHandler.setActiveClickableMenuToOptionsPage();
+                Game1.playSound( "smallSelect" );
+                hasClicked = true;
             }
 
         }

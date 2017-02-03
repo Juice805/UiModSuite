@@ -15,7 +15,7 @@ namespace UiModSuite.UiMods {
         private const int WIDTH = 800;
 
         private List<ClickableComponent> optionSlots = new List<ClickableComponent>();
-        public List<OptionsElement> options = new List<OptionsElement>();
+        public List<ModOptionsElement> options = new List<ModOptionsElement>();
 
         private string hoverText = "";
         private int optionsSlotHeld = -1;

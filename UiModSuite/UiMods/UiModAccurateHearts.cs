@@ -91,6 +91,12 @@ namespace UiModSuite.UiMods {
                 }
             }
 
+            // ReDraw the tooltip
+            var defaultHoverText = ( string ) typeof( GameMenu ).GetField( "hoverText", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( gameMenu );
+
+            IClickableMenu.drawHoverText( Game1.spriteBatch, defaultHoverText, Game1.smallFont, 0, 0, -1, ( string ) null, -1, ( string[] ) null, ( Item ) null, 0, -1, -1, -1, -1, 1f, ( CraftingRecipe ) null );
+
+
         }
 
         /// <summary>

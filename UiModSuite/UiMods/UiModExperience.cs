@@ -70,21 +70,16 @@ namespace UiModSuite.UiMods {
 
         }
 
-        public bool toggleAllowExperienceBarFadeOut() {
-            return true;
-        }
-
         private void removeAllExpPointDisplays( object sender, EventArgsCurrentLocationChanged e ) {
             expPointDisplays.Clear();
         }
 
-        private void togglLevelUpAnimation() {
+        public void togglLevelUpAnimation() {
+
+            PlayerEvents.LeveledUp -= onLevelUp;
 
             if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) ) {
-                PlayerEvents.LeveledUp -= onLevelUp;
                 PlayerEvents.LeveledUp += onLevelUp;
-            } else {
-               PlayerEvents.LeveledUp -= onLevelUp;
             }
 
         }
