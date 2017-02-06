@@ -42,6 +42,7 @@ namespace UiModSuite.Options {
             options.Add( new ModOptionsCheckbox( "Show luck icon", ( int ) ModOptionsPage.Setting.SHOW_LUCK_ICON, uiModluckOfDay.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show hover info on crops and barrels", ( int ) ModOptionsPage.Setting.SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER, uiModDisplayCropAndBarrelTime.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show birthday icon reminder", ( int ) ModOptionsPage.Setting.SHOW_BIRTHDAY_ICON, uiModDisplayBirthdayIcon.toggleOption ) );
+            options.Add( new ModOptionsCheckbox( "Show when animals need pets", ( int ) ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS, uiModDisplayAnimalNeedsPet.toggleOption ) );
 
             //ModOptionsPage.syncSettingsToLoadedData( options );
         }

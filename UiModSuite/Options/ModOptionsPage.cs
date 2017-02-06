@@ -28,6 +28,7 @@ namespace UiModSuite.Options {
             SHOW_LOCATION_OF_TOWNSPEOPLE_SHOW_QUEST_ICON = 10,
             SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER = 11,
             SHOW_BIRTHDAY_ICON = 12,
+            SHOW_ANIMALS_NEED_PETS = 13,
         }
 
         internal ModOptionsPage( List<ModOptionsElement> options ) {

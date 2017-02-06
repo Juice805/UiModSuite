@@ -20,11 +20,12 @@ namespace UiModSuite.Options {
         public ModOptionsCheckbox( string label, int whichOption, Action toggleOptionDelegate, int x = -1, int y = -1 )
           : base( label, x, y, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom, whichOption ) {
             this.toggleOptionDelegate = toggleOptionDelegate;
-            if ( ModEntry.modData.boolSettings.ContainsKey( whichOption ) ) {
-                isChecked = ModEntry.modData.boolSettings[ whichOption ];
-            } else {
+
+            if ( ModEntry.modData.boolSettings.ContainsKey( whichOption ) == false ) {
                 ModEntry.modData.boolSettings.Add( whichOption, true );
             }
+
+            isChecked = ModEntry.modData.boolSettings[ whichOption ];
             toggleOptionDelegate.Invoke();
         }
 

@@ -4,6 +4,7 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
+using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
     internal class UiModDisplayAnimalNeedsPet {
@@ -14,7 +15,6 @@ namespace UiModSuite.UiMods {
         private float alpha;
 
         public UiModDisplayAnimalNeedsPet() {
-            LocationEvents.CurrentLocationChanged += onLocationChange;
             timer = new Timer();
             timer.Elapsed += triggerDraw;
         }
@@ -87,6 +87,16 @@ namespace UiModSuite.UiMods {
                 GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;
             }
 
+        }
+
+        internal void toggleOption() {
+            timer.Stop();
+            LocationEvents.CurrentLocationChanged -= onLocationChange;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS ) ) {
+                timer.Start();
+                LocationEvents.CurrentLocationChanged += onLocationChange;
+            }
         }
     }
 }
