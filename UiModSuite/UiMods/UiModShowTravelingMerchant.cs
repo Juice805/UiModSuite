@@ -5,6 +5,8 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using UiModSuite.Options;
+
 
 namespace UiModSuite.UiMods {
     internal class UiModShowTravelingMerchant {
@@ -13,7 +15,7 @@ namespace UiModSuite.UiMods {
         public void toggleShowTravelingMerchant() {
             GraphicsEvents.OnPreRenderHudEvent -= drawTravelingMerchant;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_TRAVELING_MERCHANT ) == true ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_TRAVELING_MERCHANT ) == true ) {
                 GraphicsEvents.OnPreRenderHudEvent += drawTravelingMerchant;
             }
 

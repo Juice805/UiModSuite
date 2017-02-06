@@ -9,6 +9,8 @@ using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UiModSuite.Options;
+
 
 namespace UiModSuite.UiMods {
 
@@ -561,7 +563,7 @@ namespace UiModSuite.UiMods {
             ControlEvents.MouseChanged -= handleClickForSocialPage;
             MenuEvents.MenuChanged -= onMenuChange;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
                 GraphicsEvents.OnPostRenderGuiEvent += drawNPCLocationsOnMap;
                 GraphicsEvents.OnPostRenderGuiEvent += drawSocialPageOptions;
                 ControlEvents.MouseChanged += handleClickForSocialPage;

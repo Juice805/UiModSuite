@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using Microsoft.Xna.Framework.Input;
+using UiModSuite.Options;
+
 
 namespace UiModSuite.UiMods {
     internal class UiModDisplayCalendarAndBillboardOnGameMenuButton {

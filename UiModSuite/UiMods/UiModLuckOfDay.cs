@@ -3,13 +3,13 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using static UiModSuite.UiMods.OptionsPage;
+using static UiModSuite.Options.ModOptionsPage;
 
 namespace UiModSuite.UiMods {
     /// <summary>
     /// The icon below the day that shows your luck for the day when hovered
     /// </summary>
-    class UiModLuckOfDay : IToggleOption {
+    class UiModLuckOfDay {
 
         private ClickableTextureComponent icon;
         private string hoverText = "";

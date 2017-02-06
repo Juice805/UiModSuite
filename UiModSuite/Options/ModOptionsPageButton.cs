@@ -6,15 +6,16 @@ using StardewValley;
 using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
-    internal class OptionsPageButton : IClickableMenu {
+namespace UiModSuite.Options {
+    internal class ModOptionsPageButton : IClickableMenu {
 
         public Rectangle bounds = new Rectangle();
-        private OptionsPageHandler optionPageHandler;
+        private ModOptionsPageHandler optionPageHandler;
         private bool hasClicked = false;
 
-        public OptionsPageButton( OptionsPageHandler optionPageHandler ) {
+        public ModOptionsPageButton( ModOptionsPageHandler optionPageHandler ) {
 
             this.optionPageHandler = optionPageHandler;
 
@@ -50,7 +51,7 @@ namespace UiModSuite.UiMods {
 
             if ( bounds.Contains( e.NewPosition.X, e.NewPosition.Y ) && !hasClicked ) {
                 base.receiveLeftClick( e.NewPosition.X, e.NewPosition.Y, true );
-                optionPageHandler.setActiveClickableMenuToOptionsPage();
+                optionPageHandler.setActiveClickableMenuToModOptionsPage();
                 Game1.playSound( "smallSelect" );
                 hasClicked = true;
             }

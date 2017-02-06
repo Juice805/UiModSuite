@@ -5,6 +5,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UiModSuite.Options;
 
 namespace UiModSuite {
     public class ModEntry : Mod {
@@ -83,7 +84,7 @@ namespace UiModSuite {
             }
 
             // Initialize mods
-            var optionPageHandler = new OptionsPageHandler();
+            var optionPageHandler = new ModOptionsPageHandler();
 
         }
 

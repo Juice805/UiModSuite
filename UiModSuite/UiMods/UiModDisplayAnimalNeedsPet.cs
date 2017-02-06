@@ -21,7 +21,7 @@ namespace UiModSuite.UiMods {
 
         private void onLocationChange( object sender, EventArgsCurrentLocationChanged e ) {
             if( e.NewLocation is AnimalHouse || e.NewLocation is Farm ) {
-                timer.Interval = 8000;
+                timer.Interval = 5000;
                 timer.Start();
             } else {
                 timer.Stop();
@@ -77,7 +77,7 @@ namespace UiModSuite.UiMods {
 
             scale += 0.01f;
             movementYPerDraw += 0.3f;
-            alpha -= 0.01f;
+            alpha -= 0.014f;
 
             if( alpha < 0.1f ) {
                 GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;

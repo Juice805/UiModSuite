@@ -6,9 +6,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Reflection;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
-    class OptionsPage : OptionsWindow {
+namespace UiModSuite.Options {
+    class ModOptionsPage : OptionsWindow {
 
         public enum Setting : int {
             ALLOW_EXPERIENCE_BAR_TO_FADE_OUT = 1,
@@ -29,7 +30,7 @@ namespace UiModSuite.UiMods {
             SHOW_BIRTHDAY_ICON = 12,
         }
 
-        internal OptionsPage( List<ModOptionsElement> options ) {
+        internal ModOptionsPage( List<ModOptionsElement> options ) {
             this.options = options;
         }
 

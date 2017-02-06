@@ -4,6 +4,8 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
+using UiModSuite.Options;
+
 
 namespace UiModSuite.UiMods {
     internal class UiModDisplayBirthdayIcon {
@@ -11,7 +13,7 @@ namespace UiModSuite.UiMods {
         internal void toggleOption() {
             GraphicsEvents.OnPreRenderHudEvent -= drawBirthdayIcon;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_BIRTHDAY_ICON) ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_BIRTHDAY_ICON) ) {
                 GraphicsEvents.OnPreRenderHudEvent += drawBirthdayIcon;
             }
 

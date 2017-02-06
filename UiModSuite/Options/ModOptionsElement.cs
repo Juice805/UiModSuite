@@ -4,8 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using System;
-
-namespace UiModSuite.UiMods {
+using UiModSuite.UiMods;
+ 
+namespace UiModSuite.Options {
     public class ModOptionsElement {
         public const int defaultX = 8;
         public const int defaultY = 4;

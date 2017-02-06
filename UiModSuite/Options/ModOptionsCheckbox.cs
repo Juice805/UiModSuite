@@ -8,8 +8,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
+namespace UiModSuite.Options {
     public class ModOptionsCheckbox : ModOptionsElement {
         public static Rectangle sourceRectUnchecked = new Rectangle( 227, 425, 9, 9 );
         public static Rectangle sourceRectChecked = new Rectangle( 236, 425, 9, 9 );

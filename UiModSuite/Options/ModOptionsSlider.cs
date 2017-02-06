@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
+namespace UiModSuite.Options {
     public class ModOptionsSlider : OptionsElement {
 
         public static Rectangle sliderBGSource = new Rectangle( 403, 383, 6, 6 );

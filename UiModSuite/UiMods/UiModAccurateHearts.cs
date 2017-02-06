@@ -6,6 +6,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
 
@@ -152,7 +153,7 @@ namespace UiModSuite.UiMods {
             GraphicsEvents.OnPostRenderGuiEvent -= drawHeartFills;
             MenuEvents.MenuChanged -= OnMenuChange;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_HEART_FILLS ) ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HEART_FILLS ) ) {
                 MenuEvents.MenuChanged += OnMenuChange;
                 GraphicsEvents.OnPostRenderGuiEvent += drawHeartFills;
             }

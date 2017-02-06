@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UiModSuite.Options;
+
 
 namespace UiModSuite.UiMods {
     class UiModDisplayCropAndBarrelTime {
@@ -19,7 +21,7 @@ namespace UiModSuite.UiMods {
 
             GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER ) ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER ) ) {
 
                 GraphicsEvents.OnPostRenderEvent += drawHoverTooltip;
             }

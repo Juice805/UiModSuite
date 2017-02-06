@@ -8,8 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
+namespace UiModSuite.Options {
     public class OptionsWindow : IClickableMenu {
 
         private const int WIDTH = 800;

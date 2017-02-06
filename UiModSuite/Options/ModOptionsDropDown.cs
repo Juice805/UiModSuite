@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
+namespace UiModSuite.Options {
     class ModOptionsDropDown : ModOptionsElement {
         public static Rectangle dropDownBGSource = new Rectangle( 433, 451, 3, 3 );
         public static Rectangle dropDownButtonSource = new Rectangle( 437, 450, 10, 11 );

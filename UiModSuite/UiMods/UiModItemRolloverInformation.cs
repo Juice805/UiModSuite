@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
 
@@ -23,7 +24,7 @@ namespace UiModSuite.UiMods {
             GraphicsEvents.OnPreRenderEvent -= removeDefaultHoverItems;
             GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolip;
 
-            if ( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) ) {
+            if ( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) ) {
                 GraphicsEvents.OnPostRenderEvent += drawAdvancedToolip;
                 GraphicsEvents.OnPreRenderEvent += removeDefaultHoverItems;
             }

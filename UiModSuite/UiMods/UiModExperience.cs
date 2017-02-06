@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Timers;
+using UiModSuite.Options;
+
 
 namespace UiModSuite.UiMods {
 
@@ -78,7 +80,7 @@ namespace UiModSuite.UiMods {
 
             PlayerEvents.LeveledUp -= onLevelUp;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) ) {
                 PlayerEvents.LeveledUp += onLevelUp;
             }
 
@@ -156,7 +158,7 @@ namespace UiModSuite.UiMods {
             } else if( currentExp != nextExp ) {
                 displayExperienceBar();
 
-                if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_EXP_GAIN ) == true && ( nextExp - currentExp ) > 0 ) {
+                if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXP_GAIN ) == true && ( nextExp - currentExp ) > 0 ) {
                     expPointDisplays.Add( new ExpPointDisplay( nextExp - currentExp, Game1.player.getLocalPosition( Game1.viewport ) ) );
                 }
 
@@ -165,7 +167,7 @@ namespace UiModSuite.UiMods {
             previousItem = currentItem;
             currentExp = nextExp;
 
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_EXPERIENCE_BAR ) == false || shouldDrawExperienceBar == false  || levelOfCurrentlyDisplayedExp == 10 ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXPERIENCE_BAR ) == false || shouldDrawExperienceBar == false  || levelOfCurrentlyDisplayedExp == 10 ) {
                 return;
             }
 
@@ -250,7 +252,7 @@ namespace UiModSuite.UiMods {
         }
 
         private void displayExperienceBar() {
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.ALLOW_EXPERIENCE_BAR_TO_FADE_OUT ) == true ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.ALLOW_EXPERIENCE_BAR_TO_FADE_OUT ) == true ) {
                 timerToDissapear.Interval = TIME_BEFORE_EXPERIENCE_BAR_FADE;
                 timerToDissapear.Start();
                 shouldDrawExperienceBar = true;
@@ -265,7 +267,7 @@ namespace UiModSuite.UiMods {
         /// Pauses the game, shows Level Up text and plays a chime, and unpauses after some time;
         /// </summary>
         internal void onLevelUp( object sender, EventArgsLevelUp e ) {
-            if( OptionsPage.getCheckboxValue( OptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) == false ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) == false ) {
                 return;
             }
             

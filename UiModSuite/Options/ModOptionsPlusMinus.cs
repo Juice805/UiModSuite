@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using UiModSuite.UiMods;
 
-namespace UiModSuite.UiMods {
+namespace UiModSuite.Options {
     class ModOptionsPlusMinus : ModOptionsElement {
         public static Rectangle minusButtonSource = new Rectangle( 177, 345, 7, 8 );
         public static Rectangle plusButtonSource = new Rectangle( 184, 345, 7, 8 );
