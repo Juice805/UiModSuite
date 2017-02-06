@@ -33,6 +33,10 @@ namespace UiModSuite.UiMods {
             if( Game1.currentLocation.objects.ContainsKey( Game1.currentCursorTile ) ) {
                 StardewValley.Object groundObject = Game1.currentLocation.objects[ Game1.currentCursorTile ];
 
+                if( groundObject.bigCraftable == false ) {
+                    return;
+                }
+
                 // handle object information from objects.cask and maybe others? needs testing
                 if( groundObject.minutesUntilReady > 0 ) {
                     //groundObject.minutesUntilReady;

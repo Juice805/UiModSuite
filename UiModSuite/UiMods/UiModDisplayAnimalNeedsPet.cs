@@ -38,6 +38,10 @@ namespace UiModSuite.UiMods {
 
         private void drawHoverTooltip( object sender, EventArgs e ) {
 
+            if( Game1.eventUp || Game1.activeClickableMenu != null ) {
+                return;
+            }
+
             StardewValley.SerializableDictionary<long, FarmAnimal> animals;
 
             // Get animals from the current location
