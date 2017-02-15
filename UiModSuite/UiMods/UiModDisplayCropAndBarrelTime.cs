@@ -29,6 +29,10 @@ namespace UiModSuite.UiMods {
         }
 
         private void drawHoverTooltip( object sender, EventArgs e ) {
+
+            if( Game1.activeClickableMenu != null || Game1.eventUp == true ) {
+                return;
+            }
             
             if( Game1.currentLocation.objects.ContainsKey( Game1.currentCursorTile ) ) {
                 StardewValley.Object groundObject = Game1.currentLocation.objects[ Game1.currentCursorTile ];

@@ -3,6 +3,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
+using UiModSuite.Options;
 using static UiModSuite.Options.ModOptionsPage;
 
 namespace UiModSuite.UiMods {
@@ -40,11 +41,14 @@ namespace UiModSuite.UiMods {
                 hoverText = "Feelin' lucky... but not too lucky";
             }
 
+            // Set icon position
+            icon.bounds.X = IconHandler.getIconXPosition();
+
             icon.draw( Game1.spriteBatch, color, 1 );
         }
 
         internal void adjustIconXToBlackBorder( object sender, EventArgsCurrentLocationChanged e ) {
-            icon = new ClickableTextureComponent( "", new Rectangle( ( int ) DemiacleUtility.getWidthInPlayArea() - 134, 260, 10 * Game1.pixelZoom, 14 * Game1.pixelZoom ), "", "", Game1.mouseCursors, new Rectangle( 50, 428, 10, 14 ), Game1.pixelZoom );
+            icon = new ClickableTextureComponent( "", new Rectangle( ( int ) DemiacleUtility.getWidthInPlayArea() - 134, 260, 10 * Game1.pixelZoom, 10 * Game1.pixelZoom ), "", "", Game1.mouseCursors, new Rectangle( 50, 428, 10, 14 ), Game1.pixelZoom );
         }
 
         internal void drawHoverTextOverEverything( object sender, EventArgs e ) {

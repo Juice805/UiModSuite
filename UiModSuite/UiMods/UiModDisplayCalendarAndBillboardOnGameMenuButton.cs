@@ -49,7 +49,7 @@ namespace UiModSuite.UiMods {
 
             // Set button position
             showBillboardButton.bounds.X = Game1.activeClickableMenu.xPositionOnScreen + Game1.activeClickableMenu.width - 160;
-            showBillboardButton.bounds.Y = Game1.activeClickableMenu.yPositionOnScreen + Game1.activeClickableMenu.height - 100;
+            showBillboardButton.bounds.Y = Game1.activeClickableMenu.yPositionOnScreen + Game1.activeClickableMenu.height - 300;
 
             showBillboardButton.draw( Game1.spriteBatch );
 

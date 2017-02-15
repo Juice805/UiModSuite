@@ -28,7 +28,7 @@ namespace UiModSuite.UiMods {
                         // draw headshot of npc whos birthday it is
                         Rectangle rect = UiModLocationOfTownsfolk.getHeadShot( npc );
 
-                        int iconPositionX = ( int ) DemiacleUtility.getWidthInPlayArea() - 234;
+                        int iconPositionX = IconHandler.getIconXPosition();
                         int iconPositionY = 256;
 
                         float scale = 2.9f;

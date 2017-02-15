@@ -76,6 +76,7 @@
     <Compile Include="DemiacleUtility.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="ModEntry.cs" />
+    <Compile Include="Options\IconHandler.cs" />
     <Compile Include="Options\ModOptionsCheckbox.cs" />
     <Compile Include="Options\ModOptionsDropDown.cs" />
     <Compile Include="Options\ModOptionsElement.cs" />
