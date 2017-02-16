@@ -32,7 +32,7 @@ namespace UiModSuite.UiMods {
 
         private void drawAdvancedToolip( object sender, EventArgs e ) {
 
-            if( hoverItem == null || !( hoverItem is StardewValley.Object ) ) {
+            if( hoverItem == null ) {
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace UiModSuite.UiMods {
                 if( hoverItem.canStackWith( hoverItem ) && hoverItem.getStack() > 1 ) {
                     sellForAmount += $" ({ hoverItem.salePrice() / 2 * hoverItem.getStack() })";
                 }
-            }
+            } 
 
             bool isDrawingHarvestPrice = false;
 
@@ -71,11 +71,14 @@ namespace UiModSuite.UiMods {
                     // Box and text
                     Game1.drawDialogueBox( positionX, positionY - 100, 220, 176, false, true );
                     //Game1.drawWithBorder( harvestPrice, Color.Gray, Color.Black, new Vector2( positionX, positionY ) );
-                    Game1.spriteBatch.DrawString( Game1.dialogueFont, harvestPrice, new Vector2( positionX + 26, positionY + 4 ), Color.Black );
+                    Game1.spriteBatch.DrawString( Game1.dialogueFont, harvestPrice, new Vector2( positionX + 30, positionY + 4 ), Color.Black );
 
                     // Harvest icon
                     var spriteRectangle = new Rectangle( 60, 428, 10, 10 );
                     Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( positionX + 38, positionY ), spriteRectangle, Color.White, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.85f );
+
+                    // Mini coin icon
+                    Game1.spriteBatch.Draw( Game1.debrisSpriteSheet, new Vector2( positionX + 70, positionY + 10 ), new Rectangle?( Game1.getSourceRectForStandardTileSheet( Game1.debrisSpriteSheet, 8, 16, 16 ) ), Color.White, 0f, new Vector2( 8f, 8f ), ( float ) 4f, SpriteEffects.None, 0.95f );
 
                     isDrawingShopInformation = false;
                 }
@@ -83,11 +86,11 @@ namespace UiModSuite.UiMods {
                 return;
             }
             
-
+            // Draw tooltip
             IClickableMenu.drawToolTip( Game1.spriteBatch, hoverItem.getDescription(), hoverItem.Name + sellForAmount + harvestPrice, hoverItem, false, -1, 0, -1, -1, null, -1 );
             string test = hoverItem.getDescription();
 
-            // Draw coin
+            // Calculate coin and harvest icons
             if( sellForAmount != "" ) {
                 float height = 0;
 
@@ -162,6 +165,7 @@ namespace UiModSuite.UiMods {
                 }
 
 
+                // Draw coin icon
                 Game1.spriteBatch.Draw( Game1.debrisSpriteSheet, new Vector2( iconPositionX - fixIconTopX, iconPositionY ), new Rectangle?( Game1.getSourceRectForStandardTileSheet( Game1.debrisSpriteSheet, 8, 16, 16 ) ), Color.White, 0f, new Vector2( 8f, 8f ), ( float ) Game1.pixelZoom, SpriteEffects.None, 0.95f );
                
                 // Draw harvest icon
@@ -198,8 +202,10 @@ namespace UiModSuite.UiMods {
                         var inventoryPage = ( InventoryPage ) pages[ i ];
                         hoverItem = ( Item ) typeof( InventoryPage ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( inventoryPage );
                         typeof( InventoryPage ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance ).SetValue( inventoryPage, null );
+                        typeof( InventoryPage ).GetField( "hoverText", BindingFlags.NonPublic | BindingFlags.Instance ).SetValue( inventoryPage, null );
                     }
                 }
+
             }
 
             // Remove hovers from chests and shipping bin
@@ -213,6 +219,11 @@ namespace UiModSuite.UiMods {
                 var shopMenu = ( ShopMenu ) Game1.activeClickableMenu;
                 hoverItem = ( Item ) typeof( ShopMenu ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public ).GetValue( shopMenu );
                 isDrawingShopInformation = true;
+            }
+
+            // Remove from fish caught menu
+            if( true ) {
+
             }
         }
 

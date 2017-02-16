@@ -193,10 +193,13 @@ namespace UiModSuite.UiMods {
             // Icon
             Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( (int) positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62 ), spriteRectangle, iconColor , 0.0f, Vector2.Zero, 2.9f, SpriteEffects.None, 0.85f );
 
+            // Draw current Level
+            Game1.drawWithBorder( $"{currentLevel}", Color.Black * 0.6f, Color.Azure, new Vector2( positionX + 12, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66 ) );
+
             // Hacky way to handle a mouseover
             test = new ClickableTextureComponent( "", new Rectangle( ( int ) positionX - 36, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 80, 260, 100 ), "", "", Game1.mouseCursors, new Rectangle( 0, 0, 0, 0 ), Game1.pixelZoom );
             if( test.containsPoint( Game1.getMouseX(), Game1.getMouseY() ) ) {
-                Game1.drawWithBorder( $"{currentExp} / {  expRequiredToLevel - expAlreadyEarnedFromPreviousLevels}", Color.Black, Color.White, new Vector2( positionX + 20, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 114 ) );
+                Game1.drawWithBorder( $"{currentExp} / {  expRequiredToLevel - expAlreadyEarnedFromPreviousLevels}", Color.Black, Color.White, new Vector2( positionX + 64, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66 ) );
             }
 
             // Level Up display
