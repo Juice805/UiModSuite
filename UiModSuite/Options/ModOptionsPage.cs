@@ -29,6 +29,7 @@ namespace UiModSuite.Options {
             SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER = 11,
             SHOW_BIRTHDAY_ICON = 12,
             SHOW_ANIMALS_NEED_PETS = 13,
+            SHOW_SPRINKLER_SCARECROW_RANGE = 14,
         }
 
         internal ModOptionsPage( List<ModOptionsElement> options ) {
