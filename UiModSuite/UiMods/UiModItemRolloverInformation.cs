@@ -51,6 +51,38 @@ namespace UiModSuite.UiMods {
 
             foreach( var item in bundleData ) {
 
+                // This code sucks....
+                string bundleArea = item.Key.Split( '/' )[ 0 ];
+                int noteInt = 0;
+
+                switch( bundleArea ) {
+                    case "Pantry":
+                        noteInt = 0;
+                        break;
+                    case "Crafts Room":
+                        noteInt = 1;
+                        break;
+                    case "Fish Tank":
+                        noteInt = 2;
+                        break;
+                    case "Boiler Room":
+                        noteInt = 3;
+                        break;
+                    case "Vault":
+                        noteInt = 4;
+                        break;
+                    case "Bulletin Board":
+                        noteInt = 5;
+                        break;
+                    default:
+                        continue;
+                }
+
+                // Ignore items if bundles cannot be turned in
+                if( communityCenter.isJunimoNoteAtArea( noteInt ) == false ) {
+                    continue;
+                }
+
                 // Required since the index in the bundles are all wonky
                 int indexInSavedBundleData = Convert.ToInt32( item.Key.Split( '/' )[ 1 ] );
 
