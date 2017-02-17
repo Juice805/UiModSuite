@@ -30,6 +30,7 @@ namespace UiModSuite.Options {
             SHOW_BIRTHDAY_ICON = 12,
             SHOW_ANIMALS_NEED_PETS = 13,
             SHOW_SPRINKLER_SCARECROW_RANGE = 14,
+            SHOW_ITEMS_REQUIRED_FOR_BUNDLES = 15,
         }
 
         internal ModOptionsPage( List<ModOptionsElement> options ) {
