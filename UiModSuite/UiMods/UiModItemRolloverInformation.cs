@@ -79,7 +79,7 @@ namespace UiModSuite.UiMods {
                 }
 
                 // Ignore items if bundles cannot be turned in
-                if( communityCenter.isJunimoNoteAtArea( noteInt ) == false ) {
+                if( communityCenter.shouldNoteAppearInArea( noteInt ) == false ) {
                     continue;
                 }
 

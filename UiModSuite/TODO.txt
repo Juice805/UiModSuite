@@ -8,10 +8,10 @@
 	Complete -Display when an animal still needs to be pet
 	Complete -View calendar and billboard anywhere
 	COMPLETE -Display how many days a crop needs until yeild when mouseover
-	-Display shearing and milking
-	-Item hover includes infor on bundles or artifact
-	-sprinkler scarecrow range
-	-Create a list of items you've given to npcs and how much they like them visible on social panel
+	Complete -Display shearing and milking
+	Complete -Item hover includes infor on bundles or artifact
+	Complete -sprinkler scarecrow range
+	On Hold -Create a list of items you've given to npcs and how much they like them visible on social panel
 	
 -Known bugs
 	-Level up sound triggers on load
