@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -19,16 +20,18 @@ namespace UiModSuite.UiMods {
 
         internal void toggleOption() {
 
-            GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;
+            GraphicsEvents.OnPreRenderHudEventNoCheck -= drawHoverTooltip;
 
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER ) ) {
-
-                GraphicsEvents.OnPostRenderEvent += drawHoverTooltip;
+                GraphicsEvents.OnPreRenderHudEventNoCheck += drawHoverTooltip;
             }
-
         }
 
         private void drawHoverTooltip( object sender, EventArgs e ) {
+
+            if( Game1.isOneOfTheseKeysDown( Game1.oldKBState, new InputButton[] { new InputButton( Keys.LeftShift ), new InputButton( Keys.RightShift ) } ) == false && Game1.oldMouseState.RightButton == ButtonState.Pressed == false ) {
+                return;
+            }
 
             if( Game1.activeClickableMenu != null || Game1.eventUp == true ) {
                 return;
@@ -43,7 +46,6 @@ namespace UiModSuite.UiMods {
 
                 // handle object information from objects.cask and maybe others? needs testing
                 if( groundObject.minutesUntilReady > 0 ) {
-                    //groundObject.minutesUntilReady;
 
                     // Parse string
                     int hours = groundObject.minutesUntilReady / 60;
@@ -59,7 +61,6 @@ namespace UiModSuite.UiMods {
                     IClickableMenu.drawHoverText( Game1.spriteBatch, tooltip, Game1.smallFont );
                     return;
                 }
-
             }
 
             if( Game1.currentLocation.terrainFeatures.ContainsKey( Game1.currentCursorTile ) ) {
@@ -116,9 +117,7 @@ namespace UiModSuite.UiMods {
 
                     IClickableMenu.drawHoverText( Game1.spriteBatch, tooltip, Game1.smallFont );
                 }
-
             }
-
         }
 
     }

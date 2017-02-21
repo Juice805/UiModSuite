@@ -64,10 +64,15 @@ namespace UiModSuite.UiMods {
             GraphicsEvents.OnPreRenderHudEvent += onPreRenderEvent;
             LocationEvents.CurrentLocationChanged += removeAllExpPointDisplays;
 
-            Stream soundfile = TitleContainer.OpenStream( @"Mods\\UiModSuite\\LevelUp.wav" );
-            SoundEffect soundEffect = SoundEffect.FromStream( soundfile );
-            se = soundEffect.CreateInstance();
-            se.Volume = 1;
+            try {
+                Stream soundfile = TitleContainer.OpenStream( @"Mods\\UiModSuite\\LevelUp.wav" );
+                SoundEffect soundEffect = SoundEffect.FromStream( soundfile );
+                se = soundEffect.CreateInstance();
+                se.Volume = 1;
+            } catch( FileNotFoundException e ) {
+                ModEntry.Log( "Failed to load LevelUp.wav, please contact Demiacle! \n" + e.StackTrace );
+            }
+            
             timerToDissapear.Elapsed += stopTimerAndFadeBarOut;
 
         }
@@ -190,16 +195,20 @@ namespace UiModSuite.UiMods {
             Game1.spriteBatch.Draw( Game1.staminaRect, new Rectangle( (int) positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 63, barWidth, 4 ), Color.LightGray );
             Game1.spriteBatch.Draw( Game1.staminaRect, new Rectangle( (int) positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 36, barWidth, 4 ), Color.LightGray );
 
-            // Icon
-            Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( (int) positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62 ), spriteRectangle, iconColor , 0.0f, Vector2.Zero, 2.9f, SpriteEffects.None, 0.85f );
-
-            // Draw current Level
-            Game1.drawWithBorder( $"{currentLevel}", Color.Black * 0.6f, Color.Azure, new Vector2( positionX + 12, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66 ) );
-
+            
             // Hacky way to handle a mouseover
+            // Draw experience gained this level and amount needed for next level
             test = new ClickableTextureComponent( "", new Rectangle( ( int ) positionX - 36, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 80, 260, 100 ), "", "", Game1.mouseCursors, new Rectangle( 0, 0, 0, 0 ), Game1.pixelZoom );
             if( test.containsPoint( Game1.getMouseX(), Game1.getMouseY() ) ) {
-                Game1.drawWithBorder( $"{currentExp} / {  expRequiredToLevel - expAlreadyEarnedFromPreviousLevels}", Color.Black, Color.White, new Vector2( positionX + 64, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66 ) );
+                Game1.drawWithBorder( $"{currentExp}/{  expRequiredToLevel - expAlreadyEarnedFromPreviousLevels}", Color.Black, Color.White, new Vector2( positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66 ) );
+            
+            // Draw Level and icon
+            } else {
+                // Icon
+                Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( ( int ) positionX + 54, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62 ), spriteRectangle, iconColor, 0.0f, Vector2.Zero, 2.9f, SpriteEffects.None, 0.85f );
+
+                // Draw current Level
+                Game1.drawWithBorder( $"{currentLevel}", Color.Black * 0.6f, Color.Azure, new Vector2( positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66 ) );
             }
 
             // Level Up display
@@ -292,8 +301,6 @@ namespace UiModSuite.UiMods {
                     break;
             }
 
-            Game1.paused = true;
-
             shouldDrawLevelUp = true;
 
             timerToDissapear.Interval = TIME_BEFORE_EXPERIENCE_BAR_FADE;
@@ -304,24 +311,28 @@ namespace UiModSuite.UiMods {
             float prevAmbientVolume = Game1.options.ambientVolumeLevel;
             float prevMusicVolume = Game1.options.musicVolumeLevel;
 
-            if( prevMusicVolume > 0.01f ) {
-                se.Volume = Math.Min( 1, ( prevMusicVolume + 0.3f ) );
-            } else {
-                se.Volume = 0;
+            // Play sound if loaded
+            if( se != null ) {
+                if( prevMusicVolume > 0.01f ) {
+                    se.Volume = Math.Min( 1, ( prevMusicVolume + 0.3f ) );
+                } else {
+                    se.Volume = 0;
+                }
             }
-            
+
             Task.Factory.StartNew( () => {
                 System.Threading.Thread.Sleep( 100 );
 
                 Game1.musicCategory.SetVolume( Math.Max( 0, Game1.options.musicVolumeLevel - 0.3f ) );
                 Game1.ambientCategory.SetVolume( Math.Max( 0, Game1.options.ambientVolumeLevel - 0.3f ) );
-                
-                se.Play();
+
+                if( se != null ) {
+                    se.Play();
+                }
             } );
 
             Task.Factory.StartNew( () => {
                 System.Threading.Thread.Sleep( lengthOfLevelUpPause );
-                Game1.paused = false;
                 shouldDrawLevelUp = false;
 
 

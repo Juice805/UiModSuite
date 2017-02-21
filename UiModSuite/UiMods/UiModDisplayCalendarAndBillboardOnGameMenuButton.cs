@@ -6,20 +6,33 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using Microsoft.Xna.Framework.Input;
 using UiModSuite.Options;
-
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace UiModSuite.UiMods {
     internal class UiModDisplayCalendarAndBillboardOnGameMenuButton {
 
         ClickableTextureComponent showBillboardButton = new ClickableTextureComponent( new Rectangle( 0, 0, 99, 60 ), Game1.content.Load<Texture2D>( "Maps\\summer_town" ), new Rectangle( 122, 291, 35, 20 ), 3 );
-        //ClickableTextureComponent showCalendarButton = new ClickableTextureComponent( new Rectangle( 0, 0, 0, 0 ), Game1.mouseCursors, new Rectangle( 0, 0, 0, 0 ), 1 );
+        string hoverText;
 
         public UiModDisplayCalendarAndBillboardOnGameMenuButton() {
             GraphicsEvents.OnPostRenderGuiEvent += renderButtons;
+            GraphicsEvents.OnPreRenderGuiEvent += removeDefaultTooltips;
             ControlEvents.MouseChanged += onMouseClick;
         }
 
+        // Removes default tooltips if better tooltips are not showing
+        private void removeDefaultTooltips( object sender, EventArgs e ) {
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) == false ) {
+                var pages = ( List<IClickableMenu> ) typeof( GameMenu ).GetField( "pages", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( Game1.activeClickableMenu );
+                var inventoryPage = ( InventoryPage ) pages[ GameMenu.inventoryTab ];
+                hoverText = ( string ) typeof( InventoryPage ).GetField( "hoverText", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
+                typeof( InventoryPage ).GetField( "hoverText", BindingFlags.Instance | BindingFlags.NonPublic ).SetValue( inventoryPage, "" );
+            }
+        }
+
         private void onMouseClick( object sender, EventArgsMouseStateChanged e ) {
+
             if( ( Game1.activeClickableMenu is GameMenu ) == false ) {
                 return;
             }
@@ -65,6 +78,16 @@ namespace UiModSuite.UiMods {
                 IClickableMenu.drawHoverText( Game1.spriteBatch, tooltip, Game1.dialogueFont );
             }
 
+            // Redraw tooltips if advanced tooltips are not showing
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) == false ) {
+                var pages = ( List<IClickableMenu> ) typeof( GameMenu ).GetField( "pages", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( Game1.activeClickableMenu );
+                var inventoryPage = ( InventoryPage ) pages[ GameMenu.inventoryTab ];
+                var hoverTitle = ( string ) typeof( InventoryPage ).GetField( "hoverTitle", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
+                var hoveredItem = ( Item ) typeof( InventoryPage ).GetField( "hoveredItem", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
+                var heldItem = ( Item ) typeof( InventoryPage ).GetField( "heldItem", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
+                IClickableMenu.drawToolTip( Game1.spriteBatch, hoverText, hoverTitle, hoveredItem, heldItem != null, -1, 0, -1, -1, ( CraftingRecipe ) null, -1 );
+            }
         }
+
     }
 }
