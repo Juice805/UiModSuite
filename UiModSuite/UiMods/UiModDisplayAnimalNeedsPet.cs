@@ -28,14 +28,14 @@ namespace UiModSuite.UiMods {
                 timer.Start();
             } else {
                 timer.Stop();
-                GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;
+                GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
             }
 
         }
 
         private void triggerDraw( object sender, ElapsedEventArgs e ) {
-            GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;
-            GraphicsEvents.OnPostRenderEvent += drawHoverTooltip;
+            GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
+            GraphicsEvents.OnPreRenderHudEvent += drawHoverTooltip;
             scale = 4f;
             movementYPerDraw = -3;
             alpha = 1;
@@ -76,7 +76,7 @@ namespace UiModSuite.UiMods {
             alpha -= 0.014f;
 
             if( alpha < 0.1f ) {
-                GraphicsEvents.OnPostRenderEvent -= drawHoverTooltip;
+                GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
             }
 
         }
@@ -118,12 +118,12 @@ namespace UiModSuite.UiMods {
         internal void toggleOption() {
             timer.Stop();
             LocationEvents.CurrentLocationChanged -= onLocationChange;
-            GraphicsEvents.OnPostRenderEvent -= drawAnimalHasProduct;
+            GraphicsEvents.OnPreRenderHudEvent -= drawAnimalHasProduct;
 
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS ) ) {
                 timer.Start();
                 LocationEvents.CurrentLocationChanged += onLocationChange;
-                GraphicsEvents.OnPostRenderEvent += drawAnimalHasProduct;
+                GraphicsEvents.OnPreRenderHudEvent += drawAnimalHasProduct;
             }
         }
 
@@ -148,6 +148,9 @@ namespace UiModSuite.UiMods {
                 // Check if animal has a yield
                 if( animal.currentProduce > 0 && animal.age >= ( int ) animal.ageWhenMature ) {
                     Vector2 speechBubblePosition = getPositionAboveAnimal( animal );
+
+                    // Make that bubble into a sin!! ohhh offset by its hashname so nothing lines up... so twist!
+                    speechBubblePosition.Y += (float) Math.Sin ( Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 300 + animal.name.GetHashCode() ) * 5;
 
                     // Draw speech bubble
                     Game1.spriteBatch.Draw( Game1.emoteSpriteSheet, new Vector2( speechBubblePosition.X + 14, speechBubblePosition.Y ), new Rectangle( 3 * ( Game1.tileSize / 4 ) % Game1.emoteSpriteSheet.Width, 3 * ( Game1.tileSize / 4 ) / Game1.emoteSpriteSheet.Width * ( Game1.tileSize / 4 ), Game1.tileSize / 4, Game1.tileSize / 4 ), Color.White * 0.9f, 0, Vector2.Zero, 4f, SpriteEffects.None, 1 );

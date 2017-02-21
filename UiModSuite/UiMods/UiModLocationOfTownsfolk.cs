@@ -495,6 +495,11 @@ namespace UiModSuite.UiMods {
                 // ReDraw the mouse
                 Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( ( float ) Game1.getMouseX(), ( float ) Game1.getMouseY() ), new Microsoft.Xna.Framework.Rectangle?( Game1.getSourceRectForStandardTileSheet( Game1.mouseCursors, Game1.mouseCursor, 16, 16 ) ), Color.White * Game1.mouseCursorTransparency, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom + Game1.dialogueButtonScale / 150f, SpriteEffects.None, 1f );
 
+                // Draw tooltip
+                if( checkboxes[i].bounds.Contains( Game1.getMouseX(), Game1.getMouseY() ) ) {
+                    IClickableMenu.drawHoverText( Game1.spriteBatch, $"Track on map", Game1.dialogueFont );
+                }
+
                 // Keep just in case
                 // Draw Large Heart
                 // Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( checkboxes[ i ].bounds.X + heartOffsetX, checkboxes[ i ].bounds.Y ), new Rectangle( 218, 428, 7, 6 ), Color.White, 0f, Vector2.Zero, 8, SpriteEffects.None, 0.88f );
