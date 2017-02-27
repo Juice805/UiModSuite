@@ -31,6 +31,7 @@ namespace UiModSuite.Options {
             var uiModDisplayCalendarAndBillboardOnGameMenuButton = new UiModDisplayCalendarAndBillboardOnGameMenuButton();
             var uiModDisplayAnimalNeedsPet = new UiModDisplayAnimalNeedsPet();
             var uiModDisplayScarecrowAndSprinklerRange = new UiModDisplayScarecrowAndSprinklerRange();
+            var shopHarvestPrices = new ShopHarvestPrices();
             
             // Oder in which this is executed effects the order in which icons are drawn from IconHandler
 
@@ -48,6 +49,7 @@ namespace UiModSuite.Options {
             options.Add( new ModOptionsCheckbox( "Show birthday icon reminder", ( int ) ModOptionsPage.Setting.SHOW_BIRTHDAY_ICON, uiModDisplayBirthdayIcon.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show when animals need pets", ( int ) ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS, uiModDisplayAnimalNeedsPet.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show Scarecrow and sprinkler range", (int) ModOptionsPage.Setting.SHOW_SPRINKLER_SCARECROW_RANGE, uiModDisplayScarecrowAndSprinklerRange.toggleOption ) );
+            options.Add( new ModOptionsCheckbox( "Show harvest prices in shop", (int) ModOptionsPage.Setting.SHOW_HARVEST_PRICES_IN_SHOP, shopHarvestPrices.toggleOption ) );
             
 
             //ModOptionsPage.syncSettingsToLoadedData( options );

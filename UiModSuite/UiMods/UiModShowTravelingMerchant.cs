@@ -22,7 +22,7 @@ namespace UiModSuite.UiMods {
         }
 
         private void drawTravelingMerchant( object sender, EventArgs e ) {
-            if( daysMerchantVisits.Contains( Game1.dayOfMonth ) ) {
+            if( daysMerchantVisits.Contains( Game1.dayOfMonth )  && Game1.eventUp == false ) {
                 var clickableTextureComponent = new ClickableTextureComponent( new Rectangle( IconHandler.getIconXPosition(), 260, 40, 40 ), Game1.content.Load<Texture2D>( "LooseSprites\\Cursors" ), new Rectangle( 192, 1411, 20, 20 ), 2 );
                 clickableTextureComponent.draw( Game1.spriteBatch );
 

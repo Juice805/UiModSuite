@@ -27,7 +27,7 @@ namespace UiModSuite.UiMods {
                 var pages = ( List<IClickableMenu> ) typeof( GameMenu ).GetField( "pages", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( Game1.activeClickableMenu );
                 var inventoryPage = ( InventoryPage ) pages[ GameMenu.inventoryTab ];
                 hoverText = ( string ) typeof( InventoryPage ).GetField( "hoverText", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
-                typeof( InventoryPage ).GetField( "hoverText", BindingFlags.Instance | BindingFlags.NonPublic ).SetValue( inventoryPage, "" );
+                //typeof( InventoryPage ).GetField( "hoverText", BindingFlags.Instance | BindingFlags.NonPublic ).SetValue( inventoryPage, "" );
             }
         }
 

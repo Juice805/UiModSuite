@@ -4,6 +4,8 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Objects;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +25,11 @@ namespace UiModSuite.UiMods {
         Dictionary<string, string> bundleData;
         ClickableTextureComponent bundleIcon =  new ClickableTextureComponent("", new Rectangle( 0, 0, Game1.tileSize, Game1.tileSize), "", Game1.content.LoadString("Strings\\UI:GameMenu_JunimoNote_Hover"), Game1.mouseCursors, new Rectangle(331, 374, 15, 14), (float) Game1.pixelZoom, false);
 
-        private bool isDrawingShopInformation = false;
-
         public void toggleOption() {
 
-            GraphicsEvents.OnPreRenderEvent -= removeDefaultHoverItems;
+            PlayerEvents.InventoryChanged -= populateRequiredBundled;
             GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolip;
+            GraphicsEvents.OnPreRenderEvent -= getHoverItem;
 
             if ( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) ) {
 
@@ -41,7 +42,7 @@ namespace UiModSuite.UiMods {
 
                 PlayerEvents.InventoryChanged += populateRequiredBundled;
                 GraphicsEvents.OnPostRenderEvent += drawAdvancedToolip;
-                GraphicsEvents.OnPreRenderEvent += removeDefaultHoverItems;
+                GraphicsEvents.OnPreRenderEvent += getHoverItem;
             }
         }
 
@@ -100,7 +101,7 @@ namespace UiModSuite.UiMods {
                             continue;
                         }
 
-                        ModEntry.Log( $"count is {indexInSavedBundleData} and prunedItems is {prunedRequiredItems.Count()}" );
+                        //ModEntry.Log( $"count is {indexInSavedBundleData} and prunedItems is {prunedRequiredItems.Count()}" );
                         if( communityCenter.bundles[ indexInSavedBundleData ][ prunedRequiredItems.Count() ] == false ) {
                             prunedRequiredItems.Add( Convert.ToInt32( requiredItems[ i ] ) );
                         }
@@ -108,9 +109,7 @@ namespace UiModSuite.UiMods {
                 }
 
                 prunedRequiredBundles.Add( bundleType, prunedRequiredItems );
-
             }
-
         }
 
         private void drawAdvancedToolip( object sender, EventArgs e ) {
@@ -122,11 +121,13 @@ namespace UiModSuite.UiMods {
             string sellForAmount = "";
             string harvestPrice = "";
 
-            if( hoverItem.salePrice() > 0 && hoverItem.Name != "Scythe" ) {
-                sellForAmount = "\n  " + hoverItem.salePrice() / 2;
+            int truePrice = getTruePrice( hoverItem );
+
+            if( truePrice > 0 && hoverItem.Name != "Scythe" ) {
+                sellForAmount = "\n  " + truePrice / 2;
 
                 if( hoverItem.canStackWith( hoverItem ) && hoverItem.getStack() > 1 ) {
-                    sellForAmount += $" ({ hoverItem.salePrice() / 2 * hoverItem.getStack() })";
+                    sellForAmount += $" ({ truePrice / 2 * hoverItem.getStack() })";
                 }
             } 
 
@@ -142,39 +143,21 @@ namespace UiModSuite.UiMods {
                     harvestPrice += $"    { item.price }";
                     isDrawingHarvestPrice = true;
                 }
-
             }
 
-            // Draws harvest info for seeds in shop
-            if( Game1.activeClickableMenu is ShopMenu ) {
-                if( isDrawingShopInformation && ( ( StardewValley.Object ) hoverItem ).type == "Seeds" && harvestPrice != "" ) {
-                    int positionX = Game1.getMouseX() + 50;
-                    int positionY = Game1.getMouseY() - 30;
+            string advancedTitle = hoverItem.Name + sellForAmount + harvestPrice;
 
-                    // Box and text
-                    Game1.drawDialogueBox( positionX, positionY - 100, 220, 176, false, true );
-                    //Game1.drawWithBorder( harvestPrice, Color.Gray, Color.Black, new Vector2( positionX, positionY ) );
-                    Game1.spriteBatch.DrawString( Game1.dialogueFont, harvestPrice, new Vector2( positionX + 30, positionY + 4 ), Color.Black );
-
-                    // Harvest icon
-                    var spriteRectangle = new Rectangle( 60, 428, 10, 10 );
-                    Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( positionX + 38, positionY ), spriteRectangle, Color.White, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.85f );
-
-                    // Mini coin icon
-                    Game1.spriteBatch.Draw( Game1.debrisSpriteSheet, new Vector2( positionX + 70, positionY + 10 ), new Rectangle?( Game1.getSourceRectForStandardTileSheet( Game1.debrisSpriteSheet, 8, 16, 16 ) ), Color.White, 0f, new Vector2( 8f, 8f ), ( float ) 4f, SpriteEffects.None, 0.95f );
-
-                    isDrawingShopInformation = false;
-                }
-
-                return;
-            }
-            
-            // Draw tooltip
-            IClickableMenu.drawToolTip( Game1.spriteBatch, hoverItem.getDescription(), hoverItem.Name + sellForAmount + harvestPrice, hoverItem, false, -1, 0, -1, -1, null, -1 );
-
-            Vector2 iconPosition = calculateIconPosition( hoverItem.Name + sellForAmount + harvestPrice );
+            // Prepare tooltip
+            float tooltipHeight;
+            Vector2 iconPosition = calculateIconPosition( hoverItem.Name + sellForAmount + harvestPrice, out tooltipHeight );
             float iconPositionX = iconPosition.X;
             float iconPositionY = iconPosition.Y;
+
+            // Draw transparency fix
+            //Game1.spriteBatch.Draw( Game1.staminaRect, new Rectangle( Game1.getMouseX(), Game1.getMouseY(), 12, (int) tooltipHeight ), Color.White );
+
+            // Draw tooltip
+            IClickableMenu.drawToolTip( Game1.spriteBatch, hoverItem.getDescription(), advancedTitle, hoverItem, false, -1, 0, -1, -1, null, -1 );
 
             // Draw icons inside description text
             if( sellForAmount != "" ) {
@@ -187,7 +170,6 @@ namespace UiModSuite.UiMods {
                     var spriteRectangle = new Rectangle( 60, 428, 10, 10 );
                     Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( iconPositionX + Game1.dialogueFont.MeasureString( sellForAmount ).X - 10, iconPositionY - 20 ), spriteRectangle, Color.White, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.85f );
                 }
-
             }
 
             // Draw bundle info
@@ -221,28 +203,51 @@ namespace UiModSuite.UiMods {
                     bundleIcon.scale = 3f;
                     bundleIcon.draw( Game1.spriteBatch );
 
-                    return;
+                    break;
                 }
             }
 
+            restoreMenuState();
+        }
+
+        // This is needed for compatibility
+        private void restoreMenuState() {
+            if( Game1.activeClickableMenu is ItemGrabMenu ) {
+                var itemGrabMenu = ( ItemGrabMenu ) Game1.activeClickableMenu;
+                itemGrabMenu.hoveredItem = hoverItem;
+            }
+        }
+
+
+        // Returns the correct sell price
+        public static int getTruePrice( Item hoverItem ) {
+
+            // Overwrite ores cause salePrice() is not accurate for some reason...???
+            switch( hoverItem.parentSheetIndex ) {
+                case 378:
+                case 380:
+                case 382:
+                case 384:
+                case 388:
+                case 390:
+                    return ( int ) ( ( double ) ( (hoverItem as StardewValley.Object).price * 2 ) * ( 1.0 + ( double ) ( hoverItem as StardewValley.Object ).quality * 0.25 ) );
+                default:
+                    return hoverItem.salePrice();
+            }
         }
 
         // Calculate coin and harvest icons
-        private Vector2 calculateIconPosition( string descriptionToMeasureY ) {
+        private Vector2 calculateIconPosition( string descriptionToMeasureY, out float height ) {
             float iconPositionX = Game1.getMousePosition().X + 78;
             float iconPositionY = 0;
-            float height = 0;
-
+            height = 0;
             // Width of 11 border pixels
             height += Game1.pixelZoom * 11;
 
             // Mouse height
             height += 9 * Game1.pixelZoom;
-
             height += Game1.smallFont.MeasureString( hoverItem.getDescription() ).Y;
-
             height += Game1.smallFont.MeasureString( hoverItem.getCategoryName() ).Y;
-
             height += Game1.dialogueFont.MeasureString( descriptionToMeasureY ).Y;
 
             // Size of attachmentSlots
@@ -306,7 +311,7 @@ namespace UiModSuite.UiMods {
             return new Vector2( iconPositionX, iconPositionY );
         }
 
-        private void removeDefaultHoverItems( object sender, EventArgs e ) {
+        private void getHoverItem( object sender, EventArgs e ) {
 
             // Remove hovers from toolbar
             for( int j = 0; j < Game1.onScreenMenus.Count; j++ ) {
@@ -329,26 +334,17 @@ namespace UiModSuite.UiMods {
                     if( pages[ i ] is InventoryPage ) {
                         var inventoryPage = ( InventoryPage ) pages[ i ];
                         hoverItem = ( Item ) typeof( InventoryPage ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( inventoryPage );
-                        typeof( InventoryPage ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance ).SetValue( inventoryPage, null );
-                        typeof( InventoryPage ).GetField( "hoverText", BindingFlags.NonPublic | BindingFlags.Instance ).SetValue( inventoryPage, null );
+                        typeof( InventoryPage ).GetField( "hoverText", BindingFlags.NonPublic | BindingFlags.Instance ).SetValue( inventoryPage, "" );
                     }
                 }
-
             }
 
             // Remove hovers from chests and shipping bin
             if( Game1.activeClickableMenu is ItemGrabMenu ) {
                 var itemGrabMenu  = ( ItemGrabMenu ) Game1.activeClickableMenu;
-                hoverItem = ( Item ) typeof( ItemGrabMenu ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public ).GetValue( itemGrabMenu );
-                typeof( ItemGrabMenu ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public ).SetValue( itemGrabMenu, null );
+                hoverItem = itemGrabMenu.hoveredItem;
+                itemGrabMenu.hoveredItem = null;
             }
-
-            if( Game1.activeClickableMenu is ShopMenu ) {
-                var shopMenu = ( ShopMenu ) Game1.activeClickableMenu;
-                hoverItem = ( Item ) typeof( ShopMenu ).GetField( "hoveredItem", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public ).GetValue( shopMenu );
-                isDrawingShopInformation = true;
-            }
-
         }
 
     }

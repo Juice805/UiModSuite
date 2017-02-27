@@ -91,6 +91,7 @@
     <Compile Include="Serializer.cs" />
     <Compile Include="UiMods\ExpPointDisplay.cs" />
     <Compile Include="Options\OptionsWindow.cs" />
+    <Compile Include="UiMods\ShopHarvestPrices.cs" />
     <Compile Include="UiMods\SkipIntro.cs" />
     <Compile Include="UiMods\UiModAccurateHearts.cs" />
     <Compile Include="UiMods\UiModDisplayAnimalNeedsPet.cs" />

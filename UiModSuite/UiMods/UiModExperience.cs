@@ -122,7 +122,7 @@ namespace UiModSuite.UiMods {
                 spriteRectangle = new Rectangle( 30, 428, 10, 10 );
                 currentLevel = Game1.player.miningLevel;
 
-            } else if( currentItem is MeleeWeapon ) {
+            } else if( currentItem is MeleeWeapon && currentItem.Name != "Scythe" ) {
                 currentLevelIndex = 4;
                 spriteRectangle = new Rectangle( 120, 428, 10, 10 );
                 currentLevel = Game1.player.combatLevel;

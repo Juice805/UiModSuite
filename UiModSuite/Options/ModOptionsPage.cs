@@ -31,6 +31,7 @@ namespace UiModSuite.Options {
             SHOW_ANIMALS_NEED_PETS = 13,
             SHOW_SPRINKLER_SCARECROW_RANGE = 14,
             SHOW_ITEMS_REQUIRED_FOR_BUNDLES = 15,
+            SHOW_HARVEST_PRICES_IN_SHOP = 16,
         }
 
         internal ModOptionsPage( List<ModOptionsElement> options ) {

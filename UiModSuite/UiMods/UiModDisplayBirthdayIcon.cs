@@ -21,6 +21,10 @@ namespace UiModSuite.UiMods {
 
         private void drawBirthdayIcon( object sender, EventArgs e ) {
 
+            if( Game1.eventUp ) {
+                return;
+            }
+
             // Draw birthday icon
             foreach( GameLocation location in Game1.locations ) {
                 foreach( NPC npc in location.characters ) {
