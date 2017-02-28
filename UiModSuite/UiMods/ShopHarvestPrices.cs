@@ -128,7 +128,6 @@ namespace UiModSuite.UiMods {
                     var getHoveredItemExtraItemIndex = ModEntry.helper.Reflection.GetPrivateMethod( shopMenu, "getHoveredItemExtraItemIndex" );
                     var getHoveredItemExtraItemAmount = ModEntry.helper.Reflection.GetPrivateMethod( shopMenu, "getHoveredItemExtraItemAmount" );
                     IClickableMenu.drawToolTip( Game1.spriteBatch, hoverText, boldTitleText, hoveredItem, heldItem != null, -1, currency, getHoveredItemExtraItemIndex.Invoke<int>(), getHoveredItemExtraItemAmount.Invoke<int>(), null, hoverPrice );
-
                 }
 
                 return;

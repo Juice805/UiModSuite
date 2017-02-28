@@ -12,6 +12,7 @@ namespace UiModSuite {
 
         public static ModData modData;
         public static ModEntry modEntry;
+        public static ModConfig modConfig;
         public static IModHelper helper;
         // TODO Replace with helper method mod already has a saver and loader so change to use that
         public static string modDirectory;
@@ -23,6 +24,7 @@ namespace UiModSuite {
             ModEntry.modEntry = this;
             modData = new ModData();
             modDirectory = helper.DirectoryPath + @"\\";
+            modConfig = helper.ReadConfig<ModConfig>();
 
             // Loads the correct settings on character load
             SaveEvents.AfterLoad += loadModData;
@@ -42,7 +44,6 @@ namespace UiModSuite {
         }
 
         /// <summary>
-
         /// Loads mod specific data
         /// </summary>
         internal void loadModData( object sender, EventArgs e ) {

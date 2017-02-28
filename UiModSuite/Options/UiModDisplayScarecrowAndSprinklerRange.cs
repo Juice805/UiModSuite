@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
@@ -10,23 +11,17 @@ namespace UiModSuite.Options {
 
         List<Point> effectiveArea = new List<Point>();
 
-        public UiModDisplayScarecrowAndSprinklerRange() {
-
-            
-        }
-
         private void checkDrawTileOutlines( object sender, EventArgs e ) {
 
             effectiveArea.Clear();
+
             if( Game1.player.CurrentItem == null || Game1.activeClickableMenu != null || Game1.eventUp != false ) {
                 return;
             }
             var player = Game1.player;
 
-
             string itemName = Game1.player.CurrentItem.Name;
             
-
             if( itemName.Contains( "arecrow" ) ) {
 
                 int centerX = ( Game1.getMouseX() + Game1.viewport.X ) / Game1.tileSize;
@@ -49,35 +44,30 @@ namespace UiModSuite.Options {
 
             } else if( itemName.Contains( "Iridium Sprinkler" ) ) {
 
-                int width = 5;
-                int height = 5;
-
-                for( int i = 0;  i < width; i++ ) {
-                    for( int j = 0; j < height; j++ ) {
-                        effectiveArea.Add( new Point( tileUnderMouseX() + i - 2, tileUnderMouseY() + j - 2 ) );
-                    }
-                }
-
+                var highlightedLocation = ModEntry.modConfig.IridiumSprinkler;
+                parseConfigToHighlightedArea( highlightedLocation );
+                
             } else if( itemName.Contains( "Quality Sprinkler" ) ) {
 
-                int width = 3;
-                int height = 3;
-
-                for( int i = 0; i < width; i++ ) {
-                    for( int j = 0; j < height; j++ ) {
-                        effectiveArea.Add( new Point( tileUnderMouseX() + i - 1, tileUnderMouseY() + j - 1 ) );
-                    }
-                }
+                var highlightedLocation = ModEntry.modConfig.QualitySprinkler;
+                parseConfigToHighlightedArea( highlightedLocation );
 
             } else if( itemName.Contains( "Sprinkler" ) ) {
 
-                effectiveArea.Add( new Point( tileUnderMouseX(), tileUnderMouseY() - 1 ) );
-                effectiveArea.Add( new Point( tileUnderMouseX() - 1, tileUnderMouseY() ) );
-                effectiveArea.Add( new Point( tileUnderMouseX(), tileUnderMouseY() + 1 ) );
-                effectiveArea.Add( new Point( tileUnderMouseX() + 1, tileUnderMouseY() ) );
+                var highlightedLocation = ModEntry.modConfig.Sprinkler;
+                parseConfigToHighlightedArea( highlightedLocation );
 
             }
+        }
 
+        private void parseConfigToHighlightedArea( int[,] highlightedLocation ) {
+            for( int col = 0; col < highlightedLocation.GetLength( 0 ); col++ ) {
+                for( int row = 0; row < highlightedLocation.GetLength( 1 ); row++ ) {
+                    if( highlightedLocation[ col, row ] == 1 ) {
+                        effectiveArea.Add( new Point( tileUnderMouseX() + col - 5, tileUnderMouseY() + row - 5 ) );
+                    }
+                }
+            }
         }
 
         private int tileUnderMouseX() {
@@ -89,7 +79,6 @@ namespace UiModSuite.Options {
             return ( Game1.getMouseY() + Game1.viewport.Y ) / Game1.tileSize;
         }
 
-
         private void drawTileOutlines( object sender, EventArgs e ) {
             if( effectiveArea.Count < 1 ) {
                 return;
@@ -98,9 +87,6 @@ namespace UiModSuite.Options {
             foreach( var item in effectiveArea ) {
                 Game1.spriteBatch.Draw( Game1.mouseCursors, Game1.GlobalToLocal( new Vector2( ( float ) ( item.X * Game1.tileSize ), ( float ) ( item.Y * Game1.tileSize ) ) ), new Rectangle?( new Rectangle( 194, 388, 16, 16 ) ), Color.White * 0.7f, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.01f );
             }
-
-
-
         }
 
         internal void toggleOption() {
@@ -111,5 +97,6 @@ namespace UiModSuite.Options {
                 GameEvents.FourthUpdateTick += checkDrawTileOutlines;
             }
         }
+
     }
 }

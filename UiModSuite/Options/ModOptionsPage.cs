@@ -32,6 +32,7 @@ namespace UiModSuite.Options {
             SHOW_SPRINKLER_SCARECROW_RANGE = 14,
             SHOW_ITEMS_REQUIRED_FOR_BUNDLES = 15,
             SHOW_HARVEST_PRICES_IN_SHOP = 16,
+            DISPLAY_CALENDAR_AND_BILLBOARD = 17,
         }
 
         internal ModOptionsPage( List<ModOptionsElement> options ) {

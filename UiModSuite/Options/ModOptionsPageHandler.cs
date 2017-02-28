@@ -50,6 +50,7 @@ namespace UiModSuite.Options {
             options.Add( new ModOptionsCheckbox( "Show when animals need pets", ( int ) ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS, uiModDisplayAnimalNeedsPet.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show Scarecrow and sprinkler range", (int) ModOptionsPage.Setting.SHOW_SPRINKLER_SCARECROW_RANGE, uiModDisplayScarecrowAndSprinklerRange.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show harvest prices in shop", (int) ModOptionsPage.Setting.SHOW_HARVEST_PRICES_IN_SHOP, shopHarvestPrices.toggleOption ) );
+            options.Add( new ModOptionsCheckbox( "Display calendar/billboard button", (int) ModOptionsPage.Setting.DISPLAY_CALENDAR_AND_BILLBOARD, uiModDisplayCalendarAndBillboardOnGameMenuButton.toggleOption ) );
             
 
             //ModOptionsPage.syncSettingsToLoadedData( options );

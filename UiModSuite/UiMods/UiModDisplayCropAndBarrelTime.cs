@@ -29,10 +29,23 @@ namespace UiModSuite.UiMods {
 
         private void drawHoverTooltip( object sender, EventArgs e ) {
 
-            if( Game1.isOneOfTheseKeysDown( Game1.oldKBState, new InputButton[] { new InputButton( Keys.LeftShift ), new InputButton( Keys.RightShift ) } ) == false && Game1.oldMouseState.RightButton == ButtonState.Pressed == false ) {
+            var inputButtons = new InputButton[ ModEntry.modConfig.keysForBarrelAndCropTimes.Length ];
+
+            // Convert the string to an int and then to a Keys enum
+            for( int i = 0; i < ModEntry.modConfig.keysForBarrelAndCropTimes.Length; i++ ) {
+                var key = (Keys) Enum.Parse( typeof( Keys ), ModEntry.modConfig.keysForBarrelAndCropTimes[ i ] );
+                inputButtons[ i ] = new InputButton( key );
+            }
+
+            bool keyTriggerIsDown = Game1.isOneOfTheseKeysDown( Game1.oldKBState, inputButtons );
+            bool rightClickIsTriggered = ( ModEntry.modConfig.canRightClickForBarrelAndCropTimes == true && Game1.oldMouseState.RightButton == ButtonState.Pressed );
+
+            // Don't draw tooltip if key is not hit
+            if( keyTriggerIsDown == false && rightClickIsTriggered == false ) {
                 return;
             }
 
+            // Don't draw tooltip on events or if menu is open
             if( Game1.activeClickableMenu != null || Game1.eventUp == true ) {
                 return;
             }
