@@ -13,10 +13,6 @@ using System.Reflection;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
-
-    /// <summary>
-    /// Handler that overrides Toolbar and InventoryMenu
-    /// </summary>
     class UiModItemRolloverInformation {
 
         Item hoverItem;
@@ -25,6 +21,9 @@ namespace UiModSuite.UiMods {
         Dictionary<string, string> bundleData;
         ClickableTextureComponent bundleIcon =  new ClickableTextureComponent("", new Rectangle( 0, 0, Game1.tileSize, Game1.tileSize), "", Game1.content.LoadString("Strings\\UI:GameMenu_JunimoNote_Hover"), Game1.mouseCursors, new Rectangle(331, 374, 15, 14), (float) Game1.pixelZoom, false);
 
+        /// <summary>
+        /// This mod displays an improved tooltip
+        /// </summary>
         public void toggleOption() {
 
             PlayerEvents.InventoryChanged -= populateRequiredBundled;
@@ -46,6 +45,9 @@ namespace UiModSuite.UiMods {
             }
         }
 
+        /// <summary>
+        /// Finds all the bundles still needing resources
+        /// </summary>
         private void populateRequiredBundled( object sender, EventArgs e ) {
 
             prunedRequiredBundles.Clear();
@@ -112,6 +114,9 @@ namespace UiModSuite.UiMods {
             }
         }
 
+        /// <summary>
+        /// Draw it!
+        /// </summary>
         private void drawAdvancedToolip( object sender, EventArgs e ) {
 
             if( hoverItem == null ) {
@@ -210,7 +215,9 @@ namespace UiModSuite.UiMods {
             restoreMenuState();
         }
 
-        // This is needed for compatibility
+        /// <summary>
+        /// This restores the hover item so it will be usable for lookup anything or any other mod
+        /// </summary>
         private void restoreMenuState() {
             if( Game1.activeClickableMenu is ItemGrabMenu ) {
                 var itemGrabMenu = ( ItemGrabMenu ) Game1.activeClickableMenu;
@@ -218,8 +225,11 @@ namespace UiModSuite.UiMods {
             }
         }
 
-
-        // Returns the correct sell price
+        /// <summary>
+        /// Gets the correct item price as ore prices use the price property
+        /// </summary>
+        /// <param name="hoverItem">The item</param>
+        /// <returns>The correct sell price</returns>
         public static int getTruePrice( Item hoverItem ) {
 
             // Overwrite ores cause salePrice() is not accurate for some reason...???
@@ -236,7 +246,12 @@ namespace UiModSuite.UiMods {
             }
         }
 
-        // Calculate coin and harvest icons
+        /// <summary>
+        /// Calculates coin and harvest icons
+        /// </summary>
+        /// <param name="descriptionToMeasureY">The description text</param>
+        /// <param name="height">The height to calculate and return</param>
+        /// <returns>The icon position</returns>
         private Vector2 calculateIconPosition( string descriptionToMeasureY, out float height ) {
             float iconPositionX = Game1.getMousePosition().X + 78;
             float iconPositionY = 0;
@@ -311,6 +326,9 @@ namespace UiModSuite.UiMods {
             return new Vector2( iconPositionX, iconPositionY );
         }
 
+        /// <summary>
+        /// Gets the hover item and removes the vanilla tooltip displays **HACKY
+        /// </summary>
         private void getHoverItem( object sender, EventArgs e ) {
 
             // Remove hovers from toolbar

@@ -8,6 +8,7 @@ using UiModSuite.UiMods;
  
 namespace UiModSuite.Options {
     public class ModOptionsElement {
+
         public const int defaultX = 8;
         public const int defaultY = 4;
         public const int defaultPixelWidth = 9;
@@ -17,6 +18,9 @@ namespace UiModSuite.Options {
         public bool greyedOut;
         public Action toggleOptionDelegate;
 
+        /// <summary>
+        /// The base class for all custom ModOptions
+        /// </summary>
         public ModOptionsElement( string label ) {
             this.label = label;
             this.bounds = new Rectangle( 8 * Game1.pixelZoom, 4 * Game1.pixelZoom, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom );
@@ -24,16 +28,19 @@ namespace UiModSuite.Options {
         }
 
         public ModOptionsElement( string label, int x, int y, int width, int height, int whichOption = -1 ) {
+
             if( x == -1 )
                 x = 8 * Game1.pixelZoom;
             if( y == -1 )
                 y = 4 * Game1.pixelZoom;
+
             this.bounds = new Rectangle( x, y, width, height );
             this.label = label;
             this.whichOption = whichOption;
         }
 
         public ModOptionsElement( string label, Rectangle bounds, int whichOption ) {
+
             this.whichOption = whichOption;
             this.label = label;
             this.bounds = bounds;

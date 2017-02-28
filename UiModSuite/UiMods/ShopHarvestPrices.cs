@@ -14,6 +14,18 @@ using UiModSuite.Options;
 namespace UiModSuite.UiMods {
     class ShopHarvestPrices {
 
+        /// <summary>
+        /// Draws a box on the shop menus that display the harvest price of the highlighted seed or fruit tree
+        /// </summary>
+        internal void toggleOption() {
+
+            GraphicsEvents.OnPostRenderGuiEvent -= drawShopHarvestPrices;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HARVEST_PRICES_IN_SHOP ) ) {
+                GraphicsEvents.OnPostRenderGuiEvent += drawShopHarvestPrices;
+            }
+        }
+
         private void drawShopHarvestPrices( object sender, EventArgs e ) {
 
             if( Game1.activeClickableMenu is ShopMenu == false ) {
@@ -131,15 +143,6 @@ namespace UiModSuite.UiMods {
                 }
 
                 return;
-            }
-        }
-
-        internal void toggleOption() {
-
-            GraphicsEvents.OnPostRenderGuiEvent -= drawShopHarvestPrices;
-
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HARVEST_PRICES_IN_SHOP ) ) {
-                GraphicsEvents.OnPostRenderGuiEvent += drawShopHarvestPrices;
             }
         }
 

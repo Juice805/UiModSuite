@@ -15,6 +15,9 @@ namespace UiModSuite.Options {
         private ModOptionsPageHandler optionPageHandler;
         private bool hasClicked = false;
 
+        /// <summary>
+        /// This is the tab button that is drawn on the main GameMenu. It opens a ModOptionsPage
+        /// </summary>
         public ModOptionsPageButton( ModOptionsPageHandler optionPageHandler ) {
 
             this.optionPageHandler = optionPageHandler;

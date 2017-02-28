@@ -21,6 +21,9 @@ namespace UiModSuite.Options {
         public const int sliderMaxValue = 100;
         public int value;
 
+        /// <summary>
+        /// Options slider for ModOptionsPage **UNTESTED
+        /// </summary>
         public ModOptionsSlider( string label, int whichOption, int x = -1, int y = -1 )
           : base( label, x, y, 48 * Game1.pixelZoom, 6 * Game1.pixelZoom, whichOption ) {
             // set value to loaded settings value

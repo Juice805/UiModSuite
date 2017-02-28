@@ -14,12 +14,35 @@ namespace UiModSuite.UiMods {
         private float movementYPerDraw;
         private float alpha;
         private StardewValley.Object wool = new StardewValley.Object( 440, 1 );
-
+        
+        /// <summary>
+        /// Load the timer but mod is not initialized until toggleOption is fired
+        /// </summary>
         public UiModDisplayAnimalNeedsPet() {
             timer = new Timer();
             timer.Elapsed += triggerDraw;
         }
 
+        /// <summary>
+        /// This mod displays a hand icon periodically when a pet needs to be pet.
+        /// This mod also displays an icon above the head of animals that are ready to produce a product
+        /// </summary>
+        internal void toggleOption() {
+
+            timer.Stop();
+            LocationEvents.CurrentLocationChanged -= onLocationChange;
+            GraphicsEvents.OnPreRenderHudEvent -= drawAnimalHasProduct;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS ) ) {
+                timer.Start();
+                LocationEvents.CurrentLocationChanged += onLocationChange;
+                GraphicsEvents.OnPreRenderHudEvent += drawAnimalHasProduct;
+            }
+        }
+
+        /// <summary>
+        /// Starts or stops the timer to display hand icon when pets are still needed
+        /// </summary>
         private void onLocationChange( object sender, EventArgsCurrentLocationChanged e ) {
 
             // Only start timer in places where animals exist
@@ -30,10 +53,13 @@ namespace UiModSuite.UiMods {
                 timer.Stop();
                 GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
             }
-
         }
 
+        /// <summary>
+        /// Attaches the drawing delegates to draw the hand icon when pets are still needed
+        /// </summary>
         private void triggerDraw( object sender, ElapsedEventArgs e ) {
+
             GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
             GraphicsEvents.OnPreRenderHudEvent += drawHoverTooltip;
             scale = 4f;
@@ -41,6 +67,9 @@ namespace UiModSuite.UiMods {
             alpha = 1;
         }
 
+        /// <summary>
+        /// Draws the hand icon if animal needs pet
+        /// </summary>
         private void drawHoverTooltip( object sender, EventArgs e ) {
 
             if( Game1.eventUp || Game1.activeClickableMenu != null ) {
@@ -68,7 +97,6 @@ namespace UiModSuite.UiMods {
                     }
                     Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( handPosition.X, handPosition.Y + movementYPerDraw ), new Rectangle( 32, 0, 16, 16 ), Color.White * alpha, 0, Vector2.Zero, 4f, SpriteEffects.None, 1 );
                 }
-
             }
 
             scale += 0.01f;
@@ -78,9 +106,13 @@ namespace UiModSuite.UiMods {
             if( alpha < 0.1f ) {
                 GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
             }
-
         }
 
+        /// <summary>
+        /// Finds the point above an animals head
+        /// </summary>
+        /// <param name="animal">The animal to check</param>
+        /// <returns>The position in actual pixel coordinates</returns>
         private Vector2 getPositionAboveAnimal( FarmAnimal animal ) {
             float positionX = animal.position.X;
             float positionY = animal.position.Y;
@@ -100,6 +132,10 @@ namespace UiModSuite.UiMods {
             return new Vector2( positionX, positionY );
         }
 
+        /// <summary>
+        /// Finds all the animals in the current location
+        /// </summary>
+        /// <returns>The animals found</returns>
         private StardewValley.SerializableDictionary<long, FarmAnimal> getAnimalsInCurrentLocation() {
 
             // Get animals from the current location
@@ -112,21 +148,11 @@ namespace UiModSuite.UiMods {
             } else {
                 return null;
             }
-
         }
 
-        internal void toggleOption() {
-            timer.Stop();
-            LocationEvents.CurrentLocationChanged -= onLocationChange;
-            GraphicsEvents.OnPreRenderHudEvent -= drawAnimalHasProduct;
-
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS ) ) {
-                timer.Start();
-                LocationEvents.CurrentLocationChanged += onLocationChange;
-                GraphicsEvents.OnPreRenderHudEvent += drawAnimalHasProduct;
-            }
-        }
-
+        /// <summary>
+        /// Draws the icon bubble and product above the animals head
+        /// </summary>
         private void drawAnimalHasProduct( object sender, EventArgs e ) {
             if( Game1.eventUp || Game1.activeClickableMenu != null ) {
                 return;
@@ -158,11 +184,8 @@ namespace UiModSuite.UiMods {
                     // Draw item
                     Rectangle? sourceRectangle1 = new Microsoft.Xna.Framework.Rectangle?( Game1.currentLocation.getSourceRectForObject( animal.currentProduce ) );
                     Game1.spriteBatch.Draw( Game1.objectSpriteSheet, new Vector2( speechBubblePosition.X + 28, speechBubblePosition.Y + 8 ), sourceRectangle1, Color.White * 0.9f, 0, Vector2.Zero, 2.2f, SpriteEffects.None, ( float ) 1 );
-
                 }
-
             }
-
         }
 
     }

@@ -14,9 +14,6 @@ using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
 
-    /// <summary>
-    /// Displays mugshots of townsfolk on the map.
-    /// </summary>
     class UiModLocationOfTownsfolk {
 
         private SocialPage socialPage;
@@ -32,6 +29,25 @@ namespace UiModSuite.UiMods {
 
         private int socialPanelWidth = 190;
         private int socialPanelOffsetX = 160;
+        
+        /// <summary>
+        /// This mod displays mugshots of townsfolk on the map.
+        /// </summary>
+        public void toggleShowNPCLocationOnMap() {
+
+            onMenuChange( null, null );
+            GraphicsEvents.OnPostRenderGuiEvent -= drawNPCLocationsOnMap;
+            GraphicsEvents.OnPostRenderGuiEvent -= drawSocialPageOptions;
+            ControlEvents.MouseChanged -= handleClickForSocialPage;
+            MenuEvents.MenuChanged -= onMenuChange;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
+                GraphicsEvents.OnPostRenderGuiEvent += drawNPCLocationsOnMap;
+                GraphicsEvents.OnPostRenderGuiEvent += drawSocialPageOptions;
+                ControlEvents.MouseChanged += handleClickForSocialPage;
+                MenuEvents.MenuChanged += onMenuChange;
+            }
+        }
 
         private void drawNPCLocationsOnMap( object sender, EventArgs e ) {
             
@@ -274,7 +290,6 @@ namespace UiModSuite.UiMods {
 
                 //TOOD change to just a drawable texture
                 var npcMugShot = new ClickableTextureComponent( npc.name, new Rectangle( iconPositionX, iconPositionY, 0, 0 ), null, npc.name, npc.sprite.Texture, rect, scale, false );
-                //npcMugShot.draw( Game1.spriteBatch );
                 Game1.spriteBatch.Draw( npc.sprite.Texture, new Vector2( iconPositionX, iconPositionY ), rect, tint, 0, Vector2.Zero, 2f, SpriteEffects.None, 1 );
 
                 // Draw quest icon
@@ -304,7 +319,6 @@ namespace UiModSuite.UiMods {
                         }
 
                         if( hasQuest ) {
-                            //var clickableTextureComponent = new ClickableTextureComponent( new Rectangle( 0, 0, 16, 40), Game1.content.Load<Texture2D>( "LooseSprites\\Cursors" ), new Rectangle( 1578, 1983, 16, 40 ), 4 );
                             Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( iconPositionX+10, iconPositionY - 12 ), new Rectangle(1578/4,1983/4,4,10), Color.White, 0, Vector2.Zero, 3, SpriteEffects.None, 1 );
                         }
                     }
@@ -322,9 +336,13 @@ namespace UiModSuite.UiMods {
             var defaultHoverText = ( string ) typeof( MapPage ).GetField( "hoverText", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( mapPage );
 
             IClickableMenu.drawHoverText( Game1.spriteBatch, defaultHoverText, Game1.smallFont, 0, 0, -1, ( string ) null, -1, ( string[] ) null, ( Item ) null, 0, -1, -1, -1, -1, 1f, ( CraftingRecipe ) null );
-
         }
 
+        /// <summary>
+        /// Gets the rectangle for the correct head shot of the character
+        /// </summary>
+        /// <param name="npc">The townfolk to check</param>
+        /// <returns>The area for the headshot</returns>
         public static Rectangle getHeadShot( NPC npc ) {
             int cropFactor = 0;
 
@@ -444,6 +462,9 @@ namespace UiModSuite.UiMods {
             return rect;
         }
 
+        /// <summary>
+        /// Draws the options in the social pane
+        /// </summary>
         private void drawSocialPageOptions( object sender, EventArgs e ) {
 
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
@@ -499,10 +520,6 @@ namespace UiModSuite.UiMods {
                 if( checkboxes[i].bounds.Contains( Game1.getMouseX(), Game1.getMouseY() ) ) {
                     IClickableMenu.drawHoverText( Game1.spriteBatch, $"Track on map", Game1.dialogueFont );
                 }
-
-                // Keep just in case
-                // Draw Large Heart
-                // Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( checkboxes[ i ].bounds.X + heartOffsetX, checkboxes[ i ].bounds.Y ), new Rectangle( 218, 428, 7, 6 ), Color.White, 0f, Vector2.Zero, 8, SpriteEffects.None, 0.88f );
             }
         }
 
@@ -560,23 +577,9 @@ namespace UiModSuite.UiMods {
             }
         }
 
-        public void toggleShowNPCLocationOnMap() {
-            
-            onMenuChange(null,null);
-            GraphicsEvents.OnPostRenderGuiEvent -= drawNPCLocationsOnMap;
-            GraphicsEvents.OnPostRenderGuiEvent -= drawSocialPageOptions;
-            ControlEvents.MouseChanged -= handleClickForSocialPage;
-            MenuEvents.MenuChanged -= onMenuChange;
-
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
-                GraphicsEvents.OnPostRenderGuiEvent += drawNPCLocationsOnMap;
-                GraphicsEvents.OnPostRenderGuiEvent += drawSocialPageOptions;
-                ControlEvents.MouseChanged += handleClickForSocialPage;
-                MenuEvents.MenuChanged += onMenuChange;
-            }
-
-        }
-
+        /// <summary>
+        /// Handle checkbox clicks on the social page
+        /// </summary>
         private void handleClickForSocialPage( object sender, EventArgsMouseStateChanged e ) {
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;

@@ -7,14 +7,31 @@ using UiModSuite.Options;
 using static UiModSuite.Options.ModOptionsPage;
 
 namespace UiModSuite.UiMods {
-    /// <summary>
-    /// The icon below the day that shows your luck for the day when hovered
-    /// </summary>
     class UiModLuckOfDay {
 
         private ClickableTextureComponent icon;
         private string hoverText = "";
 
+        /// <summary>
+        /// This mod draws an icon displaying the luck of the day
+        /// </summary>
+        public void toggleOption() {
+
+            LocationEvents.CurrentLocationChanged -= adjustIconXToBlackBorder;
+            GraphicsEvents.OnPreRenderHudEvent -= drawDiceIcon;
+            GraphicsEvents.OnPostRenderHudEvent -= drawHoverTextOverEverything;
+
+            if( getCheckboxValue( Setting.SHOW_LUCK_ICON ) ) {
+                adjustIconXToBlackBorder( null, null );
+                LocationEvents.CurrentLocationChanged += adjustIconXToBlackBorder;
+                GraphicsEvents.OnPreRenderHudEvent += drawDiceIcon;
+                GraphicsEvents.OnPostRenderHudEvent += drawHoverTextOverEverything;
+            }
+        }
+
+        /// <summary>
+        /// Draws the dice icon
+        /// </summary>
         internal void drawDiceIcon( object sender, EventArgs e ) {
             if( Game1.eventUp ) {
                 return;
@@ -47,29 +64,20 @@ namespace UiModSuite.UiMods {
             icon.draw( Game1.spriteBatch, color, 1 );
         }
 
+        /// <summary>
+        /// Shifts the icon if there is a black border
+        /// </summary>
         internal void adjustIconXToBlackBorder( object sender, EventArgsCurrentLocationChanged e ) {
             icon = new ClickableTextureComponent( "", new Rectangle( ( int ) DemiacleUtility.getWidthInPlayArea() - 134, 260, 10 * Game1.pixelZoom, 10 * Game1.pixelZoom ), "", "", Game1.mouseCursors, new Rectangle( 50, 428, 10, 14 ), Game1.pixelZoom );
         }
 
+        /// <summary>
+        /// Draws tooltip on hover
+        /// </summary>
         internal void drawHoverTextOverEverything( object sender, EventArgs e ) {
             if( icon.containsPoint( Game1.oldMouseState.X, Game1.oldMouseState.Y ) ) {
                 IClickableMenu.drawHoverText( Game1.spriteBatch, hoverText, Game1.dialogueFont );
             }
-        }
-
-        public void toggleOption() {
-
-            LocationEvents.CurrentLocationChanged -= adjustIconXToBlackBorder;
-            GraphicsEvents.OnPreRenderHudEvent -= drawDiceIcon;
-            GraphicsEvents.OnPostRenderHudEvent -= drawHoverTextOverEverything;
-
-            if( getCheckboxValue( Setting.SHOW_LUCK_ICON ) ) {
-                adjustIconXToBlackBorder( null, null );
-                LocationEvents.CurrentLocationChanged += adjustIconXToBlackBorder;
-                GraphicsEvents.OnPreRenderHudEvent += drawDiceIcon;
-                GraphicsEvents.OnPostRenderHudEvent += drawHoverTextOverEverything;
-            }
-
         }
 
     }

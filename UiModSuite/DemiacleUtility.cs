@@ -23,6 +23,9 @@ namespace UiModSuite {
             } );
         }
 
+        /// <summary>
+        /// Gets the width of the area in play
+        /// </summary>
         public static float getWidthInPlayArea() {
             if( Game1.isOutdoorMapSmallerThanViewport() ) {
                 float positionX = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Right;
@@ -35,6 +38,9 @@ namespace UiModSuite {
             }
         }
 
+        /// <summary>
+        /// Gets the width of the area of the location provided
+        /// </summary>
         public static float getWidthInPlayArea( GameLocation location) {
             if( Game1.isOutdoorMapSmallerThanViewport() ) {
                 float positionX = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Right;
@@ -65,7 +71,6 @@ namespace UiModSuite {
 
     }
 }
-
 
 // Below is a list of things worth keeping as a reference
 

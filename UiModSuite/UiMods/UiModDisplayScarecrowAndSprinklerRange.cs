@@ -5,12 +5,30 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using UiModSuite.Options;
 
-namespace UiModSuite.Options {
+namespace UiModSuite.UiMods {
     internal class UiModDisplayScarecrowAndSprinklerRange {
 
         List<Point> effectiveArea = new List<Point>();
 
+        /// <summary>
+        /// This mod displays a customizable range for sprinklers and scarecrows
+        /// </summary>
+        internal void toggleOption() {
+
+            GraphicsEvents.OnPostRenderEvent -= drawTileOutlines;
+            GameEvents.FourthUpdateTick -= checkDrawTileOutlines;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_SPRINKLER_SCARECROW_RANGE ) ) {
+                GraphicsEvents.OnPostRenderEvent += drawTileOutlines;
+                GameEvents.FourthUpdateTick += checkDrawTileOutlines;
+            }
+        }
+
+        /// <summary>
+        /// Finds the tiles that need to be drawn to highlight the range
+        /// </summary>
         private void checkDrawTileOutlines( object sender, EventArgs e ) {
 
             effectiveArea.Clear();
@@ -60,6 +78,10 @@ namespace UiModSuite.Options {
             }
         }
 
+        /// <summary>
+        /// Parses the highlighted are in the config file for sprinklers
+        /// </summary>
+        /// <param name="highlightedLocation">The config data</param>
         private void parseConfigToHighlightedArea( int[,] highlightedLocation ) {
             for( int col = 0; col < highlightedLocation.GetLength( 0 ); col++ ) {
                 for( int row = 0; row < highlightedLocation.GetLength( 1 ); row++ ) {
@@ -74,27 +96,18 @@ namespace UiModSuite.Options {
             return ( Game1.getMouseX() + Game1.viewport.X ) / Game1.tileSize;
         }
 
-
         private int tileUnderMouseY() {
             return ( Game1.getMouseY() + Game1.viewport.Y ) / Game1.tileSize;
         }
 
         private void drawTileOutlines( object sender, EventArgs e ) {
+
             if( effectiveArea.Count < 1 ) {
                 return;
             }
 
             foreach( var item in effectiveArea ) {
                 Game1.spriteBatch.Draw( Game1.mouseCursors, Game1.GlobalToLocal( new Vector2( ( float ) ( item.X * Game1.tileSize ), ( float ) ( item.Y * Game1.tileSize ) ) ), new Rectangle?( new Rectangle( 194, 388, 16, 16 ) ), Color.White * 0.7f, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.01f );
-            }
-        }
-
-        internal void toggleOption() {
-            GraphicsEvents.OnPostRenderEvent -= drawTileOutlines;
-            GameEvents.FourthUpdateTick -= checkDrawTileOutlines;
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_SPRINKLER_SCARECROW_RANGE ) ) {
-                GraphicsEvents.OnPostRenderEvent += drawTileOutlines;
-                GameEvents.FourthUpdateTick += checkDrawTileOutlines;
             }
         }
 

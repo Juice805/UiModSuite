@@ -6,17 +6,19 @@ using StardewValley.Menus;
 using System;
 using UiModSuite.Options;
 
-
 namespace UiModSuite.UiMods {
     internal class UiModDisplayBirthdayIcon {
 
+        /// <summary>
+        /// This mod draws a birthday icon when its a townsfolk birthday
+        /// </summary>
         internal void toggleOption() {
+
             GraphicsEvents.OnPreRenderHudEvent -= drawBirthdayIcon;
 
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_BIRTHDAY_ICON) ) {
                 GraphicsEvents.OnPreRenderHudEvent += drawBirthdayIcon;
             }
-
         }
 
         private void drawBirthdayIcon( object sender, EventArgs e ) {
@@ -25,7 +27,7 @@ namespace UiModSuite.UiMods {
                 return;
             }
 
-            // Draw birthday icon
+            // Calculate and draw birthday icon
             foreach( GameLocation location in Game1.locations ) {
                 foreach( NPC npc in location.characters ) {
                     if( npc.isBirthday( Game1.currentSeason, Game1.dayOfMonth ) ) {
@@ -48,7 +50,6 @@ namespace UiModSuite.UiMods {
                     }
                 }
             }
-
         }
 
     }

@@ -12,6 +12,7 @@ using UiModSuite.UiMods;
 
 namespace UiModSuite.Options {
     class ModOptionsPlusMinus : ModOptionsElement {
+
         public static Rectangle minusButtonSource = new Rectangle( 177, 345, 7, 8 );
         public static Rectangle plusButtonSource = new Rectangle( 184, 345, 7, 8 );
         public List<string> options = new List<string>();
@@ -23,6 +24,9 @@ namespace UiModSuite.Options {
         private Rectangle minusButton;
         private Rectangle plusButton;
 
+        /// <summary>
+        /// Plus Minus option for the ModOptionsPage ** UNTESTED
+        /// </summary>
         public ModOptionsPlusMinus( string label, int whichOption, List<string> options, int x = -1, int y = -1 )
           : base( label, x, y, 7 * Game1.pixelZoom, 7 * Game1.pixelZoom, whichOption ) {
             this.options = options;

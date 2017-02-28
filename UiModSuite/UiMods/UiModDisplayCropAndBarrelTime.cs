@@ -18,6 +18,9 @@ namespace UiModSuite.UiMods {
 
         Dictionary<int, string> indexOfCropNames = new Dictionary<int, string>();
 
+        /// <summary>
+        /// This mod displays crop time and barrel times when a button is pressed
+        /// </summary>
         internal void toggleOption() {
 
             GraphicsEvents.OnPreRenderHudEventNoCheck -= drawHoverTooltip;
@@ -27,6 +30,9 @@ namespace UiModSuite.UiMods {
             }
         }
 
+        /// <summary>
+        /// Draws the tooltip at the cursor when the config button is pressed
+        /// </summary>
         private void drawHoverTooltip( object sender, EventArgs e ) {
 
             var inputButtons = new InputButton[ ModEntry.modConfig.keysForBarrelAndCropTimes.Length ];

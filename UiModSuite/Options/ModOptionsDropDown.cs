@@ -11,6 +11,7 @@ using UiModSuite.UiMods;
 
 namespace UiModSuite.Options {
     class ModOptionsDropDown : ModOptionsElement {
+
         public static Rectangle dropDownBGSource = new Rectangle( 433, 451, 3, 3 );
         public static Rectangle dropDownButtonSource = new Rectangle( 437, 450, 10, 11 );
         public List<string> dropDownOptions = new List<string>();
@@ -22,6 +23,9 @@ namespace UiModSuite.Options {
         private bool clicked;
         private Rectangle dropDownBounds;
 
+        /// <summary>
+        /// This mod creates a custom drop down for the ModOptionsPage ** UNTESTED
+        /// </summary>
         public ModOptionsDropDown( string label, int whichOption, int x = -1, int y = -1 )
           : base( label, x, y, ( int ) Game1.smallFont.MeasureString( "Windowed Borderless " ).X + Game1.pixelZoom * 12, 11 * Game1.pixelZoom, whichOption ) {
             // set value to loaded option

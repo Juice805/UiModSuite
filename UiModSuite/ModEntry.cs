@@ -14,7 +14,6 @@ namespace UiModSuite {
         public static ModEntry modEntry;
         public static ModConfig modConfig;
         public static IModHelper helper;
-        // TODO Replace with helper method mod already has a saver and loader so change to use that
         public static string modDirectory;
         public const string saveFilePostfix = "_modData.xml";
         public static Boolean isTesting = false;
@@ -31,12 +30,11 @@ namespace UiModSuite {
            
             // Skip Intro
             MenuEvents.MenuChanged += SkipIntro.onMenuChange;
-
         }
 
         internal static void Log( string log ) {
             if( isTesting ) {
-                System.Console.WriteLine( log );
+                Console.WriteLine( log );
                 return;
             }
 

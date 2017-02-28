@@ -28,6 +28,9 @@ namespace UiModSuite.Options {
         private ClickableTextureComponent scrollBar;
         private Rectangle scrollBarRunner;
 
+        /// <summary>
+        /// Base class of ModOptionsPage, mostly copy paste
+        /// </summary>
         public OptionsWindow ()
           : base( Game1.activeClickableMenu.xPositionOnScreen, Game1.activeClickableMenu.yPositionOnScreen + 10, WIDTH, Game1.activeClickableMenu.height ) {
             this.upArrow = new ClickableTextureComponent( new Rectangle( this.xPositionOnScreen + width + Game1.tileSize / 4, this.yPositionOnScreen + Game1.tileSize, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom ), Game1.mouseCursors, new Rectangle( 421, 459, 11, 12 ), ( float ) Game1.pixelZoom, false );

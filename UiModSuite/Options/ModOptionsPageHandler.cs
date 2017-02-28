@@ -10,16 +10,18 @@ using UiModSuite.UiMods;
 
 namespace UiModSuite.Options {
     class ModOptionsPageHandler {
+
         private List<ModOptionsElement> options = new List<ModOptionsElement>();
         private ModOptionsPageButton optionPageButton;
 
         public ModOptionsPageHandler( ) {
-            //ControlEvents.KeyPressed += onKeyPress;
+
             TimeEvents.DayOfMonthChanged += saveModData;
             MenuEvents.MenuChanged += addModOptionButtonToMenu;
             MenuEvents.MenuClosed += removeModOptionButtonFromMenu;
             GraphicsEvents.OnPreRenderEvent += IconHandler.reset;
 
+            // Load all mods, mods decide if they are loaded in their respective toggle method
             var uiModluckOfDay = new UiModLuckOfDay();
             var uiModAccurateHearts = new UiModAccurateHearts();
             var uiModLocationOfTownsfolk = new UiModLocationOfTownsfolk();
@@ -33,8 +35,7 @@ namespace UiModSuite.Options {
             var uiModDisplayScarecrowAndSprinklerRange = new UiModDisplayScarecrowAndSprinklerRange();
             var shopHarvestPrices = new ShopHarvestPrices();
             
-            // Oder in which this is executed effects the order in which icons are drawn from IconHandler
-
+            // Order in which this is executed effects the order in which icons are drawn from IconHandler 
             options.Add( new ModOptionsElement( "UiModeSuite v0.1: Demiacle" ) );
             options.Add( new ModOptionsCheckbox( "Show experience bar", ( int ) ModOptionsPage.Setting.SHOW_EXPERIENCE_BAR, () => { } ) );
             options.Add( new ModOptionsCheckbox( "Allow experience bar to fade out", ( int ) ModOptionsPage.Setting.ALLOW_EXPERIENCE_BAR_TO_FADE_OUT, () => { } ) );
@@ -51,12 +52,13 @@ namespace UiModSuite.Options {
             options.Add( new ModOptionsCheckbox( "Show Scarecrow and sprinkler range", (int) ModOptionsPage.Setting.SHOW_SPRINKLER_SCARECROW_RANGE, uiModDisplayScarecrowAndSprinklerRange.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Show harvest prices in shop", (int) ModOptionsPage.Setting.SHOW_HARVEST_PRICES_IN_SHOP, shopHarvestPrices.toggleOption ) );
             options.Add( new ModOptionsCheckbox( "Display calendar/billboard button", (int) ModOptionsPage.Setting.DISPLAY_CALENDAR_AND_BILLBOARD, uiModDisplayCalendarAndBillboardOnGameMenuButton.toggleOption ) );
-            
-
-            //ModOptionsPage.syncSettingsToLoadedData( options );
         }
 
+        /// <summary>
+        /// Removes the delegates that handle the button click and draw method of the tab
+        /// </summary>
         private void removeModOptionButtonFromMenu( object sender, EventArgsClickableMenuClosed e ) {
+
             if( optionPageButton == null ) {
                 return;
             }
@@ -66,6 +68,9 @@ namespace UiModSuite.Options {
             optionPageButton = null;
         }
 
+        /// <summary>
+        /// Attaches the delegates that handle the button click and draw method of the tab
+        /// </summary>
         private void addModOptionButtonToMenu( object sender, EventArgsClickableMenuChanged e ) {
             if ( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;
@@ -83,6 +88,9 @@ namespace UiModSuite.Options {
 
         }
 
+        /// <summary>
+        /// Draws the tab in the top right corner of the GameMenu
+        /// </summary>
         private void drawButton( object sender, EventArgs e ) {
             if( !( Game1.activeClickableMenu is GameMenu ) || optionPageButton == null ) {
                 return;
@@ -105,6 +113,9 @@ namespace UiModSuite.Options {
 
         }
 
+        /// <summary>
+        /// Saves mod data on day of month change
+        /// </summary>
         private void saveModData( object sender, EventArgsIntChanged e ) {
             ModEntry.updateModData();
         }

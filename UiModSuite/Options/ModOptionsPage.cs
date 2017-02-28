@@ -16,13 +16,9 @@ namespace UiModSuite.Options {
             SHOW_EXPERIENCE_BAR = 2,
             SHOW_EXP_GAIN = 3,
             SHOW_LEVEL_UP_ANIMATION = 4,
-
             SHOW_HEART_FILLS = 5,
-
             SHOW_EXTRA_ITEM_INFORMATION = 6,
-
             SHOW_LOCATION_Of_TOWNSPEOPLE = 7,
-
             SHOW_LUCK_ICON = 8,
             SHOW_TRAVELING_MERCHANT = 9,
             SHOW_LOCATION_OF_TOWNSPEOPLE_SHOW_QUEST_ICON = 10,
@@ -35,10 +31,14 @@ namespace UiModSuite.Options {
             DISPLAY_CALENDAR_AND_BILLBOARD = 17,
         }
 
+        /// <summary>
+        /// This class provides a page to handle attaching and removing mods
+        /// </summary>
         internal ModOptionsPage( List<ModOptionsElement> options ) {
             this.options = options;
         }
 
+        [Obsolete( "Never fires" )]
         internal static int getSliderValue( Setting setting ) {
             return ModEntry.modData.intSettings[ (int) setting ];
         }
@@ -47,6 +47,7 @@ namespace UiModSuite.Options {
             return ModEntry.modData.boolSettings[ (int) setting ];
         }
 
+        [Obsolete( "Never fires" )]
         internal static string getSelectValue( Setting setting ) {
             return ModEntry.modData.stringSettings[ (int) setting ];
         }

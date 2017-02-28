@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 namespace UiModSuite {
     public class ModConfig {
 
+        // Key binds
         public string[] keysForBarrelAndCropTimes { get; set; } = { Keys.LeftShift.ToString() };
         public bool canRightClickForBarrelAndCropTimes { get; set; } = true;
 
+        // Sprinkler highlights
         public int[,] Sprinkler { get; set; } =
         { 
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },

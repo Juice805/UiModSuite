@@ -9,14 +9,24 @@ using System.Reflection;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
-
-    /// <summary>
-    /// SocialPage overwriting handler. Also holds data between menu calls
-    /// </summary>
     class UiModAccurateHearts {
         
         private List<ClickableTextureComponent> friendNames;
         private SocialPage socialPage;
+
+        /// <summary>
+        /// Displays a partial heart fill between heart levels on the social page
+        /// </summary>
+        public void toggleVisibleHearts() {
+
+            GraphicsEvents.OnPostRenderGuiEvent -= drawHeartFills;
+            MenuEvents.MenuChanged -= OnMenuChange;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HEART_FILLS ) ) {
+                MenuEvents.MenuChanged += OnMenuChange;
+                GraphicsEvents.OnPostRenderGuiEvent += drawHeartFills;
+            }
+        }
 
         /// <summary>
         /// Stores the useful data from the social page when the GameMenu is brought up
@@ -36,7 +46,6 @@ namespace UiModSuite.UiMods {
                     friendNames = ( List<ClickableTextureComponent> ) typeof( SocialPage ).GetField( "friendNames", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( pages[ k ] );
                 }
             }
-
         }
 
         public void drawHeartFills( object sender, EventArgs e ) {
@@ -96,8 +105,6 @@ namespace UiModSuite.UiMods {
             var defaultHoverText = ( string ) typeof( GameMenu ).GetField( "hoverText", BindingFlags.NonPublic | BindingFlags.Instance ).GetValue( gameMenu );
 
             IClickableMenu.drawHoverText( Game1.spriteBatch, defaultHoverText, Game1.smallFont, 0, 0, -1, ( string ) null, -1, ( string[] ) null, ( Item ) null, 0, -1, -1, -1, -1, 1f, ( CraftingRecipe ) null );
-
-
         }
 
         /// <summary>
@@ -129,8 +136,6 @@ namespace UiModSuite.UiMods {
 
             int distanceAwayFromFirstHeartPositionX = 316;
 
-           
-
             // Draw the squares from bottom to top and left to right
             for( int row = 3; row >= 0; row-- ) {
                 for( int column = 0; column < 5; column++ ) {
@@ -146,18 +151,6 @@ namespace UiModSuite.UiMods {
                     }
                 }
             }
-        }
-
-        public void toggleVisibleHearts() {
-
-            GraphicsEvents.OnPostRenderGuiEvent -= drawHeartFills;
-            MenuEvents.MenuChanged -= OnMenuChange;
-
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HEART_FILLS ) ) {
-                MenuEvents.MenuChanged += OnMenuChange;
-                GraphicsEvents.OnPostRenderGuiEvent += drawHeartFills;
-            }
-
         }
 
     }

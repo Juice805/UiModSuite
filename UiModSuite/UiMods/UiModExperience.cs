@@ -15,7 +15,7 @@ using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
 
-    //TODO This class is not efficient at all and is really really messy... if bored or have time please cleanup...
+    //TODO This class is not efficient at all and is really really messy... but functional... so if have time cleanup!
 
     /* Experience point indexes
      * 
@@ -26,10 +26,7 @@ namespace UiModSuite.UiMods {
      * Combat = 4
      * Luck = 5 
     */
-
-    /// <summary>
-    /// The mod that shows an experienceBar and plays an animation on level up
-    /// </summary>
+    
     class UiModExperience {
 
         private int maxBarWidth = 175;
@@ -59,6 +56,9 @@ namespace UiModSuite.UiMods {
 
         Rectangle levelUpIconRectangle;
 
+        /// <summary>
+        /// This mod  shows an experienceBar, experience gained and plays an animation on level up
+        /// </summary>
         public UiModExperience() {
 
             GraphicsEvents.OnPreRenderHudEvent += onPreRenderEvent;
@@ -74,13 +74,18 @@ namespace UiModSuite.UiMods {
             }
             
             timerToDissapear.Elapsed += stopTimerAndFadeBarOut;
-
         }
 
+        /// <summary>
+        /// Removes any dangling exp displays when changing locations
+        /// </summary>
         private void removeAllExpPointDisplays( object sender, EventArgsCurrentLocationChanged e ) {
             expPointDisplays.Clear();
         }
 
+        /// <summary>
+        /// Toggles the level up animation on or off
+        /// </summary>
         public void togglLevelUpAnimation() {
 
             PlayerEvents.LeveledUp -= onLevelUp;
@@ -88,14 +93,19 @@ namespace UiModSuite.UiMods {
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) ) {
                 PlayerEvents.LeveledUp += onLevelUp;
             }
-
         }
 
+        /// <summary>
+        /// Stop displaying the exp bar
+        /// </summary>
         private void stopTimerAndFadeBarOut( object sender, ElapsedEventArgs e ) {
             timerToDissapear.Stop();
             shouldDrawExperienceBar = false;
         }
 
+        /// <summary>
+        /// Draw all experience displays
+        /// </summary>
         internal void onPreRenderEvent( object sender, EventArgs e ) {
             if( Game1.eventUp ) {
                 return;
@@ -234,6 +244,11 @@ namespace UiModSuite.UiMods {
             }
         }
 
+        /// <summary>
+        /// Gets the required exp needed per level
+        /// </summary>
+        /// <param name="levelOfCurrentlyDisplayedExp">The level</param>
+        /// <returns>Amount needed for next level</returns>
         private int getExperienceRequiredToLevel( int levelOfCurrentlyDisplayedExp ) {
             switch( levelOfCurrentlyDisplayedExp ) {
                 case 0:
@@ -263,6 +278,9 @@ namespace UiModSuite.UiMods {
             }; 
         }
 
+        /// <summary>
+        /// Displays the exp bar
+        /// </summary>
         private void displayExperienceBar() {
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.ALLOW_EXPERIENCE_BAR_TO_FADE_OUT ) == true ) {
                 timerToDissapear.Interval = TIME_BEFORE_EXPERIENCE_BAR_FADE;
@@ -272,7 +290,6 @@ namespace UiModSuite.UiMods {
                 timerToDissapear.Stop();
                 shouldDrawExperienceBar = true;
             }
-
         }
 
         /// <summary>
@@ -342,6 +359,11 @@ namespace UiModSuite.UiMods {
           
         }
 
+        /// <summary>
+        /// Finds the exp gained for the current level
+        /// </summary>
+        /// <param name="currentLevel">Players level</param>
+        /// <returns>The exp already earned towards current level</returns>
         private int getExperienceGainedFromPreviousLevels( int currentLevel ) {
 
             int expAlreadyEarnedFromPreviousLevels = 0;

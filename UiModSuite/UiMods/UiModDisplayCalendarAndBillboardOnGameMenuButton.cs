@@ -15,7 +15,25 @@ namespace UiModSuite.UiMods {
         ClickableTextureComponent showBillboardButton = new ClickableTextureComponent( new Rectangle( 0, 0, 99, 60 ), Game1.content.Load<Texture2D>( "Maps\\summer_town" ), new Rectangle( 122, 291, 35, 20 ), 3 );
         string hoverText;
 
-        // Removes default tooltips if better tooltips are not showing
+        /// <summary>
+        /// This mod displays a button in GameMenu to show billboard and calendar anywhere
+        /// </summary>
+        internal void toggleOption() {
+
+            GraphicsEvents.OnPostRenderGuiEvent -= renderButtons;
+            GraphicsEvents.OnPreRenderGuiEvent -= removeDefaultTooltips;
+            ControlEvents.MouseChanged -= onBilboardIconClick;
+
+            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.DISPLAY_CALENDAR_AND_BILLBOARD ) ) {
+                GraphicsEvents.OnPostRenderGuiEvent += renderButtons;
+                GraphicsEvents.OnPreRenderGuiEvent += removeDefaultTooltips;
+                ControlEvents.MouseChanged += onBilboardIconClick;
+            }
+        }
+
+        /// <summary>
+        /// Removes default tooltips to allow drawing standard tooltips over the billboard icon only if better tooltips are not showing
+        /// </summary>
         private void removeDefaultTooltips( object sender, EventArgs e ) {
 
             if( Game1.activeClickableMenu is GameMenu == false ) {
@@ -30,7 +48,10 @@ namespace UiModSuite.UiMods {
             }
         }
 
-        private void onMouseClick( object sender, EventArgsMouseStateChanged e ) {
+        /// <summary>
+        /// Handles the click for the bilboard icon on the GameMenu
+        /// </summary>
+        private void onBilboardIconClick( object sender, EventArgsMouseStateChanged e ) {
 
             if( ( Game1.activeClickableMenu is GameMenu ) == false ) {
                 return;
@@ -49,6 +70,9 @@ namespace UiModSuite.UiMods {
             }
         }
 
+        /// <summary>
+        /// Draws the billboard button below the inventory screen
+        /// </summary>
         private void renderButtons( object sender, EventArgs e ) {
 
             if( ( Game1.activeClickableMenu is GameMenu) == false ) {
@@ -85,18 +109,6 @@ namespace UiModSuite.UiMods {
                 var hoveredItem = ( Item ) typeof( InventoryPage ).GetField( "hoveredItem", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
                 var heldItem = ( Item ) typeof( InventoryPage ).GetField( "heldItem", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
                 IClickableMenu.drawToolTip( Game1.spriteBatch, hoverText, hoverTitle, hoveredItem, heldItem != null, -1, 0, -1, -1, ( CraftingRecipe ) null, -1 );
-            }
-        }
-
-        internal void toggleOption() {
-            GraphicsEvents.OnPostRenderGuiEvent -= renderButtons;
-            GraphicsEvents.OnPreRenderGuiEvent -= removeDefaultTooltips;
-            ControlEvents.MouseChanged -= onMouseClick;
-
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.DISPLAY_CALENDAR_AND_BILLBOARD ) ) {
-                GraphicsEvents.OnPostRenderGuiEvent += renderButtons;
-                GraphicsEvents.OnPreRenderGuiEvent += removeDefaultTooltips;
-                ControlEvents.MouseChanged += onMouseClick;
             }
         }
 
