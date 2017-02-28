@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
 using UiModSuite.Options;
+using StardewValley.Characters;
 
 namespace UiModSuite.UiMods {
     internal class UiModDisplayAnimalNeedsPet {
@@ -51,7 +52,7 @@ namespace UiModSuite.UiMods {
                 timer.Start();
             } else {
                 timer.Stop();
-                GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
+                GraphicsEvents.OnPreRenderHudEvent -= drawNeedsPetTooltip;
             }
         }
 
@@ -60,8 +61,8 @@ namespace UiModSuite.UiMods {
         /// </summary>
         private void triggerDraw( object sender, ElapsedEventArgs e ) {
 
-            GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
-            GraphicsEvents.OnPreRenderHudEvent += drawHoverTooltip;
+            GraphicsEvents.OnPreRenderHudEvent -= drawNeedsPetTooltip;
+            GraphicsEvents.OnPreRenderHudEvent += drawNeedsPetTooltip;
             scale = 4f;
             movementYPerDraw = -3;
             alpha = 1;
@@ -70,12 +71,25 @@ namespace UiModSuite.UiMods {
         /// <summary>
         /// Draws the hand icon if animal needs pet
         /// </summary>
-        private void drawHoverTooltip( object sender, EventArgs e ) {
+        private void drawNeedsPetTooltip( object sender, EventArgs e ) {
 
             if( Game1.eventUp || Game1.activeClickableMenu != null ) {
                 return;
             }
 
+            drawIconForFarmAnimals();
+            drawIconForPets();
+
+            scale += 0.01f;
+            movementYPerDraw += 0.3f;
+            alpha -= 0.014f;
+
+            if( alpha < 0.1f ) {
+                GraphicsEvents.OnPreRenderHudEvent -= drawNeedsPetTooltip;
+            }
+        }
+
+        private void drawIconForFarmAnimals() {
             StardewValley.SerializableDictionary<long, FarmAnimal> animals = getAnimalsInCurrentLocation();
 
             if( animals == null ) {
@@ -91,20 +105,29 @@ namespace UiModSuite.UiMods {
                 // Draw if needs pet
                 if( animal.wasPet == false ) {
                     Vector2 handPosition = getPositionAboveAnimal( animal );
+
+                    // Adjust hand for larger animals
                     if( animal.type.Contains( "Cow" ) || animal.type.Contains( "Sheep" ) | animal.type.Contains( "Goat" ) || animal.type.Contains( "Pig" ) ) {
                         handPosition.X += 50;
                         handPosition.Y += 50;
                     }
+
                     Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( handPosition.X, handPosition.Y + movementYPerDraw ), new Rectangle( 32, 0, 16, 16 ), Color.White * alpha, 0, Vector2.Zero, 4f, SpriteEffects.None, 1 );
                 }
             }
 
-            scale += 0.01f;
-            movementYPerDraw += 0.3f;
-            alpha -= 0.014f;
+        }
 
-            if( alpha < 0.1f ) {
-                GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
+        private void drawIconForPets() {
+            foreach( var npc in Game1.currentLocation.characters ) {
+                if( npc is Pet ) {
+                    var wasPetToday = ModEntry.helper.Reflection.GetPrivateField<bool>( npc, "wasPetToday" ).GetValue();
+                    if( wasPetToday == false ) {
+                        Vector2 handPosition = getPositionAboveAnimal( npc );
+                        handPosition.X += 40;
+                        Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( handPosition.X, handPosition.Y + movementYPerDraw ), new Rectangle( 32, 0, 16, 16 ), Color.White * alpha, 0, Vector2.Zero, 4f, SpriteEffects.None, 1 );
+                    }
+                }
             }
         }
 
@@ -113,7 +136,7 @@ namespace UiModSuite.UiMods {
         /// </summary>
         /// <param name="animal">The animal to check</param>
         /// <returns>The position in actual pixel coordinates</returns>
-        private Vector2 getPositionAboveAnimal( FarmAnimal animal ) {
+        private Vector2 getPositionAboveAnimal( Character animal ) {
             float positionX = animal.position.X;
             float positionY = animal.position.Y;
 

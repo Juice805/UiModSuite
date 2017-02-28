@@ -92,6 +92,7 @@ namespace UiModSuite.UiMods {
 
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) ) {
                 PlayerEvents.LeveledUp += onLevelUp;
+                
             }
         }
 
@@ -296,6 +297,12 @@ namespace UiModSuite.UiMods {
         /// Pauses the game, shows Level Up text and plays a chime, and unpauses after some time;
         /// </summary>
         internal void onLevelUp( object sender, EventArgsLevelUp e ) {
+
+            // Fix firing on new day. Exp can never be gained in FarmHouse
+            if( Game1.currentLocation.name == "FarmHouse" ) {
+                return;
+            }
+
             if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LEVEL_UP_ANIMATION ) == false ) {
                 return;
             }
