@@ -27,7 +27,8 @@ namespace UiModSuite.UiMods {
         public void toggleOption() {
 
             PlayerEvents.InventoryChanged -= populateRequiredBundled;
-            GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolip;
+            GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolipForMenu;
+            GraphicsEvents.OnPostRenderHudEvent -= drawAdvancedToolipForToolbar;
             GraphicsEvents.OnPreRenderEvent -= getHoverItem;
 
             if ( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) ) {
@@ -40,8 +41,21 @@ namespace UiModSuite.UiMods {
                 populateRequiredBundled( null, null );
 
                 PlayerEvents.InventoryChanged += populateRequiredBundled;
-                GraphicsEvents.OnPostRenderEvent += drawAdvancedToolip;
+                GraphicsEvents.OnPostRenderEvent += drawAdvancedToolipForMenu;
+                GraphicsEvents.OnPostRenderHudEvent += drawAdvancedToolipForToolbar;
                 GraphicsEvents.OnPreRenderEvent += getHoverItem;
+            }
+        }
+
+        private void drawAdvancedToolipForMenu( object sender, EventArgs e ) {
+            if( Game1.activeClickableMenu != null ) {
+                drawAdvancedToolip( sender, e );
+            }
+        }
+
+        private void drawAdvancedToolipForToolbar( object sender, EventArgs e ) {
+            if( Game1.activeClickableMenu == null ) {
+                drawAdvancedToolip( sender, e );
             }
         }
 
@@ -368,7 +382,9 @@ namespace UiModSuite.UiMods {
                 x += Game1.tileSize / 4;
                 y1 = Game1.viewport.Height - height;
             }
+            
             IClickableMenu.drawTextureBox( b, Game1.menuTexture, new Rectangle( 0, 256, 60, 60 ), x, y1, width + ( craftingIngredients != null ? Game1.tileSize / 3 : 0 ), height, Color.White * alpha, 1f, true );
+
             if( boldTitleText != null ) {
                 IClickableMenu.drawTextureBox( b, Game1.menuTexture, new Rectangle( 0, 256, 60, 60 ), x, y1, width + ( craftingIngredients != null ? Game1.tileSize / 3 : 0 ), ( int ) Game1.dialogueFont.MeasureString( boldTitleText ).Y + Game1.tileSize / 2 + ( hoveredItem == null || text1.Length <= 0 ? 0 : ( int ) font.MeasureString( "asd" ).Y ) - Game1.pixelZoom, Color.White * alpha, 1f, false );
                 b.Draw( Game1.menuTexture, new Rectangle( x + Game1.pixelZoom * 3, y1 + ( int ) Game1.dialogueFont.MeasureString( boldTitleText ).Y + Game1.tileSize / 2 + ( hoveredItem == null || text1.Length <= 0 ? 0 : ( int ) font.MeasureString( "asd" ).Y ) - Game1.pixelZoom, width - Game1.pixelZoom * ( craftingIngredients == null ? 6 : 1 ), Game1.pixelZoom ), new Rectangle?( new Rectangle( 44, 300, 4, 4 ) ), Color.White );
