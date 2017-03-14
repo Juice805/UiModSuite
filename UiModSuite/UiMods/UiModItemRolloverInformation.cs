@@ -25,7 +25,6 @@ namespace UiModSuite.UiMods {
         /// This mod displays an improved tooltip
         /// </summary>
         public void toggleOption() {
-
             PlayerEvents.InventoryChanged -= populateRequiredBundled;
             GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolipForMenu;
             GraphicsEvents.OnPostRenderHudEvent -= drawAdvancedToolipForToolbar;
@@ -63,7 +62,6 @@ namespace UiModSuite.UiMods {
         /// Finds all the bundles still needing resources
         /// </summary>
         private void populateRequiredBundled( object sender, EventArgs e ) {
-
             prunedRequiredBundles.Clear();
 
             foreach( var item in bundleData ) {
@@ -132,7 +130,6 @@ namespace UiModSuite.UiMods {
         /// Draw it!
         /// </summary>
         private void drawAdvancedToolip( object sender, EventArgs e ) {
-
             if( hoverItem == null ) {
                 return;
             }
@@ -186,6 +183,7 @@ namespace UiModSuite.UiMods {
                     var spriteRectangle = new Rectangle( 60, 428, 10, 10 );
                     Game1.spriteBatch.Draw( Game1.mouseCursors, new Vector2( iconPositionX + Game1.dialogueFont.MeasureString( sellForAmount ).X - 10, iconPositionY - 20 ), spriteRectangle, Color.White, 0.0f, Vector2.Zero, ( float ) Game1.pixelZoom, SpriteEffects.None, 0.85f );
                 }
+
             }
 
             // Draw bundle info
@@ -242,6 +240,11 @@ namespace UiModSuite.UiMods {
         /// <param name="hoverItem">The item</param>
         /// <returns>The correct sell price</returns>
         public static int getTruePrice( Item hoverItem ) {
+            if( hoverItem is StardewValley.Object ) {
+
+                // No clue why selToStorePrice needs to be multiplied for the correct value...???
+                return ( hoverItem as StardewValley.Object ).sellToStorePrice() * 2; 
+            }
 
             // Overwrite ores cause salePrice() is not accurate for some reason...???
             switch( hoverItem.parentSheetIndex ) {

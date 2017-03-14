@@ -17,7 +17,7 @@ namespace UiModSuite.UiMods {
                 MenuEvents.MenuChanged -= SkipIntro.onMenuChange;
 
             } catch ( Exception exception ) {
-                ModEntry.Log( "This should never be called." );
+                ModEntry.Log( "This should never be called." + exception );
             }
         }
 
