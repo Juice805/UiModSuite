@@ -42,7 +42,7 @@ namespace UiModSuite.UiMods {
             string sellForAmount = "";
             string harvestPrice = "";
 
-            int truePrice = UiModItemRolloverInformation.getTruePrice( hoverItem );
+            int truePrice = ItemRolloverInformation.getTruePrice( hoverItem );
 
             if( truePrice > 0 && hoverItem.Name != "Scythe" ) {
                 sellForAmount = "\n  " + truePrice / 2;

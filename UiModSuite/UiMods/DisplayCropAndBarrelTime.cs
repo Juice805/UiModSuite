@@ -14,7 +14,7 @@ using UiModSuite.Options;
 
 
 namespace UiModSuite.UiMods {
-    class UiModDisplayCropAndBarrelTime {
+    class DisplayCropAndBarrelTime {
 
         Dictionary<int, string> indexOfCropNames = new Dictionary<int, string>();
 

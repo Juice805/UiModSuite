@@ -7,7 +7,7 @@ using System;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
-    internal class UiModDisplayBirthdayIcon {
+    internal class DisplayBirthdayIcon {
 
         /// <summary>
         /// This mod draws a birthday icon when its a townsfolk birthday
@@ -32,7 +32,7 @@ namespace UiModSuite.UiMods {
                 foreach( NPC npc in location.characters ) {
                     if( npc.isBirthday( Game1.currentSeason, Game1.dayOfMonth ) ) {
                         // draw headshot of npc whos birthday it is
-                        Rectangle rect = UiModLocationOfTownsfolk.getHeadShot( npc );
+                        Rectangle rect = LocationOfTownsfolk.getHeadShot( npc );
 
                         int iconPositionX = IconHandler.getIconXPosition();
                         int iconPositionY = 256;

@@ -13,7 +13,7 @@ using System.Reflection;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
-    class UiModItemRolloverInformation {
+    class ItemRolloverInformation {
 
         Item hoverItem;
         CommunityCenter communityCenter;

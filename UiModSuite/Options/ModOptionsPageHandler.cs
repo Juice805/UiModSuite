@@ -22,17 +22,17 @@ namespace UiModSuite.Options {
             GraphicsEvents.OnPreRenderEvent += IconHandler.reset;
 
             // Load all mods, mods decide if they are loaded in their respective toggle method
-            var uiModluckOfDay = new UiModLuckOfDay();
-            var uiModAccurateHearts = new UiModAccurateHearts();
-            var uiModLocationOfTownsfolk = new UiModLocationOfTownsfolk();
-            var uiModShowTravelingMerchant = new UiModShowTravelingMerchant();
-            var uiModItemrolloverInformation = new UiModItemRolloverInformation();
-            var uiModExperience = new UiModExperience();
-            var uiModDisplayCropAndBarrelTime = new UiModDisplayCropAndBarrelTime();
-            var uiModDisplayBirthdayIcon = new UiModDisplayBirthdayIcon();
-            var uiModDisplayCalendarAndBillboardOnGameMenuButton = new UiModDisplayCalendarAndBillboardOnGameMenuButton();
-            var uiModDisplayAnimalNeedsPet = new UiModDisplayAnimalNeedsPet();
-            var uiModDisplayScarecrowAndSprinklerRange = new UiModDisplayScarecrowAndSprinklerRange();
+            var uiModluckOfDay = new LuckOfDay();
+            var uiModAccurateHearts = new AccurateHearts();
+            var uiModLocationOfTownsfolk = new LocationOfTownsfolk();
+            var uiModShowTravelingMerchant = new ShowTravelingMerchant();
+            var uiModItemrolloverInformation = new ItemRolloverInformation();
+            var uiModExperience = new Experience();
+            var uiModDisplayCropAndBarrelTime = new DisplayCropAndBarrelTime();
+            var uiModDisplayBirthdayIcon = new DisplayBirthdayIcon();
+            var uiModDisplayCalendarAndBillboardOnGameMenuButton = new DisplayCalendarAndBillboardOnGameMenuButton();
+            var uiModDisplayAnimalNeedsPet = new DisplayAnimalNeedsPet();
+            var uiModDisplayScarecrowAndSprinklerRange = new DisplayScarecrowAndSprinklerRange();
             var shopHarvestPrices = new ShopHarvestPrices();
             
             // Order in which this is executed effects the order in which icons are drawn from IconHandler 

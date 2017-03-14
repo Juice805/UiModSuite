@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
-    internal class UiModDisplayScarecrowAndSprinklerRange {
+    internal class DisplayScarecrowAndSprinklerRange {
 
         List<Point> effectiveArea = new List<Point>();
 

@@ -9,7 +9,7 @@ using UiModSuite.Options;
 
 
 namespace UiModSuite.UiMods {
-    internal class UiModShowTravelingMerchant {
+    internal class ShowTravelingMerchant {
 
         List<int> daysMerchantVisits = new List<int>() { 5, 7, 12, 14, 19, 21, 26, 28 };
 

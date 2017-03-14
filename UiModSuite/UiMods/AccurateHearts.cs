@@ -9,7 +9,7 @@ using System.Reflection;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
-    class UiModAccurateHearts {
+    class AccurateHearts {
         
         private List<ClickableTextureComponent> friendNames;
         private SocialPage socialPage;

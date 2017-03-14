@@ -7,7 +7,7 @@ using UiModSuite.Options;
 using static UiModSuite.Options.ModOptionsPage;
 
 namespace UiModSuite.UiMods {
-    class UiModLuckOfDay {
+    class LuckOfDay {
 
         private ClickableTextureComponent icon;
         private string hoverText = "";

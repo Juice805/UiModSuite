@@ -27,7 +27,7 @@ namespace UiModSuite.UiMods {
      * Luck = 5 
     */
     
-    class UiModExperience {
+    class Experience {
 
         private int maxBarWidth = 175;
 
@@ -59,7 +59,7 @@ namespace UiModSuite.UiMods {
         /// <summary>
         /// This mod  shows an experienceBar, experience gained and plays an animation on level up
         /// </summary>
-        public UiModExperience() {
+        public Experience() {
 
             GraphicsEvents.OnPreRenderHudEvent += onPreRenderEvent;
             LocationEvents.CurrentLocationChanged += removeAllExpPointDisplays;

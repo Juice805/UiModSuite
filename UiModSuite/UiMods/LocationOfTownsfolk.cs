@@ -14,7 +14,7 @@ using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
 
-    class UiModLocationOfTownsfolk {
+    class LocationOfTownsfolk {
 
         private SocialPage socialPage;
 

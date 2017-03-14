@@ -8,7 +8,7 @@ using UiModSuite.Options;
 using StardewValley.Characters;
 
 namespace UiModSuite.UiMods {
-    internal class UiModDisplayAnimalNeedsPet {
+    internal class DisplayAnimalNeedsPet {
 
         private Timer timer;
         private float scale;
@@ -19,7 +19,7 @@ namespace UiModSuite.UiMods {
         /// <summary>
         /// Load the timer but mod is not initialized until toggleOption is fired
         /// </summary>
-        public UiModDisplayAnimalNeedsPet() {
+        public DisplayAnimalNeedsPet() {
             timer = new Timer();
             timer.Elapsed += triggerDraw;
         }

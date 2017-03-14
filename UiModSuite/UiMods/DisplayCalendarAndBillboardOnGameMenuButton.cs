@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 namespace UiModSuite.UiMods {
-    internal class UiModDisplayCalendarAndBillboardOnGameMenuButton {
+    internal class DisplayCalendarAndBillboardOnGameMenuButton {
 
         ClickableTextureComponent showBillboardButton = new ClickableTextureComponent( new Rectangle( 0, 0, 99, 60 ), Game1.content.Load<Texture2D>( "Maps\\summer_town" ), new Rectangle( 122, 291, 35, 20 ), 3 );
         string hoverText;

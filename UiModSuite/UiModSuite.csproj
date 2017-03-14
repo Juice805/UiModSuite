@@ -86,7 +86,7 @@
     <Compile Include="Options\ModOptionsPage.cs" />
     <Compile Include="Options\ModOptionsPageButton.cs" />
     <Compile Include="Options\ModOptionsPageHandler.cs" />
-    <Compile Include="UiMods\UiModDisplayScarecrowAndSprinklerRange.cs" />
+    <Compile Include="UiMods\DisplayScarecrowAndSprinklerRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="Serializer.cs" />
@@ -94,16 +94,16 @@
     <Compile Include="Options\OptionsWindow.cs" />
     <Compile Include="UiMods\ShopHarvestPrices.cs" />
     <Compile Include="UiMods\SkipIntro.cs" />
-    <Compile Include="UiMods\UiModAccurateHearts.cs" />
-    <Compile Include="UiMods\UiModDisplayAnimalNeedsPet.cs" />
-    <Compile Include="UiMods\UiModDisplayBirthdayIcon.cs" />
-    <Compile Include="UiMods\UiModDisplayCalendarAndBillboardOnGameMenuButton.cs" />
-    <Compile Include="UiMods\UiModDisplayCropAndBarrelTime.cs" />
-    <Compile Include="UiMods\UiModExperience.cs" />
-    <Compile Include="UiMods\UiModItemRolloverInformation.cs" />
-    <Compile Include="UiMods\UiModLocationOfTownsfolk.cs" />
-    <Compile Include="UiMods\UiModLuckOfDay.cs" />
-    <Compile Include="UiMods\UiModShowTravelingMerchant.cs" />
+    <Compile Include="UiMods\AccurateHearts.cs" />
+    <Compile Include="UiMods\DisplayAnimalNeedsPet.cs" />
+    <Compile Include="UiMods\DisplayBirthdayIcon.cs" />
+    <Compile Include="UiMods\DisplayCalendarAndBillboardOnGameMenuButton.cs" />
+    <Compile Include="UiMods\DisplayCropAndBarrelTime.cs" />
+    <Compile Include="UiMods\Experience.cs" />
+    <Compile Include="UiMods\ItemRolloverInformation.cs" />
+    <Compile Include="UiMods\LocationOfTownsfolk.cs" />
+    <Compile Include="UiMods\LuckOfDay.cs" />
+    <Compile Include="UiMods\ShowTravelingMerchant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json">
