@@ -32,7 +32,7 @@ namespace UiModSuite.UiMods {
         /// Stores the useful data from the social page when the GameMenu is brought up
         /// </summary>
         internal void OnMenuChange( object sender, EventArgsClickableMenuChanged e ) {
-            Farmer x = Game1.player;
+            StardewValley.Farmer x = Game1.player;
             if( !( Game1.activeClickableMenu is GameMenu ) ) {
                 return;
             }
