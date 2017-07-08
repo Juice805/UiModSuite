@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
@@ -21,16 +22,31 @@ namespace UiModSuite.UiMods {
         Dictionary<string, string> bundleData;
         ClickableTextureComponent bundleIcon =  new ClickableTextureComponent("", new Rectangle( 0, 0, Game1.tileSize, Game1.tileSize), "", Game1.content.LoadString("Strings\\UI:GameMenu_JunimoNote_Hover"), Game1.mouseCursors, new Rectangle(331, 374, 15, 14), (float) Game1.pixelZoom, false);
 
+		private ModOptionToggle option;
+
+		public ItemRolloverInformation()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayExtraItemInfo") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayExtraItemInfo", "Show extra item information");
+				ModEntry.Options.AddModOption(this.option);
+			}
+
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// This mod displays an improved tooltip
         /// </summary>
-        public void toggleOption() {
+        public void toggleOption(string identifier, bool IsOn) {
             PlayerEvents.InventoryChanged -= populateRequiredBundled;
             GraphicsEvents.OnPostRenderEvent -= drawAdvancedToolipForMenu;
             GraphicsEvents.OnPostRenderHudEvent -= drawAdvancedToolipForToolbar;
             GraphicsEvents.OnPreRenderEvent -= getHoverItem;
 
-            if ( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) ) {
+			if ( IsOn ) {
 
                 // Load bundle data
                 communityCenter = ( CommunityCenter ) Game1.getLocationFromName( "CommunityCenter" );

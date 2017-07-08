@@ -4,19 +4,34 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
     internal class DisplayBirthdayIcon {
 
+		private ModOptionToggle option;
+
+		public DisplayBirthdayIcon()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayBirthday") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayBirthday", "Show birthday icon reminder");
+				ModEntry.Options.AddModOption(this.option);
+			}
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// This mod draws a birthday icon when its a townsfolk birthday
         /// </summary>
-        internal void toggleOption() {
+        internal void toggleOption(string identifier, bool IsOn) {
 
             GraphicsEvents.OnPreRenderHudEvent -= drawBirthdayIcon;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_BIRTHDAY_ICON) ) {
+			if( IsOn ) {
                 GraphicsEvents.OnPreRenderHudEvent += drawBirthdayIcon;
             }
         }

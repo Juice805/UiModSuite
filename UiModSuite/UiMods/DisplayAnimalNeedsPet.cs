@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
 using UiModSuite.Options;
 using StardewValley.Characters;
+using StardewConfigFramework;
 
 namespace UiModSuite.UiMods {
     internal class DisplayAnimalNeedsPet {
@@ -15,26 +16,39 @@ namespace UiModSuite.UiMods {
         private float movementYPerDraw;
         private float alpha;
         private StardewValley.Object wool = new StardewValley.Object( 440, 1 );
-        
+
+		private ModOptionToggle option;
+
         /// <summary>
         /// Load the timer but mod is not initialized until toggleOption is fired
         /// </summary>
         public DisplayAnimalNeedsPet() {
+
+			this.option = ModEntry.Options.GetOptionWithIdentifier("animalNeedsPet") as ModOptionToggle;
+			if (this.option == null) {
+				this.option = new ModOptionToggle("animalNeedsPet", "Show when animals need pets");
+				ModEntry.Options.AddModOption(this.option);
+			}
+				
+
             timer = new Timer();
             timer.Elapsed += triggerDraw;
+
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
         }
 
         /// <summary>
         /// This mod displays a hand icon periodically when a pet needs to be pet.
         /// This mod also displays an icon above the head of animals that are ready to produce a product
         /// </summary>
-        internal void toggleOption() {
+        internal void toggleOption(string identifier, bool IsOn) {
 
             timer.Stop();
             LocationEvents.CurrentLocationChanged -= onLocationChange;
             GraphicsEvents.OnPreRenderHudEvent -= drawAnimalHasProduct;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_ANIMALS_NEED_PETS ) ) {
+			if( IsOn ) {
                 timer.Start();
                 LocationEvents.CurrentLocationChanged += onLocationChange;
                 GraphicsEvents.OnPreRenderHudEvent += drawAnimalHasProduct;
@@ -121,7 +135,7 @@ namespace UiModSuite.UiMods {
         private void drawIconForPets() {
             foreach( var npc in Game1.currentLocation.characters ) {
                 if( npc is Pet ) {
-                    var wasPetToday = ModEntry.helper.Reflection.GetPrivateField<bool>( npc, "wasPetToday" ).GetValue();
+                    var wasPetToday = ModEntry.Helper.Reflection.GetPrivateField<bool>( npc, "wasPetToday" ).GetValue();
                     if( wasPetToday == false ) {
                         Vector2 handPosition = getPositionAboveAnimal( npc );
                         handPosition.X += 40;

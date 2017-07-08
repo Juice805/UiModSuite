@@ -4,7 +4,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using UiModSuite.Options;
-using static UiModSuite.Options.ModOptionsPage;
+using StardewConfigFramework;
 
 namespace UiModSuite.UiMods {
     class LuckOfDay {
@@ -12,16 +12,30 @@ namespace UiModSuite.UiMods {
         private ClickableTextureComponent icon;
         private string hoverText = "";
 
+		private ModOptionToggle option;
+
+		public LuckOfDay()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayLuck") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayLuck", "Show luck icon");
+				ModEntry.Options.AddModOption(this.option);
+			}
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// This mod draws an icon displaying the luck of the day
         /// </summary>
-        public void toggleOption() {
+        public void toggleOption(string identifier, bool IsOn) {
 
             LocationEvents.CurrentLocationChanged -= adjustIconXToBlackBorder;
             GraphicsEvents.OnPreRenderHudEvent -= drawDiceIcon;
             GraphicsEvents.OnPostRenderHudEvent -= drawHoverTextOverEverything;
 
-            if( getCheckboxValue( Setting.SHOW_LUCK_ICON ) ) {
+			if( IsOn ) {
                 adjustIconXToBlackBorder( null, null );
                 LocationEvents.CurrentLocationChanged += adjustIconXToBlackBorder;
                 GraphicsEvents.OnPreRenderHudEvent += drawDiceIcon;

@@ -9,6 +9,7 @@ using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 
@@ -29,11 +30,26 @@ namespace UiModSuite.UiMods {
 
         private int socialPanelWidth = 190;
         private int socialPanelOffsetX = 160;
-        
+
+		private ModOptionToggle option;
+
+		public LocationOfTownsfolk()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayTownspeopleLoc") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayTownspeopleLoc", "Show townspeople on map");
+				ModEntry.Options.AddModOption(this.option);
+			}
+
+			this.option.ValueChanged += toggleShowNPCLocationOnMap;
+			toggleShowNPCLocationOnMap(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// This mod displays mugshots of townsfolk on the map.
         /// </summary>
-        public void toggleShowNPCLocationOnMap() {
+        public void toggleShowNPCLocationOnMap(string identifier, bool IsOn) {
 
             onMenuChange( null, null );
             GraphicsEvents.OnPostRenderGuiEvent -= drawNPCLocationsOnMap;
@@ -41,7 +57,7 @@ namespace UiModSuite.UiMods {
             ControlEvents.MouseChanged -= handleClickForSocialPage;
             MenuEvents.MenuChanged -= onMenuChange;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_LOCATION_Of_TOWNSPEOPLE ) ) {
+			if( IsOn ) {
                 GraphicsEvents.OnPostRenderGuiEvent += drawNPCLocationsOnMap;
                 GraphicsEvents.OnPostRenderGuiEvent += drawSocialPageOptions;
                 ControlEvents.MouseChanged += handleClickForSocialPage;
@@ -68,12 +84,12 @@ namespace UiModSuite.UiMods {
                 int key = npc.name.GetHashCode();
 
                 // If key for some reason doesn't exist
-                if( !( ModEntry.modData.locationOfTownsfolkOptions.ContainsKey( key ) ) ) {
+                if( !( ModEntry.ModConfig.locationOfTownsfolkOptions.ContainsKey( key ) ) ) {
                     continue;
                 }
 
                 // If key exists and value is false dont display anything
-                if ( ModEntry.modData.locationOfTownsfolkOptions[ key ] == false ) {
+                if ( ModEntry.ModConfig.locationOfTownsfolkOptions[ key ] == false ) {
                     continue;
                 }
 
@@ -264,7 +280,7 @@ namespace UiModSuite.UiMods {
                     case "Summit":
                     case "AdentureGuild":
                     default:
-                        ModEntry.Log( $"The location {npc.currentLocation.name} is not set" );
+						ModEntry.Monitor.Log( $"The location {npc.currentLocation.name} is not set" );
                         break;
 
                 }
@@ -279,7 +295,7 @@ namespace UiModSuite.UiMods {
                 int iconPositionX = positionX + offsetIconX;
                 int iconPositionY = positionY + offsetIconY;
 
-                Stack<StardewValley.Dialogue> currentDialogue =  ModEntry.helper.Reflection.GetPrivateField<Stack<StardewValley.Dialogue>>( npc, "currentDialogue" ).GetValue();
+                Stack<StardewValley.Dialogue> currentDialogue =  ModEntry.Helper.Reflection.GetPrivateField<Stack<StardewValley.Dialogue>>( npc, "currentDialogue" ).GetValue();
 
                 Color tint;
                 if( currentDialogue.Count > 0 ) {
@@ -569,11 +585,11 @@ namespace UiModSuite.UiMods {
                 }
 
                 // Ensure an entry exists
-                if( ModEntry.modData.locationOfTownsfolkOptions.ContainsKey( optionIndex ) == false ) {
-                    ModEntry.modData.locationOfTownsfolkOptions.Add( optionIndex, false );
+                if( ModEntry.ModConfig.locationOfTownsfolkOptions.ContainsKey( optionIndex ) == false ) {
+					ModEntry.ModConfig.locationOfTownsfolkOptions.Add( optionIndex, false );
                 }
 
-                checkbox.isChecked = ModEntry.modData.locationOfTownsfolkOptions[ optionIndex ];
+                checkbox.isChecked = ModEntry.ModConfig.locationOfTownsfolkOptions[ optionIndex ];
             }
         }
 
@@ -592,7 +608,7 @@ namespace UiModSuite.UiMods {
                 for( int i = slotPosition; i < slotPosition + 5; i++ ) {
                     if( checkboxes[ i ].bounds.Contains( Game1.getMouseX(), Game1.getMouseY() ) && checkboxes[ i ].greyedOut == false ) {
                         checkboxes[ i ].isChecked = !checkboxes[ i ].isChecked;
-                        ModEntry.modData.locationOfTownsfolkOptions[ checkboxes[ i ].whichOption ] = checkboxes[ i ].isChecked;
+                        ModEntry.ModConfig.locationOfTownsfolkOptions[ checkboxes[ i ].whichOption ] = checkboxes[ i ].isChecked;
                         Game1.playSound( "drumkit6" );
                     }
                 }

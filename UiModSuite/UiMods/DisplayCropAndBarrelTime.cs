@@ -7,6 +7,7 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using StardewConfigFramework;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,15 +19,30 @@ namespace UiModSuite.UiMods {
 
         Dictionary<int, string> indexOfCropNames = new Dictionary<int, string>();
 
-        /// <summary>
-        /// This mod displays crop time and barrel times when a button is pressed
-        /// </summary>
-        internal void toggleOption() {
+		private ModOptionToggle option;
 
-            GraphicsEvents.OnPreRenderHudEventNoCheck -= drawHoverTooltip;
+		public DisplayCropAndBarrelTime()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayCrop&Barrel") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayCrop&Barrel", "Show hover info on crops and barrels");
+				ModEntry.Options.AddModOption(this.option);
+			}
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_CROP_AND_BARREL_TOOLTIP_ON_HOVER ) ) {
-                GraphicsEvents.OnPreRenderHudEventNoCheck += drawHoverTooltip;
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
+		/// <summary>
+		/// This mod displays crop time and barrel times when a button is pressed
+		/// </summary>
+		internal void toggleOption(string identifier, bool IsOn)
+		{
+			GraphicsEvents.OnPreRenderHudEvent -= drawHoverTooltip;
+
+			if( IsOn ) {
+                GraphicsEvents.OnPreRenderHudEvent += drawHoverTooltip;
             }
         }
 
@@ -35,16 +51,16 @@ namespace UiModSuite.UiMods {
         /// </summary>
         private void drawHoverTooltip( object sender, EventArgs e ) {
 
-            var inputButtons = new InputButton[ ModEntry.modConfig.keysForBarrelAndCropTimes.Length ];
+            var inputButtons = new InputButton[ ModEntry.ModConfig.keysForBarrelAndCropTimes.Length ];
 
             // Convert the string to an int and then to a Keys enum
-            for( int i = 0; i < ModEntry.modConfig.keysForBarrelAndCropTimes.Length; i++ ) {
-                var key = (Keys) Enum.Parse( typeof( Keys ), ModEntry.modConfig.keysForBarrelAndCropTimes[ i ] );
+            for( int i = 0; i < ModEntry.ModConfig.keysForBarrelAndCropTimes.Length; i++ ) {
+                var key = (Keys) Enum.Parse( typeof( Keys ), ModEntry.ModConfig.keysForBarrelAndCropTimes[ i ] );
                 inputButtons[ i ] = new InputButton( key );
             }
 
             bool keyTriggerIsDown = Game1.isOneOfTheseKeysDown( Game1.oldKBState, inputButtons );
-            bool rightClickIsTriggered = ( ModEntry.modConfig.canRightClickForBarrelAndCropTimes == true && Game1.oldMouseState.RightButton == ButtonState.Pressed );
+            bool rightClickIsTriggered = ( ModEntry.ModConfig.canRightClickForBarrelAndCropTimes == true && Game1.oldMouseState.RightButton == ButtonState.Pressed );
 
             // Don't draw tooltip if key is not hit
             if( keyTriggerIsDown == false && rightClickIsTriggered == false ) {

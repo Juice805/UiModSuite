@@ -58,5 +58,8 @@ namespace UiModSuite {
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         };
 
+		public Dictionary<int, bool> locationOfTownsfolkOptions = new Dictionary<int, bool>();
+		public Dictionary<int, int> intSettings = new Dictionary<int, int>();
+		public Dictionary<int, bool> boolSettings = new Dictionary<int, bool>();
     }
 }

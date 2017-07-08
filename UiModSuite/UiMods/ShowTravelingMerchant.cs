@@ -5,6 +5,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 
@@ -13,13 +14,27 @@ namespace UiModSuite.UiMods {
 
         List<int> daysMerchantVisits = new List<int>() { 5, 7, 12, 14, 19, 21, 26, 28 };
 
+		private ModOptionToggle option;
+
+		public ShowTravelingMerchant()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayTravelMerch") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayTravelMerch", "Show traveling merchant icon");
+				ModEntry.Options.AddModOption(this.option);
+			}
+			this.option.ValueChanged += toggleShowTravelingMerchant;
+			toggleShowTravelingMerchant(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// This mod shows an icon when the traveling merchant is in town
         /// </summary>
-        public void toggleShowTravelingMerchant() {
+        public void toggleShowTravelingMerchant(string identifier, bool IsOn) {
             GraphicsEvents.OnPreRenderHudEvent -= drawTravelingMerchant;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_TRAVELING_MERCHANT ) == true ) {
+			if( IsOn ) {
                 GraphicsEvents.OnPreRenderHudEvent += drawTravelingMerchant;
             }
         }

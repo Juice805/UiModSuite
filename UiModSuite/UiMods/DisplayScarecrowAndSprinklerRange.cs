@@ -5,6 +5,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
@@ -12,15 +13,31 @@ namespace UiModSuite.UiMods {
 
         List<Point> effectiveArea = new List<Point>();
 
-        /// <summary>
-        /// This mod displays a customizable range for sprinklers and scarecrows
-        /// </summary>
-        internal void toggleOption() {
+		private ModOptionToggle option;
+
+		public DisplayScarecrowAndSprinklerRange()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayScarecrow&Sprinkler") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayScarecrow&Sprinkler", "Show Scarecrow and sprinkler range");
+				ModEntry.Options.AddModOption(this.option);
+			}
+
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
+		/// <summary>
+		/// This mod displays a customizable range for sprinklers and scarecrows
+		/// </summary>
+		internal void toggleOption(string identifier, bool IsOn)
+		{
 
             GraphicsEvents.OnPostRenderEvent -= drawTileOutlines;
             GameEvents.FourthUpdateTick -= checkDrawTileOutlines;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_SPRINKLER_SCARECROW_RANGE ) ) {
+			if( IsOn ) {
                 GraphicsEvents.OnPostRenderEvent += drawTileOutlines;
                 GameEvents.FourthUpdateTick += checkDrawTileOutlines;
             }
@@ -62,17 +79,17 @@ namespace UiModSuite.UiMods {
 
             } else if( itemName.Contains( "Iridium Sprinkler" ) ) {
 
-                var highlightedLocation = ModEntry.modConfig.IridiumSprinkler;
+                var highlightedLocation = ModEntry.ModConfig.IridiumSprinkler;
                 parseConfigToHighlightedArea( highlightedLocation );
                 
             } else if( itemName.Contains( "Quality Sprinkler" ) ) {
 
-                var highlightedLocation = ModEntry.modConfig.QualitySprinkler;
+                var highlightedLocation = ModEntry.ModConfig.QualitySprinkler;
                 parseConfigToHighlightedArea( highlightedLocation );
 
             } else if( itemName.Contains( "Sprinkler" ) ) {
 
-                var highlightedLocation = ModEntry.modConfig.Sprinkler;
+                var highlightedLocation = ModEntry.ModConfig.Sprinkler;
                 parseConfigToHighlightedArea( highlightedLocation );
 
             }

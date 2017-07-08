@@ -9,19 +9,34 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
     class ShopHarvestPrices {
 
+		private ModOptionToggle option;
+
+		public ShopHarvestPrices()
+		{
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayHarvestPrices") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayHarvestPrices", "Show harvest prices in shop");
+				ModEntry.Options.AddModOption(this.option);
+			}
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// Draws a box on the shop menus that display the harvest price of the highlighted seed or fruit tree
         /// </summary>
-        internal void toggleOption() {
+        internal void toggleOption(string identifier, bool IsOn) {
 
             GraphicsEvents.OnPostRenderGuiEvent -= drawShopHarvestPrices;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HARVEST_PRICES_IN_SHOP ) ) {
+			if( IsOn ) {
                 GraphicsEvents.OnPostRenderGuiEvent += drawShopHarvestPrices;
             }
         }
@@ -132,13 +147,13 @@ namespace UiModSuite.UiMods {
                     Game1.spriteBatch.DrawString( Game1.dialogueFont, harvestPrice, new Vector2( shopIconPositionX, positionY + 4 ), Color.Black * 0.8f );
 
                     // Redraw tooltip
-                    var hoverText = ModEntry.helper.Reflection.GetPrivateField<string>( shopMenu, "hoverText" ).GetValue();
-                    var boldTitleText = ModEntry.helper.Reflection.GetPrivateField<string>( shopMenu, "boldTitleText" ).GetValue();
-                    var hoveredItem = ModEntry.helper.Reflection.GetPrivateField<Item>( shopMenu, "hoveredItem" ).GetValue();
-                    var currency = ModEntry.helper.Reflection.GetPrivateField<int>( shopMenu, "currency" ).GetValue();
-                    var hoverPrice = ModEntry.helper.Reflection.GetPrivateField<int>( shopMenu, "hoverPrice" ).GetValue();
-                    var getHoveredItemExtraItemIndex = ModEntry.helper.Reflection.GetPrivateMethod( shopMenu, "getHoveredItemExtraItemIndex" );
-                    var getHoveredItemExtraItemAmount = ModEntry.helper.Reflection.GetPrivateMethod( shopMenu, "getHoveredItemExtraItemAmount" );
+					var hoverText = ModEntry.Helper.Reflection.GetPrivateField<string>( shopMenu, "hoverText" ).GetValue();
+                    var boldTitleText = ModEntry.Helper.Reflection.GetPrivateField<string>( shopMenu, "boldTitleText" ).GetValue();
+                    var hoveredItem = ModEntry.Helper.Reflection.GetPrivateField<Item>( shopMenu, "hoveredItem" ).GetValue();
+                    var currency = ModEntry.Helper.Reflection.GetPrivateField<int>( shopMenu, "currency" ).GetValue();
+                    var hoverPrice = ModEntry.Helper.Reflection.GetPrivateField<int>( shopMenu, "hoverPrice" ).GetValue();
+                    var getHoveredItemExtraItemIndex = ModEntry.Helper.Reflection.GetPrivateMethod( shopMenu, "getHoveredItemExtraItemIndex" );
+                    var getHoveredItemExtraItemAmount = ModEntry.Helper.Reflection.GetPrivateMethod( shopMenu, "getHoveredItemExtraItemAmount" );
                     IClickableMenu.drawToolTip( Game1.spriteBatch, hoverText, boldTitleText, hoveredItem, heldItem != null, -1, currency, getHoveredItemExtraItemIndex.Invoke<int>(), getHoveredItemExtraItemAmount.Invoke<int>(), null, hoverPrice );
                 }
 

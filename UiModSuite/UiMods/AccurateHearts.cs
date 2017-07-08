@@ -6,6 +6,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using StardewConfigFramework;
 using UiModSuite.Options;
 
 namespace UiModSuite.UiMods {
@@ -14,15 +15,29 @@ namespace UiModSuite.UiMods {
         private List<ClickableTextureComponent> friendNames;
         private SocialPage socialPage;
 
+		private ModOptionToggle option;
+
+		public AccurateHearts() {
+			this.option = ModEntry.Options.GetOptionWithIdentifier("accurateHearts") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("accurateHearts", "Show heart fills");
+				ModEntry.Options.AddModOption(this.option);
+			}
+
+			this.option.ValueChanged += toggleVisibleHearts;
+			toggleVisibleHearts(this.option.identifier, this.option.IsOn);
+		}
+
         /// <summary>
         /// Displays a partial heart fill between heart levels on the social page
         /// </summary>
-        public void toggleVisibleHearts() {
+        public void toggleVisibleHearts(string identifier, bool IsOn) {
 
             GraphicsEvents.OnPostRenderGuiEvent -= drawHeartFills;
             MenuEvents.MenuChanged -= OnMenuChange;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_HEART_FILLS ) ) {
+			if( IsOn ) {
                 MenuEvents.MenuChanged += OnMenuChange;
                 GraphicsEvents.OnPostRenderGuiEvent += drawHeartFills;
             }

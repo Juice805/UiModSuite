@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using UiModSuite.Options;
 using System.Reflection;
 using System.Collections.Generic;
+using StardewConfigFramework;
 
 namespace UiModSuite.UiMods {
     internal class DisplayCalendarAndBillboardOnGameMenuButton {
@@ -15,16 +16,40 @@ namespace UiModSuite.UiMods {
         ClickableTextureComponent showBillboardButton = new ClickableTextureComponent( new Rectangle( 0, 0, 99, 60 ), Game1.content.Load<Texture2D>( "Maps\\summer_town" ), new Rectangle( 122, 291, 35, 20 ), 3 );
         string hoverText;
 
-        /// <summary>
-        /// This mod displays a button in GameMenu to show billboard and calendar anywhere
-        /// </summary>
-        internal void toggleOption() {
+		private ModOptionToggle option;
+		private ModOptionToggle extraInfoOption;
 
-            GraphicsEvents.OnPostRenderGuiEvent -= renderButtons;
+		public DisplayCalendarAndBillboardOnGameMenuButton()
+		{
+			this.extraInfoOption = ModEntry.Options.GetOptionWithIdentifier("displayExtraItemInfo") as ModOptionToggle;
+			if (this.extraInfoOption == null)
+			{
+				this.extraInfoOption = new ModOptionToggle("displayExtraItemInfo", "Show extra item information");
+				ModEntry.Options.AddModOption(this.extraInfoOption);
+			}
+
+			this.option = ModEntry.Options.GetOptionWithIdentifier("displayCal&Billboard") as ModOptionToggle;
+			if (this.option == null)
+			{
+				this.option = new ModOptionToggle("displayCal&Billboard", "Display calendar/billboard button");
+				ModEntry.Options.AddModOption(this.option);
+			}
+
+			this.option.ValueChanged += toggleOption;
+			toggleOption(this.option.identifier, this.option.IsOn);
+		}
+
+		/// <summary>
+		/// This mod displays a button in GameMenu to show billboard and calendar anywhere
+		/// </summary>
+		internal void toggleOption(string identifier, bool IsOn)
+		{
+
+			GraphicsEvents.OnPostRenderGuiEvent -= renderButtons;
             GraphicsEvents.OnPreRenderGuiEvent -= removeDefaultTooltips;
             ControlEvents.MouseChanged -= onBilboardIconClick;
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.DISPLAY_CALENDAR_AND_BILLBOARD ) ) {
+			if( IsOn ) {
                 GraphicsEvents.OnPostRenderGuiEvent += renderButtons;
                 GraphicsEvents.OnPreRenderGuiEvent += removeDefaultTooltips;
                 ControlEvents.MouseChanged += onBilboardIconClick;
@@ -40,7 +65,7 @@ namespace UiModSuite.UiMods {
                 return;
             }
 
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) == false ) {
+			if( extraInfoOption.IsOn == false ) {
                 var pages = ( List<IClickableMenu> ) typeof( GameMenu ).GetField( "pages", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( Game1.activeClickableMenu );
                 var inventoryPage = ( InventoryPage ) pages[ GameMenu.inventoryTab ];
                 hoverText = ( string ) typeof( InventoryPage ).GetField( "hoverText", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
@@ -102,7 +127,7 @@ namespace UiModSuite.UiMods {
             }
 
             // Redraw tooltips if advanced tooltips are not showing
-            if( ModOptionsPage.getCheckboxValue( ModOptionsPage.Setting.SHOW_EXTRA_ITEM_INFORMATION ) == false ) {
+			if( extraInfoOption.IsOn == false ) {
                 var pages = ( List<IClickableMenu> ) typeof( GameMenu ).GetField( "pages", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( Game1.activeClickableMenu );
                 var inventoryPage = ( InventoryPage ) pages[ GameMenu.inventoryTab ];
                 var hoverTitle = ( string ) typeof( InventoryPage ).GetField( "hoverTitle", BindingFlags.Instance | BindingFlags.NonPublic ).GetValue( inventoryPage );
