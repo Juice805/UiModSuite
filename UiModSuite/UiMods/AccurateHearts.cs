@@ -18,12 +18,8 @@ namespace UiModSuite.UiMods {
 		private ModOptionToggle option;
 
 		public AccurateHearts() {
-			this.option = ModEntry.Options.GetOptionWithIdentifier("accurateHearts") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("accurateHearts", "Show heart fills");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("accurateHearts") ?? new ModOptionToggle("accurateHearts", "Show heart fills");
+			ModEntry.Options.AddModOption(this.option);
 
 			this.option.ValueChanged += toggleVisibleHearts;
 			toggleVisibleHearts(this.option.identifier, this.option.IsOn);

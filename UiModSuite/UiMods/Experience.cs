@@ -69,34 +69,17 @@ namespace UiModSuite.UiMods
 		public Experience()
 		{
 
+			this.displayBarOption = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayXPBar") ?? new ModOptionToggle("displayXPBar", "Show experience bar");
+			ModEntry.Options.AddModOption(this.displayBarOption);
 
-			this.displayBarOption = ModEntry.Options.GetOptionWithIdentifier("displayXPBar") as ModOptionToggle;
-			if (this.displayBarOption == null)
-			{
-				this.displayBarOption = new ModOptionToggle("displayXPBar", "Show experience bar");
-				ModEntry.Options.AddModOption(this.displayBarOption);
-			}
+			this.xpBarFadeOption = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("allowXPBarFade") ?? new ModOptionToggle("allowXPBarFade", "Allow experience bar to fade out");
+			ModEntry.Options.AddModOption(this.xpBarFadeOption);
 
-			this.xpBarFadeOption = ModEntry.Options.GetOptionWithIdentifier("allowXPBarFade") as ModOptionToggle;
-			if (this.xpBarFadeOption == null)
-			{
-				this.xpBarFadeOption = new ModOptionToggle("allowXPBarFade", "Allow experience bar to fade out");
-				ModEntry.Options.AddModOption(this.xpBarFadeOption);
-			}
+			this.displayGainOption = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayXPGain") ?? new ModOptionToggle("displayXPGain", "Show experience gain");
+			ModEntry.Options.AddModOption(this.displayGainOption);
 
-			this.displayGainOption = ModEntry.Options.GetOptionWithIdentifier("displayXPGain") as ModOptionToggle;
-			if (this.displayGainOption == null)
-			{
-				this.displayGainOption = new ModOptionToggle("displayXPGain", "Show experience gain");
-				ModEntry.Options.AddModOption(this.displayGainOption);
-			}
-
-			this.levelUpOption = ModEntry.Options.GetOptionWithIdentifier("displayLevelUp") as ModOptionToggle;
-			if (this.levelUpOption == null)
-			{
-				this.levelUpOption = new ModOptionToggle("displayLevelUp", "Show level up animation");
-				ModEntry.Options.AddModOption(this.levelUpOption);
-			}
+			this.levelUpOption = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayLevelUp") ?? new ModOptionToggle("displayLevelUp", "Show level up animation");
+			ModEntry.Options.AddModOption(this.levelUpOption);
 
 			this.levelUpOption.ValueChanged += togglLevelUpAnimation;
 			togglLevelUpAnimation(this.levelUpOption.identifier, this.levelUpOption.IsOn);

@@ -19,12 +19,9 @@ namespace UiModSuite.UiMods {
 
 		public ShopHarvestPrices()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayHarvestPrices") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayHarvestPrices", "Show harvest prices in shop");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayHarvestPrices") ?? new ModOptionToggle("displayHarvestPrices", "Show harvest prices in shop");
+			ModEntry.Options.AddModOption(this.option);
+
 			this.option.ValueChanged += toggleOption;
 			toggleOption(this.option.identifier, this.option.IsOn);
 		}

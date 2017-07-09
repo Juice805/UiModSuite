@@ -24,14 +24,10 @@ namespace UiModSuite.UiMods {
         /// </summary>
         public DisplayAnimalNeedsPet() {
 
-			this.option = ModEntry.Options.GetOptionWithIdentifier("animalNeedsPet") as ModOptionToggle;
-			if (this.option == null) {
-				this.option = new ModOptionToggle("animalNeedsPet", "Show when animals need pets");
-				ModEntry.Options.AddModOption(this.option);
-			}
-				
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("animalNeedsPet") ?? new ModOptionToggle("animalNeedsPet", "Show when animals need pets");
+			ModEntry.Options.AddModOption(this.option);
 
-            timer = new Timer();
+			timer = new Timer();
             timer.Elapsed += triggerDraw;
 
 			this.option.ValueChanged += toggleOption;

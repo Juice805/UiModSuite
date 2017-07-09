@@ -14,12 +14,9 @@ namespace UiModSuite.UiMods {
 
 		public DisplayBirthdayIcon()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayBirthday") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayBirthday", "Show birthday icon reminder");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayBirthday") ?? new ModOptionToggle("displayBirthday", "Show birthday icon reminder");
+			ModEntry.Options.AddModOption(this.option);
+
 			this.option.ValueChanged += toggleOption;
 			toggleOption(this.option.identifier, this.option.IsOn);
 		}

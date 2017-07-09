@@ -17,12 +17,8 @@ namespace UiModSuite.UiMods {
 
 		public DisplayScarecrowAndSprinklerRange()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayScarecrow&Sprinkler") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayScarecrow&Sprinkler", "Show Scarecrow and sprinkler range");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayScarecrow&Sprinkler") ?? new ModOptionToggle("displayScarecrow&Sprinkler", "Show Scarecrow and sprinkler range");
+			ModEntry.Options.AddModOption(this.option);
 
 			this.option.ValueChanged += toggleOption;
 			toggleOption(this.option.identifier, this.option.IsOn);

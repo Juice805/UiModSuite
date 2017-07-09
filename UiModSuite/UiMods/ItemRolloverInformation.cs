@@ -26,12 +26,8 @@ namespace UiModSuite.UiMods {
 
 		public ItemRolloverInformation()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayExtraItemInfo") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayExtraItemInfo", "Show extra item information");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayExtraItemInfo") ?? new ModOptionToggle("displayExtraItemInfo", "Show extra item information");
+			ModEntry.Options.AddModOption(this.option);
 
 			this.option.ValueChanged += toggleOption;
 			toggleOption(this.option.identifier, this.option.IsOn);

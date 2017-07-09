@@ -23,12 +23,8 @@ namespace UiModSuite.UiMods {
 
 		public DisplayCropAndBarrelTime()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayCrop&Barrel") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayCrop&Barrel", "Show hover info on crops and barrels");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayCrop&Barrel") ?? new ModOptionToggle("displayCrop&Barrel", "Show hover info on crops and barrels");
+			ModEntry.Options.AddModOption(this.option);
 
 			this.option.ValueChanged += toggleOption;
 			toggleOption(this.option.identifier, this.option.IsOn);

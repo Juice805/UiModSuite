@@ -21,19 +21,11 @@ namespace UiModSuite.UiMods {
 
 		public DisplayCalendarAndBillboardOnGameMenuButton()
 		{
-			this.extraInfoOption = ModEntry.Options.GetOptionWithIdentifier("displayExtraItemInfo") as ModOptionToggle;
-			if (this.extraInfoOption == null)
-			{
-				this.extraInfoOption = new ModOptionToggle("displayExtraItemInfo", "Show extra item information");
-				ModEntry.Options.AddModOption(this.extraInfoOption);
-			}
+			this.extraInfoOption = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayExtraItemInfo") ?? new ModOptionToggle("displayExtraItemInfo", "Show extra item information");
+			ModEntry.Options.AddModOption(this.extraInfoOption);
 
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayCal&Billboard") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayCal&Billboard", "Display calendar/billboard button");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayCal&Billboard") ?? new ModOptionToggle("displayCal&Billboard", "Display calendar/billboard button");
+			ModEntry.Options.AddModOption(this.option);
 
 			this.option.ValueChanged += toggleOption;
 			toggleOption(this.option.identifier, this.option.IsOn);

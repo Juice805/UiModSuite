@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using UiModSuite.Options;
 using UiModSuite.UiMods;
+using StardewConfigFramework;
 
 namespace UiModSuite
 {
@@ -37,6 +38,14 @@ namespace UiModSuite
 			uiModDisplayScarecrowAndSprinklerRange = new DisplayScarecrowAndSprinklerRange();
 			shopHarvestPrices = new ShopHarvestPrices();
 			uiModDisplayCalendarAndBillboardOnGameMenuButton = new DisplayCalendarAndBillboardOnGameMenuButton();
+
+			var saveButton = ModEntry.Options.GetOptionWithIdentifier<ModOptionTrigger>("saveButton") ?? new ModOptionTrigger("saveButton", "Save Settings", OptionActionType.OK);
+			ModEntry.Options.AddModOption(saveButton);
+
+			saveButton.ActionTriggered += (identifier) => {
+				ModEntry.Options.SaveUserSettings();
+				ModEntry.Helper.WriteConfig(ModEntry.ModConfig);
+			};
 		}
 	}
 }

@@ -35,12 +35,8 @@ namespace UiModSuite.UiMods {
 
 		public LocationOfTownsfolk()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayTownspeopleLoc") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayTownspeopleLoc", "Show townspeople on map");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayTownspeopleLoc") ?? new ModOptionToggle("displayTownspeopleLoc", "Show townspeople on map");
+			ModEntry.Options.AddModOption(this.option);
 
 			this.option.ValueChanged += toggleShowNPCLocationOnMap;
 			toggleShowNPCLocationOnMap(this.option.identifier, this.option.IsOn);

@@ -22,7 +22,7 @@ namespace UiModSuite {
             
         public override void Entry(IModHelper helper) {
 			var Settings = IModSettingsFramework.Instance;
-			ModEntry.Options = new ModOptions(this);
+			ModEntry.Options = ModOptions.LoadUserSettings(this);
 			Settings.AddModOptions(ModEntry.Options);
 
 			ModEntry.Helper = helper;
@@ -37,14 +37,17 @@ namespace UiModSuite {
 			SaveEvents.AfterReturnToTitle += RemoveListener;
 			SaveEvents.AfterSave += SaveEvents_AfterSave;
 
-
+			var skipIntro = Options.GetOptionWithIdentifier<ModOptionToggle>("skipIntro") ?? new ModOptionToggle("skipIntro", "Skip Intro");
+			Options.AddModOption(skipIntro);
 			// Skip Intro
-			MenuEvents.MenuChanged += SkipIntro.onMenuChange;
+			if (skipIntro.IsOn)
+				MenuEvents.MenuChanged += SkipIntro.onMenuChange;
         }
 
 		void SaveEvents_AfterSave(object sender, EventArgs e)
 		{
 			ModEntry.Helper.WriteConfig(ModEntry.ModConfig);
+			Options.SaveUserSettings();
 		}
 
 		void LoadFeatures(object sender, EventArgs e)

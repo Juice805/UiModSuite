@@ -18,12 +18,9 @@ namespace UiModSuite.UiMods {
 
 		public ShowTravelingMerchant()
 		{
-			this.option = ModEntry.Options.GetOptionWithIdentifier("displayTravelMerch") as ModOptionToggle;
-			if (this.option == null)
-			{
-				this.option = new ModOptionToggle("displayTravelMerch", "Show traveling merchant icon");
-				ModEntry.Options.AddModOption(this.option);
-			}
+			this.option = ModEntry.Options.GetOptionWithIdentifier<ModOptionToggle>("displayTravelMerch") ?? new ModOptionToggle("displayTravelMerch", "Show traveling merchant icon");
+			ModEntry.Options.AddModOption(this.option);
+
 			this.option.ValueChanged += toggleShowTravelingMerchant;
 			toggleShowTravelingMerchant(this.option.identifier, this.option.IsOn);
 		}
