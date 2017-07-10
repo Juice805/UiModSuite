@@ -423,7 +423,6 @@ namespace UiModSuite.UiMods
 			Task.Factory.StartNew(() =>
 			{
 				System.Threading.Thread.Sleep(100);
-
 				Game1.musicCategory.SetVolume(Math.Max(0, Game1.options.musicVolumeLevel - 0.3f));
 				Game1.ambientCategory.SetVolume(Math.Max(0, Game1.options.ambientVolumeLevel - 0.3f));
 
