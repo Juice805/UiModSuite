@@ -301,7 +301,7 @@ namespace UiModSuite.UiMods
 
 				for (int i = 0; i < items.Count(); i += 3)
 				{
-					if (items[i] == $"{hoverItem.parentSheetIndex}" && items[i + 1] != items[i + 2])
+					if (items[i] == $"{hoverItem.parentSheetIndex}")
 					{
 						bundleItemIndex = i;
 						bundleName = valueData[0];
@@ -313,7 +313,7 @@ namespace UiModSuite.UiMods
 			}))
 			{
 				var bundleNum = int.Parse(bundleData.Keys.ToList()[bundleIndex].Split('/')[1]);
-				if (!communityCenter.bundles[bundleNum][bundleItemIndex])
+				if (!communityCenter.bundles[bundleNum][bundleItemIndex/3])
 				{
 					inBundle = true;
 					height += bundleIconSourceRect.Height * Game1.pixelZoom;
@@ -355,79 +355,68 @@ namespace UiModSuite.UiMods
 
 			// Fix Height and Widths for special cases
 			string category = null;
-			if (hoveredItem != null)
-			{
+			if (hoveredItem != null) {
 				height += (Game1.tileSize + 4) * hoveredItem.attachmentSlots();
 				category = hoveredItem.getCategoryName();
-				if (category.Length > 0)
-				{
-					width = Math.Max(width, (int)font.MeasureString(category).X + Game1.tileSize / 2);
+				if (category.Length > 0) {
+					width = Math.Max(width, (int) font.MeasureString(category).X + Game1.tileSize / 2);
 					height += baseFontHeight;
 				}
 				int maxDmg = 9999;
 				int padding = 15 * Game1.pixelZoom + Game1.tileSize / 2;
-				if (hoveredItem is MeleeWeapon)
-				{
+				if (hoveredItem is MeleeWeapon) {
 					MeleeWeapon meleeWeapon = hoveredItem as MeleeWeapon;
-					height = Math.Max(heightBase * 3, (int)((title == null) ? 0f : (Game1.dialogueFont.MeasureString(title).Y + (float)(Game1.tileSize / 4))) + Game1.tileSize / 2) + baseFontHeight + (int)((moneyAmount <= -1) ? 0f : (font.MeasureString(moneyAmount + string.Empty).Y + 4f));
+					height = Math.Max(heightBase * 3, (int) ((title == null) ? 0f : (Game1.dialogueFont.MeasureString(title).Y + (float) (Game1.tileSize / 4))) + Game1.tileSize / 2) + baseFontHeight + (int) ((moneyAmount <= -1) ? 0f : (font.MeasureString(moneyAmount + string.Empty).Y + 4f));
 					height += ((!(hoveredItem.Name == "Scythe")) ? ((hoveredItem as MeleeWeapon).getNumberOfDescriptionCategories() * Game1.pixelZoom * 12) + 4 : 10);
-					height += (int)font.MeasureString(Game1.parseText((hoveredItem as MeleeWeapon).description, Game1.smallFont, Game1.tileSize * 4 + Game1.tileSize / 4)).Y;
-					width = (int)Math.Max((float)width, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Damage", new object[] {
+					height += (int) font.MeasureString(Game1.parseText((hoveredItem as MeleeWeapon).description, Game1.smallFont, Game1.tileSize * 4 + Game1.tileSize / 4)).Y;
+					width = (int) Math.Max((float) width, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Damage", new object[] {
 								maxDmg,
 								maxDmg
-						})).X + (float)padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Speed", new object[] {
+						})).X + (float) padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Speed", new object[] {
 								maxDmg
-						})).X + (float)padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", new object[] {
+						})).X + (float) padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", new object[] {
 								maxDmg
-						})).X + (float)padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", new object[] {
+						})).X + (float) padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", new object[] {
 								maxDmg
-						})).X + (float)padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", new object[] {
+						})).X + (float) padding, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", new object[] {
 								maxDmg
-						})).X + (float)padding, font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Weight", new object[] {
+						})).X + (float) padding, font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Weight", new object[] {
 								maxDmg
-						})).X + (float)padding))))));
-				}
-				else if (hoveredItem is Boots)
-				{
-					height -= (int)descriptionTextSize.Y;
-					height += (int)((float)((hoveredItem as Boots).getNumberOfDescriptionCategories() * Game1.pixelZoom * 12) + font.MeasureString(Game1.parseText((hoveredItem as Boots).description, Game1.smallFont, Game1.tileSize * 4 + Game1.tileSize / 4)).Y);
-					width = (int)Math.Max((float)width, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", new object[] {
+						})).X + (float) padding))))));
+				} else if (hoveredItem is Boots) {
+					height -= (int) descriptionTextSize.Y;
+					height += (int) ((float) ((hoveredItem as Boots).getNumberOfDescriptionCategories() * Game1.pixelZoom * 12) + font.MeasureString(Game1.parseText((hoveredItem as Boots).description, Game1.smallFont, Game1.tileSize * 4 + Game1.tileSize / 4)).Y);
+					width = (int) Math.Max((float) width, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", new object[] {
 								maxDmg
-						})).X + (float)padding, font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", new object[] {
+						})).X + (float) padding, font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", new object[] {
 								maxDmg
-						})).X + (float)padding));
-				}
-				else if (EdibleItem)
-				{
-					if (healAmount == -1)
-					{
+						})).X + (float) padding));
+				} else if (EdibleItem) {
+					if (healAmount == -1) {
 						height += (Game1.tileSize / 2 + Game1.pixelZoom * 1) * ((healAmount <= 0) ? 1 : 2);
-					}
-					else
-					{
+					} else if (healAmount == 0) {
+
+					} else {
 						height += Game1.tileSize / 2 + Game1.pixelZoom * 1;
 					}
-					healAmount = (int)Math.Ceiling((double)hoveredObject.Edibility * 2.5) + hoveredObject.quality * hoveredObject.Edibility;
-					width = (int)Math.Max((float)width, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Energy", new object[] {
+					healAmount = (int) Math.Ceiling((double) hoveredObject.Edibility * 2.5) + hoveredObject.quality * hoveredObject.Edibility;
+					width = (int) Math.Max((float) width, Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Energy", new object[] {
 								maxDmg
-						})).X + (float)padding, font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Health", new object[] {
+						})).X + (float) padding, font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Health", new object[] {
 								maxDmg
-						})).X + (float)padding));
+						})).X + (float) padding));
 				}
 
 				// Calculate required height for fish/crop/tree info
-				if (hoveredObject != null && fishData.ContainsKey(hoveredObject.ParentSheetIndex) && !hoveredObject.Name.Contains("Algae") && !hoveredObject.Name.Contains("Seaweed"))
-				{
+				if (hoveredObject != null && fishData.ContainsKey(hoveredObject.ParentSheetIndex) && !hoveredObject.Name.Contains("Algae") && !hoveredObject.Name.Contains("Seaweed")) {
 					// Add the height of the seasons icons 
 					var data = fishData[hoveredObject.ParentSheetIndex].Split('/');
-					if (data[1] != "trap")
-					{
+					if (data[1] != "trap") {
 
 						height += (fishIconSourceRect.Height + 2) * Game1.pixelZoom;
 						var times = data[5].Split(' ');
 						string timesString = "";
-						for (int i = 0; i < times.Length; i++)
-						{
+						for (int i = 0; i < times.Length; i++) {
 							int time = (int.Parse(times[i]) / 100);
 							timesString += time - (time > 12 ? 12 : 0);
 							if (time > 12)
@@ -435,34 +424,28 @@ namespace UiModSuite.UiMods
 							else
 								timesString += "a";
 
-							if (i % 2 == 1 && i != times.Length - 1)
-							{
+							if (i % 2 == 1 && i != times.Length - 1) {
 								timesString += ", ";
-							}
-							else if (i % 2 == 0)
-							{
+							} else if (i % 2 == 0) {
 								timesString += "-";
 							}
 						}
 
-						width = Math.Max(width, (int)font.MeasureString(timesString).X + Game1.tileSize / 2);
+						width = Math.Max(width, (int) font.MeasureString(timesString).X + Game1.tileSize / 2);
 
 						var seasons = data[6].Split(' ');
-						if (seasons.Count() > 0 && seasons.Count() < 4)
-						{ // if all seasons don't draw any
+						if (seasons.Count() > 0 && seasons.Count() < 4) { // if all seasons don't draw any
 							height += (summerIconSourceRect.Height + 2) * Game1.pixelZoom;
 							width = Math.Max(width, ((summerIconSourceRect.Width + 2) * Game1.pixelZoom * seasons.Count()));
 						}
 
 						var weather = data[7].Split(' ');
-						if (!weather.Contains("both"))
-						{ // if all weather don't draw any
-							width = Math.Max(width, ((rainIconSourceRect.Width * 3) + (2 * Game1.pixelZoom)) * weather.Count() + fishIconSourceRect.Width * Game1.pixelZoom + Game1.pixelZoom + (int)font.MeasureString(timesString).X + Game1.tileSize / 2);
+						if (!weather.Contains("both")) { // if all weather don't draw any
+							width = Math.Max(width, ((rainIconSourceRect.Width * 3) + (2 * Game1.pixelZoom)) * weather.Count() + fishIconSourceRect.Width * Game1.pixelZoom + Game1.pixelZoom + (int) font.MeasureString(timesString).X + Game1.tileSize / 2);
 						}
 
 					}
-				}
-				else if (hoveredObject != null && treeData.ContainsKey(hoveredObject.ParentSheetIndex))
+				} else if (hoveredObject != null && treeData.Values.ToList().Exists(x => x.Split('/')[2] == $"{hoveredObject.ParentSheetIndex}"))
 				{
 					var data = treeData[hoveredObject.ParentSheetIndex].Split('/');
 
@@ -538,8 +521,6 @@ namespace UiModSuite.UiMods
 
 			// MARK: Drawing Content
 			IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), prevMouseXOffset, prevMouseYOffset, width + ((craftingIngredients == null) ? 0 : (Game1.tileSize / 3)), height, Color.White * alpha, 1f, true);
-
-
 
 			// Items with no title
 			if (title != null)
@@ -832,9 +813,9 @@ namespace UiModSuite.UiMods
 					}
 				}
 			}
-			else if (hoveredObject != null && treeData.ContainsKey(hoveredObject.ParentSheetIndex))
+			else if (hoveredObject != null && treeData.Values.ToList().Exists(x => x.Split('/')[2] == $"{hoveredObject.ParentSheetIndex}"))
 			{
-				var data = treeData[hoveredObject.ParentSheetIndex].Split('/');
+				var data = treeData.Values.ToList().Find( x=> x.Split('/')[2] == $"{hoveredObject.ParentSheetIndex}").Split('/');
 
 				var seasonIconSize = (summerIconSourceRect.Width + 2) * Game1.pixelZoom;
 				var multiplier = 0;
