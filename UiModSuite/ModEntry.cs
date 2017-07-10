@@ -8,19 +8,22 @@ using System.IO;
 using UiModSuite.Options;
 using StardewConfigFramework;
 
-namespace UiModSuite {
-    public class ModEntry : Mod {
+namespace UiModSuite
+{
+	public class ModEntry : Mod
+	{
 
 		public static ModOptions Options;
 		public static new IModHelper Helper;
 		public static string modDirectory;
 		public static ModConfig ModConfig;
-        public static Boolean isTesting = false;
+		public static Boolean isTesting = false;
 		public static new IMonitor Monitor;
 
 		public FeatureController controller;
-            
-        public override void Entry(IModHelper helper) {
+
+		public override void Entry(IModHelper helper)
+		{
 			var Settings = IModSettingsFramework.Instance;
 			ModEntry.Options = ModOptions.LoadUserSettings(this);
 			Settings.AddModOptions(ModEntry.Options);
@@ -32,17 +35,18 @@ namespace UiModSuite {
 			// Load Modconfig
 			ModConfig = Helper.ReadConfig<ModConfig>();
 
-            // Loads the correct settings on character load
+			// Loads the correct settings on character load
 			SaveEvents.AfterLoad += LoadFeatures;
 			SaveEvents.AfterReturnToTitle += RemoveListener;
 			SaveEvents.AfterSave += SaveEvents_AfterSave;
 
 			var skipIntro = Options.GetOptionWithIdentifier<ModOptionToggle>("skipIntro") ?? new ModOptionToggle("skipIntro", "Skip Intro");
 			Options.AddModOption(skipIntro);
+
 			// Skip Intro
 			if (skipIntro.IsOn)
 				MenuEvents.MenuChanged += SkipIntro.onMenuChange;
-        }
+		}
 
 		void SaveEvents_AfterSave(object sender, EventArgs e)
 		{
