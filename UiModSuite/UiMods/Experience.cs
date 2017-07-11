@@ -48,6 +48,13 @@ namespace UiModSuite.UiMods
 		Color iconColor = new Color(Color.White.ToVector4());
 		Color expFillColor = new Color(Color.Azure.ToVector4());
 
+		Color lightenedFillColor {
+			get {
+				int amount = 20;
+				return new Color(expFillColor.R + amount, expFillColor.G + amount, expFillColor.B + amount, expFillColor.A);
+			}
+		}
+
 		Item previousItem = null;
 
 		private bool shouldDrawExperienceBar = false;
@@ -157,6 +164,7 @@ namespace UiModSuite.UiMods
 				currentLevelIndex = 1;
 				spriteRectangle = new Rectangle(20, 428, 10, 10);
 				currentLevel = Game1.player.fishingLevel;
+				expFillColor = Color.CornflowerBlue;
 
 			}
 			else if (currentItem is Axe)
@@ -164,26 +172,25 @@ namespace UiModSuite.UiMods
 				currentLevelIndex = 2;
 				spriteRectangle = new Rectangle(60, 428, 10, 10);
 				currentLevel = Game1.player.foragingLevel;
+				expFillColor = Color.ForestGreen;
 
-			}
-			else if (currentItem is Pickaxe)
+			} else if (currentItem is Pickaxe)
 			{
 				currentLevelIndex = 3;
 				spriteRectangle = new Rectangle(30, 428, 10, 10);
 				currentLevel = Game1.player.miningLevel;
+				expFillColor = Color.LightSlateGray;
 
-			}
-			else if (currentItem is MeleeWeapon && currentItem.Name != "Scythe")
+			} else if (currentItem is MeleeWeapon && currentItem.Name != "Scythe")
 			{
 				currentLevelIndex = 4;
 				spriteRectangle = new Rectangle(120, 428, 10, 10);
 				currentLevel = Game1.player.combatLevel;
-
+				expFillColor = Color.Crimson;
 
 				// If primary item is not selected
 				// Display farming exp or foraging exp depending on current location
-			}
-			else
+			} else
 			{
 
 				if (Game1.currentLocation is Farm)
@@ -191,12 +198,13 @@ namespace UiModSuite.UiMods
 					currentLevelIndex = 0;
 					spriteRectangle = new Rectangle(10, 428, 10, 10);
 					currentLevel = Game1.player.farmingLevel;
-				}
-				else
+					expFillColor = Color.SaddleBrown;
+				} else
 				{
 					currentLevelIndex = 2;
 					spriteRectangle = new Rectangle(60, 428, 10, 10);
 					currentLevel = Game1.player.foragingLevel;
+					expFillColor = Color.ForestGreen;
 				}
 			}
 
@@ -254,10 +262,10 @@ namespace UiModSuite.UiMods
 			Game1.drawDialogueBox((int)positionX, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 160, 240, 160, false, true);
 
 			// Experience fill
-			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 63, barWidth, 31), expFillColor);
-			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 63, Math.Min(4, barWidth), 31), Color.LightGray);
-			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 63, barWidth, 4), Color.LightGray);
-			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 36, barWidth, 4), Color.LightGray);
+			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 64, barWidth, 32), expFillColor);
+			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 64, Math.Min(4, barWidth), 32), lightenedFillColor);
+			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 64, barWidth, 4), lightenedFillColor);
+			Game1.spriteBatch.Draw(Game1.staminaRect, new Rectangle((int)positionX + 32, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 36, barWidth, 4), lightenedFillColor);
 
 
 			// Hacky way to handle a mouseover
@@ -265,7 +273,7 @@ namespace UiModSuite.UiMods
 			test = new ClickableTextureComponent("", new Rectangle((int)positionX - 36, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 80, 260, 100), "", "", Game1.mouseCursors, new Rectangle(0, 0, 0, 0), Game1.pixelZoom);
 			if (test.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
 			{
-				Game1.drawWithBorder($"{currentExp}/{  expRequiredToLevel - expAlreadyEarnedFromPreviousLevels}", Color.Black, Color.White, new Vector2(positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66));
+				Game1.drawWithBorder($"{currentExp}/{  expRequiredToLevel - expAlreadyEarnedFromPreviousLevels}", Color.Black, Color.White, new Vector2(positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 70));
 
 				// Draw Level and icon
 			}
@@ -275,7 +283,7 @@ namespace UiModSuite.UiMods
 				Game1.spriteBatch.Draw(Game1.mouseCursors, new Vector2((int)positionX + 54, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 62), spriteRectangle, iconColor, 0.0f, Vector2.Zero, 2.9f, SpriteEffects.None, 0.85f);
 
 				// Draw current Level
-				Game1.drawWithBorder($"{currentLevel}", Color.Black * 0.6f, Color.Azure, new Vector2(positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 66));
+				Game1.drawWithBorder($"{currentLevel}", Color.Black * 0.6f, Color.Azure, new Vector2(positionX + 33, Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Bottom - 70));
 			}
 
 			// Level Up display
