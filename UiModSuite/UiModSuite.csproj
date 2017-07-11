@@ -62,6 +62,7 @@
     <Compile Include="Utilities\DemiacleUtility.cs" />
     <Compile Include="Utilities\IconHandler.cs" />
     <Compile Include="Utilities\ModConfig.cs" />
+    <Compile Include="Utilities\SourceRects.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
