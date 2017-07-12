@@ -917,9 +917,9 @@ namespace UiModSuite.UiMods {
 			b.DrawString(this.font, this.text, location, this.color);
 		}
 
-		private Point size => font.MeasureString(text).ToPoint();
-		public override int Height => size.Y * Game1.pixelZoom;
-		public override int Width => size.X * Game1.pixelZoom;
+		private Vector2 size => font.MeasureString(text);
+		public override int Height => (int)size.Y * Game1.pixelZoom;
+		public override int Width => (int)size.X * Game1.pixelZoom;
 		public int Length => text.Length;
 
 		public SpriteFont font = null;
@@ -943,9 +943,8 @@ namespace UiModSuite.UiMods {
 		public Rectangle source = new Rectangle();
 		public float scale = 1f;
 
-		private Point size => source.Size;
-		public override int Height => size.Y;
-		public override int Width => size.X;
+		public override int Height => source.Height;
+		public override int Width => source.Width;
 
 	}
 }
