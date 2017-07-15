@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using StardewValley;
 
 namespace UiModSuite.Utilities
 {
@@ -16,6 +17,10 @@ namespace UiModSuite.Utilities
 		public static readonly Rectangle fishIcon = new Rectangle(20, 428, 10, 10);
 		public static readonly Rectangle cropIcon = new Rectangle(10, 428, 10, 10);
 		public static readonly Rectangle bundleIcon = new Rectangle(331, 374, 15, 14);
+		public static readonly Rectangle healingIcon = new Rectangle(140, 428, 10, 10);
+		public static readonly Rectangle energyIcon = new Rectangle(0, 438, 10, 10);
+		public static readonly Rectangle currencyIcon = Game1.getSourceRectForStandardTileSheet(Game1.debrisSpriteSheet, 8, 16, 16);
+
 
 	}
 }
